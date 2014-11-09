@@ -1,0 +1,11 @@
+---
+minecraft_version: 1.8
+minecraft_url: https://s3.amazonaws.com/Minecraft.Download/versions
+minecraft_user: minecraft
+minecraft_group: minecraft
+minecraft_home: /srv/minecraft
+minecraft_max_memory: 1024M
+minecraft_initial_memory: 1024M
+minecraft_supervisor_name: minecraft
+minecraft_whitelist: []
+minecraft_ops: []

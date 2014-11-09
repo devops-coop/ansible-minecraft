@@ -1,0 +1,16 @@
+- name: generate ops data
+  tags: ops
+  sudo: false
+  local_action: script generate_minecraft_acl.py -l ops {{ minecraft_ops | join(' ') }}
+  register: acl
+
+- name: update ops
+  tags: ops
+  template:
+    src=acl.json.j2
+    dest={{ minecraft_home }}/ops.json
+    owner={{ minecraft_user }}
+    group={{ minecraft_group }}
+    mode=0644
+  notify:
+    - restart Minecraft

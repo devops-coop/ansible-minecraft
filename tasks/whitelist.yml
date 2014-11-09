@@ -1,0 +1,16 @@
+- name: generate whitelist data
+  tags: whitelist
+  sudo: false
+  local_action: script generate_minecraft_acl.py -l whitelist {{ minecraft_whitelist | join(' ') }}
+  register: acl
+
+- name: update whitelist
+  tags: whitelist
+  template:
+    src=acl.json.j2
+    dest={{ minecraft_home }}/whitelist.json
+    owner={{ minecraft_user }}
+    group={{ minecraft_group }}
+    mode=0644
+  notify:
+    - restart Minecraft

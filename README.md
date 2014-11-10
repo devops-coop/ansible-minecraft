@@ -47,12 +47,20 @@ The following variable defaults are defined in `defaults/main.yml`.
 
     list of Minecraft usernames to make server ops (default: `[]`)
 
+* `minecraft_banned_players`
+
+    list of Minecraft usernames to ban (default: `[]`)
+
+* `minecraft_banned_ips`
+
+    list of IP addresses to ban (default: `[]`)
+
 ## Example
 
 ```yaml
 - hosts: minecraft
   roles:
-     - { role: minecraft, minecraft_whitelist: ["jeb_", "dinnerbone"]}
+     - { role: benwebber.minecraft, minecraft_whitelist: ["jeb_", "dinnerbone"]}
 ```
 
 ## Contributing
@@ -61,7 +69,6 @@ Pull requests are welcome. Among other features, this role lacks support for:
 
 * non-Debian operating systems
 * custom Minecraft servers
-* banned player / IP ACLs
 
 This role includes a `Vagrantfile` to set up the development/testing environment using [Vagrant](http://vagrantup.com).
 

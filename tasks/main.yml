@@ -77,8 +77,22 @@
     owner={{ minecraft_user }}
     group={{ minecraft_group }}
 
-- include: whitelist.yml
+- include: acl.yml
+    list=whitelist
+    data={{ minecraft_whitelist }}
   when: "minecraft_whitelist"
 
-- include: ops.yml
+- include: acl.yml
+    list=ops
+    data={{ minecraft_ops }}
   when: "minecraft_ops"
+
+- include: acl.yml
+    list=banned-players
+    data={{ minecraft_banned_players }}
+  when: "minecraft_banned_players"
+
+- include: acl.yml
+    list=banned-ips
+    data={{ minecraft_banned_ips }}
+  when: "minecraft_banned_ips"

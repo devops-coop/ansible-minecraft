@@ -9,3 +9,5 @@ minecraft_initial_memory: 1024M
 minecraft_supervisor_name: minecraft
 minecraft_whitelist: []
 minecraft_ops: []
+minecraft_banned_players: []
+minecraft_banned_ips: []

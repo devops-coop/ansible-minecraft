@@ -7,12 +7,6 @@
 - name: include OS-specific variables
   include_vars: "{{ ansible_os_family }}.yml"
 
-- name: open firewall
-  ufw:
-    proto=tcp
-    port=25565
-    rule=allow
-
 - name: install Minecraft dependencies
   apt:
     name={{ item }}

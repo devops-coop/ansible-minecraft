@@ -7,6 +7,11 @@
 - name: include OS-specific variables
   include_vars: "{{ ansible_os_family }}.yml"
 
+- name: Update apt cache (24h refresh)
+  apt:
+    update_cache=yes
+    cache_valid_time=86400
+
 - name: install Minecraft dependencies
   apt:
     name={{ item }}
@@ -23,6 +28,8 @@
     owner=root
     group=root
     mode=0644
+  notify:
+    - restart Minecraft
 
 - name: create Minecraft group
   group:

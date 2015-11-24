@@ -1,0 +1,20 @@
+- name: install Supervisor
+  apt: name=supervisor
+
+- name: configure Supervisor
+  template:
+    src=minecraft.conf.j2
+    dest=/etc/supervisor/conf.d/minecraft.conf
+    owner=root
+    group=root
+    mode=0644
+  notify:
+    - restart Minecraft (supervisor)
+
+- name: create log directory
+  file:
+    path={{ minecraft_home }}/logs
+    owner={{ minecraft_user }}
+    group={{ minecraft_group }}
+    mode=0755
+    state=directory

@@ -1,5 +1,10 @@
 ---
-- name: restart Minecraft
+- name: restart Minecraft (supervisor)
   supervisorctl:
     name={{ minecraft_supervisor_name }}
+    state=restarted
+
+- name: restart Minecraft (systemd)
+  service:
+    name=minecraft
     state=restarted

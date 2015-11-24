@@ -11,3 +11,6 @@ minecraft_whitelist: []
 minecraft_ops: []
 minecraft_banned_players: []
 minecraft_banned_ips: []
+minecraft_console_fifo: /run/minecraft/console
+minecraft_console_fifo_mode: '0660'
+minecraft_process_control: supervisor

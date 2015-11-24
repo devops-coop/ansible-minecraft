@@ -1,0 +1,24 @@
+---
+- name: install units
+  template:
+    src={{ item }}.j2
+    dest=/etc/systemd/system/{{ item }}
+    owner=root
+    group=root
+    mode=0644
+  with_items:
+    - minecraft.service
+    - minecraft.socket
+
+- name: reload systemd
+  command: systemctl daemon-reload
+  sudo: true
+
+- name: enable and start units
+  service:
+    name={{ item }}
+    state=started
+    enabled=true
+  with_items:
+    - minecraft.service
+    - minecraft.socket

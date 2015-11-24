@@ -1,6 +1,6 @@
 # ansible-minecraft
 
-This role installs vanilla [Minecraft](https://minecraft.net/) and configures it to run under [Supervisor](http://supervisord.org/).
+This role installs vanilla [Minecraft](https://minecraft.net/) and configures it to run under [Supervisor](http://supervisord.org/) or [systemd](https://wiki.freedesktop.org/www/Software/systemd/).
 
 ## Requirements
 
@@ -38,6 +38,10 @@ The following variable defaults are defined in `defaults/main.yml`.
 * `minecraft_supervisor_name`
 
     Supervisor program name (default: `minecraft`)
+
+* `minecraft_process_control`
+
+    Choose between `supervisor` and `systemd` (default: `supervisor`).
 
 * `minecraft_whitelist`
 

@@ -1,0 +1,26 @@
+[Unit]
+Description=Minecraft Server
+After=network.target
+Wants=minecraft.socket
+
+# The server will sometimes crash after issuing `stop`. Thus we `save-all` and
+# consider 143 a successful exit code. See: <https://bugs.mojang.com/browse/MC-38134>
+[Service]
+User={{ minecraft_user }}
+Group={{ minecraft_group }}
+WorkingDirectory={{ minecraft_home }}
+StandardInput=socket
+StandardOutput=journal
+StandardError=journal
+ExecStart=/usr/bin/java -Xmx{{ minecraft_max_memory }} -Xms{{ minecraft_initial_memory }} -jar minecraft_server.jar nogui
+ExecStop=/bin/sh -c "echo 'save-all' > {{ minecraft_console_fifo }}"
+ExecStop=/bin/sh -c "echo 'stop' > {{ minecraft_console_fifo }}"
+Restart=on-failure
+SuccessExitStatus=143
+ProtectHome=true
+ProtectSystem=full
+PrivateTmp=true
+PrivateDevices=true
+
+[Install]
+WantedBy=multi-user.target

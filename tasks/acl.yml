@@ -11,4 +11,4 @@
     group={{ minecraft_group }}
     mode=0644
   notify:
-    - restart Minecraft
+    - "restart Minecraft ({{ minecraft_process_control }})"

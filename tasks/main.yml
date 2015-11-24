@@ -18,19 +18,6 @@
     state=present
   with_items: dependencies
 
-- name: install Supervisor
-  apt: name=supervisor
-
-- name: configure Supervisor
-  template:
-    src=minecraft.conf.j2
-    dest=/etc/supervisor/conf.d/minecraft.conf
-    owner=root
-    group=root
-    mode=0644
-  notify:
-    - restart Minecraft
-
 - name: create Minecraft group
   group:
     state=present
@@ -44,13 +31,11 @@
     group={{ minecraft_group }}
     home={{ minecraft_home }}
 
-- name: create log directory
-  file:
-    path={{ minecraft_home }}/logs
-    owner={{ minecraft_user }}
-    group={{ minecraft_group }}
-    mode=0755
-    state=directory
+- include: supervisor.yml
+  when: minecraft_process_control == 'supervisor'
+
+- include: systemd.yml
+  when: minecraft_process_control == 'systemd'
 
 - name: download Minecraft server
   get_url:
@@ -68,7 +53,7 @@
     group={{ minecraft_group }}
     state=link
   notify:
-    - restart Minecraft
+    - "restart Minecraft ({{ minecraft_process_control }})"
 
 - name: agree to EULA
   copy:

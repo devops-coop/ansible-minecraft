@@ -8,3 +8,16 @@
   service:
     name=minecraft
     state=restarted
+
+- name: enable service (supervisor)
+  command: supervisorctl update
+  sudo: true
+
+- name: enable service (systemd)
+  service:
+    name={{ item }}
+    state=started
+    enabled=true
+  with_items:
+    - minecraft.service
+    - minecraft.socket

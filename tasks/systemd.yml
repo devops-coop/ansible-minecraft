@@ -25,12 +25,3 @@
 - name: create console directory
   command: systemd-tmpfiles --create /etc/tmpfiles.d/minecraft.conf
   sudo: true
-
-- name: enable and start units
-  service:
-    name={{ item }}
-    state=started
-    enabled=true
-  with_items:
-    - minecraft.service
-    - minecraft.socket

@@ -48,7 +48,7 @@
     group={{ minecraft_group }}
     state=link
   notify:
-    - restart Minecraft ({{ minecraft_process_control }})
+    - restart Minecraft
 
 - name: agree to EULA
   copy:
@@ -58,7 +58,7 @@
     owner={{ minecraft_user }}
     group={{ minecraft_group }}
   notify:
-    - enable service ({{ minecraft_process_control }})
+    - enable service
 
 - include: acl.yml
     list=whitelist

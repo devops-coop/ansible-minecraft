@@ -9,6 +9,8 @@
   with_items:
     - minecraft.service
     - minecraft.socket
+  notify:
+    - restart Minecraft
 
 - name: reload systemd
   command: systemctl daemon-reload

@@ -12,6 +12,9 @@ galaxy_info:
       versions:
       - wheezy
       - jessie
+    - name: EL
+      versions:
+        - 7
   categories:
   - system
 dependencies: []

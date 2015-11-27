@@ -1,5 +1,8 @@
-- name: install Supervisor
-  apt: name=supervisor
+- include: supervisor/Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include: supervisor/RedHat.yml
+  when: ansible_os_family == 'RedHat'
 
 - name: configure Supervisor
   template:

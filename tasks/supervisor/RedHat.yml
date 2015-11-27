@@ -1,0 +1,7 @@
+- name: check supported version
+  fail:
+    msg="Using Supervisor with {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported. Use systemd instead."
+  when: "{{ ansible_distribution_major_version | version_compare(7, '>=') }}"
+
+- name: install Supervisor
+  yum: name=supervisor

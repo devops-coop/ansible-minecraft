@@ -1,4 +1,7 @@
 ---
+- include: systemd/Ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+
 - name: install units
   template:
     src={{ item }}.j2

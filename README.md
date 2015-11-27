@@ -4,7 +4,13 @@ This role installs vanilla [Minecraft](https://minecraft.net/) and configures it
 
 ## Requirements
 
-This role supports Debian and Debian-based distributions (e.g., Ubuntu).
+This role has no dependencies. It supports supports different process supervisors on different platforms.
+
+| OS           | Supervisor | systemd |
+|--------------|:----------:|:-------:|
+| Debian 8     | ✓          | ✓       |
+| Ubuntu 14.04 | ✓          |         |
+| CentOS 7     |            | ✓       |
 
 ## Role variables
 
@@ -69,10 +75,7 @@ The following variable defaults are defined in `defaults/main.yml`.
 
 ## Contributing
 
-Pull requests are welcome. Among other features, this role lacks support for:
-
-* non-Debian operating systems
-* custom Minecraft servers
+Pull requests are welcome. Among other features, this role lacks support for custom Minecraft servers.
 
 This role includes a `Vagrantfile` to set up the development/testing environment using [Vagrant](http://vagrantup.com).
 

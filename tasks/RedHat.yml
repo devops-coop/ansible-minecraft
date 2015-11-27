@@ -1,0 +1,5 @@
+- name: install Minecraft dependencies
+  yum:
+    name={{ item }}
+    state=present
+  with_items: dependencies

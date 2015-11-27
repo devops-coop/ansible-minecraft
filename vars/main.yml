@@ -1,0 +1,3 @@
+supported_ansible_os_families:
+  - Debian
+  - RedHat

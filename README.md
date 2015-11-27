@@ -18,13 +18,16 @@ The following variable defaults are defined in `defaults/main.yml`.
 
 * `minecraft_version`
 
-    Minecraft version to install (default: `1.8`)
+    Minecraft version to install (default: `1.8.8`)
+
 * `minecraft_url`
 
     Minecraft download URL (default: `https://s3.amazonaws.com/Minecraft.Download/versions`)
+
 * `minecraft_user`
 
     system user Minecraft runs as (default: `minecraft`)
+
 * `minecraft_group`
 
     system group Minecraft runs as (default: `minecraft`)

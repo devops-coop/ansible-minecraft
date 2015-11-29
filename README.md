@@ -80,7 +80,22 @@ The following variable defaults are defined in `defaults/main.yml`.
 
 Pull requests are welcome. Among other features, this role lacks support for custom Minecraft servers.
 
+### Testing
+
 This role includes a `Vagrantfile` to set up the development/testing environment using [Vagrant](http://vagrantup.com).
+
+1. Install [Vagrant](http://vagrantup.com/).
+2. Install [vagrant-serverspec](https://github.com/jvoorhis/vagrant-serverspec) to run RSpec tests. [Serverspec](http://serverspec.org/) is a declarative testing framework for server configuration.
+
+    ```
+    vagrant plugin install vagrant-serverspec
+    ```
+
+3. Run tests with `make`. See `make help` for more information.
+
+    ```
+    vagrant jessie64 test
+    ```
 
 ## License
 

@@ -20,6 +20,19 @@ This role installs vanilla [Minecraft](https://minecraft.net/) and configures it
 * uses [Vagrant](http://vagrantup.com/) and [Serverspec](http://serverspec.org/) to run integration tests
 * manages user ACLs
 
+## Versioning
+
+This project follows [semantic versioning](http://semver.org/).
+
+In the context of semantic versioning, consider the role contract to be defined by the role variables.
+
+* Changes that require user intervention will increase the **major** version. This includes changing the default value of a role variable.
+* Changes that do not require user intervention, but add backwards-compatible features, will increase the **minor** version.
+* Bug fixes will increase the **patch** version.
+
+### Upcoming changes
+
+* **DEPRECATION NOTICE:** In version 2.0.0, the default process supervisor (`minecraft_process_control`) will switch from `supervisor` to `systemd`.
 
 ## Role variables
 

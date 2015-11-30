@@ -1,5 +1,5 @@
 [program:{{ minecraft_supervisor_name }}]
-command=java -Xmx{{ minecraft_max_memory}} -Xms{{ minecraft_initial_memory }} -jar minecraft_server.jar nogui
+command=/usr/bin/java -Xmx{{ minecraft_max_memory}} -Xms{{ minecraft_initial_memory }} -jar minecraft_server.jar nogui
 directory={{ minecraft_home }}
 user={{ minecraft_user }}
 group={{ minecraft_group }}

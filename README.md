@@ -4,13 +4,22 @@ This role installs vanilla [Minecraft](https://minecraft.net/) and configures it
 
 ## Requirements
 
-This role has no dependencies. It supports supports different process supervisors on different platforms.
+* Python 2.7 on the Ansible control machine to generate user ACLs
 
-| OS           | Supervisor | systemd |
-|--------------|:----------:|:-------:|
-| Debian 8     | ✓          | ✓       |
-| Ubuntu 14.04 | ✓          |         |
-| CentOS 7     |            | ✓       |
+## Features
+
+* supports Debian 8, Ubuntu 14.04, and RHEL/CentOS 7
+* supports different process supervisors on different platforms
+
+    | OS           | Supervisor | systemd |
+    |--------------|:----------:|:-------:|
+    | Debian 8     | ✓          | ✓       |
+    | Ubuntu 14.04 | ✓          |         |
+    | CentOS 7     |            | ✓       |
+* safely stops the server using [`stop`](http://minecraft.gamepedia.com/Commands#stop) when running under **systemd**
+* uses [Vagrant](http://vagrantup.com/) and [Serverspec](http://serverspec.org/) to run integration tests
+* manages user ACLs
+
 
 ## Role variables
 

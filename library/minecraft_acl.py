@@ -1,34 +1,26 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 """
 Generate Minecraft ACLs.
 """
 
-# This script is designed for non-Pythonistas. It must:
-#
-#   1. be completely self-contained.
-#   2. not depend on any third-party libraries.
-#
-# TODO: Classes should probably be abstracted to collections of single
-# resources (e.g., BannedPlayer, WhitelistedPlayer, etc.). But the current
-# design works.
-
-from __future__ import print_function
-
-import argparse
+import grp
 import json
-import sys
-import urllib2
+import os
+import pwd
+import stat
+import tempfile
 import uuid
 
 from datetime import datetime
 
 MINECRAFT_API_URL = 'https://api.mojang.com/profiles/minecraft'
-ACL_CHOICES = ('ops', 'whitelist', 'banned-players', 'banned-ips')
+ACL_CHOICES = ['ops', 'whitelist', 'banned-players', 'banned-ips']
 DEFAULT_ACL = 'whitelist'
 DEFAULT_BAN_EXPIRES = 'forever'
 DEFAULT_BAN_REASON = 'Banned by an operator.'
+MINECRAFT_OP_CODE = 4
 
 
 class ACL(object):
@@ -72,7 +64,7 @@ class BannedPlayers(Banlist):
         super(BannedPlayers, self).__init__()
         uuids = get_uuids(usernames)
         for username, u in uuids.items():
-            entry = self.template
+            entry = self.template.copy()
             entry['name'] = username
             entry['uuid'] = u
             self.acl.append(entry)
@@ -85,7 +77,7 @@ class BannedIPs(Banlist):
     def __init__(self, ips):
         super(BannedIPs, self).__init__()
         for ip in ips:
-            entry = self.template
+            entry = self.template.copy()
             entry['ip'] = ip
             self.acl.append(entry)
 
@@ -114,7 +106,7 @@ class Oplist(Whitelist):
         """
         super(Oplist, self).__init__(usernames)
         for entry in self.acl:
-            entry['level'] = 4
+            entry['level'] = MINECRAFT_OP_CODE
 
 
 def get_uuids(usernames, url=None):
@@ -131,46 +123,101 @@ def get_uuids(usernames, url=None):
     url = url if url else MINECRAFT_API_URL
     payload = json.dumps(usernames)
     headers = {'Content-Type': 'application/json'}
-    request = urllib2.Request(url, data=payload, headers=headers)
-    response = urllib2.urlopen(request)
+    response = open_url(url, data=payload, headers=headers)
     profiles = json.loads(response.read())
     # The API provides UUIDs without dashes. Convert the provided IDs into
     # the canonical format so Minecraft can load them.
     return dict((p['name'], str(uuid.UUID(p['id']))) for p in profiles)
 
 
-def parse_args(argv):
-    """
-    Parse command-line arguments.
-
-    Args:
-        argv: A list of command-line arguments (e.g., from sys.argv[1:].
-    Returns:
-        An argparse.Namespace object.
-    """
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        '-l', '--acl', choices=ACL_CHOICES, default=DEFAULT_ACL, metavar='',
-        help='ACL to generate. Choose from: {1} (default: {0}).'.format(
-            DEFAULT_ACL, ', '.join(ACL_CHOICES)
-        ),
-    )
-    parser.add_argument('items', nargs='+', help='Usernames or IP addresses.')
-    return parser.parse_args(argv)
-
-
 def main(argv=None):
-    if not argv:
-        argv = sys.argv[1:]
-    args = parse_args(argv)
+    module = AnsibleModule(
+        argument_spec=dict(
+            acl=dict(
+                default=DEFAULT_ACL,
+                choices=ACL_CHOICES,
+                type='str',
+            ),
+            path=dict(
+                required=True,
+                type='str',
+            ),
+            values=dict(
+                type='list',
+            )
+        ),
+        add_file_common_args=True,
+        supports_check_mode=True,
+    )
+
+    # Check required file parameters.
+    required_args = ['owner', 'group']
+    missing_args = [x for x in required_args if not module.params[x]]
+    if missing_args:
+        module.fail_json(msg='missing required arguments: {}'.format(', '.join(missing_args)))
+
+    path = os.path.expanduser(module.params['path'])
+    owner = module.params['owner']
+    group = module.params['group']
+    mode = module.params['mode'] if module.params['mode'] else 0644
+
+    # Generate appropriate ACL.
     dispatch = {
         'whitelist': Whitelist,
         'ops': Oplist,
         'banned-players': BannedPlayers,
         'banned-ips': BannedIPs,
     }
-    acl = dispatch[args.acl](args.items)
-    print(acl.json())
+    acl = dispatch[module.params['acl']](module.params['values'])
+
+    # Compare ACL against existing ACL.
+    try:
+        with open(path, 'r') as f:
+            current_acl = json.load(f)
+        st = os.stat(path)
+        current_mode = st.st_mode & stat.S_IMODE(st.st_mode)
+        # We cannot look up non-existant uids and gids when we compare the
+        # current state to desired state. Instead, get the usernames and groups
+        # now to make comparison easier.
+        current_uid, current_gid = module.user_and_group(path)
+        current_user = pwd.getpwuid(current_uid).pw_name
+        current_group = pwd.getpwuid(current_gid).gr_name
+    # Cannot read the file or the file does not exist.
+    except (IOError, OSError):
+        current_acl = []
+        current_uid, current_gid, current_mode = None, None, None
+
+    changed = any([
+        acl.acl != current_acl,
+        owner != current_user,
+        group != current_group,
+        mode != current_mode,
+    ])
+
+    if module.check_mode:
+        module.exit_json(content=acl.acl, path=path, changed=changed)
+        return
+
+    # Write ACL to temporary file; let Ansible clean it up.
+    tmp = tempfile.NamedTemporaryFile(delete=False)
+    module.add_cleanup_file(tmp.name)
+    with open(tmp.name, 'w') as f:
+        f.write(acl.json())
+
+    module.atomic_move(tmp.name, path)
+
+    changed = any([
+        changed,
+        module.set_owner_if_different(path, owner, False),
+        module.set_group_if_different(path, group, False),
+        module.set_mode_if_different(path, mode, False),
+    ])
+
+    module.exit_json(content=acl.acl, path=path, changed=changed)
+
+# import module snippets
+from ansible.module_utils.basic import *
+from ansible.module_utils.urls import *
 
 if __name__ == '__main__':
-    sys.exit(main())
+    main()

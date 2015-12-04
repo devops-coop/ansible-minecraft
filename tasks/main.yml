@@ -62,22 +62,42 @@
   notify:
     - enable service
 
-- include: acl.yml
-    list=whitelist
-    data={{ minecraft_whitelist }}
-  when: "minecraft_whitelist"
+- name: update whitelist
+  minecraft_acl:
+    acl: whitelist
+    values: "{{ minecraft_whitelist }}"
+    path: "{{ minecraft_home }}/whitelist.json"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_user }}"
+  notify:
+    - restart Minecraft
 
-- include: acl.yml
-    list=ops
-    data={{ minecraft_ops }}
-  when: "minecraft_ops"
+- name: update ops
+  minecraft_acl:
+    acl: ops
+    values: "{{ minecraft_ops }}"
+    path: "{{ minecraft_home }}/ops.json"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_user }}"
+  notify:
+    - restart Minecraft
 
-- include: acl.yml
-    list=banned-players
-    data={{ minecraft_banned_players }}
-  when: "minecraft_banned_players"
+- name: update banned-players
+  minecraft_acl:
+    acl: banned-players
+    values: "{{ minecraft_banned_players }}"
+    path: "{{ minecraft_home }}/banned-players.json"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_user }}"
+  notify:
+    - restart Minecraft
 
-- include: acl.yml
-    list=banned-ips
-    data={{ minecraft_banned_ips }}
-  when: "minecraft_banned_ips"
+- name: update banned-ips
+  minecraft_acl:
+    acl: banned-ips
+    values: "{{ minecraft_banned_ips }}"
+    path: "{{ minecraft_home }}/banned-ips.json"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_user }}"
+  notify:
+    - restart Minecraft

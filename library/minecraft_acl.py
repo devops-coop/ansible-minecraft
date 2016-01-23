@@ -181,11 +181,11 @@ def main(argv=None):
         # now to make comparison easier.
         current_uid, current_gid = module.user_and_group(path)
         current_user = pwd.getpwuid(current_uid).pw_name
-        current_group = pwd.getpwuid(current_gid).gr_name
+        current_group = grp.getgrgid(current_gid).gr_name
     # Cannot read the file or the file does not exist.
     except (IOError, OSError):
         current_acl = []
-        current_uid, current_gid, current_mode = None, None, None
+        current_user, current_group, current_mode = None, None, None
 
     changed = any([
         acl.acl != current_acl,

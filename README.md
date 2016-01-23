@@ -117,7 +117,7 @@ This role includes a `Vagrantfile` to set up the development/testing environment
 3. Run tests with `make`. See `make help` for more information.
 
     ```
-    vagrant jessie64 test
+    make jessie64 test
     ```
 
 ## License

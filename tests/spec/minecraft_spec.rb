@@ -14,7 +14,7 @@ describe file '/srv/minecraft' do
   }
 end
 
-describe file '/srv/minecraft/minecraft_server.1.8.8.jar' do
+describe file '/srv/minecraft/minecraft_server.1.9.jar' do
   it {
     should be_file
     should be_owned_by 'minecraft'
@@ -25,7 +25,7 @@ end
 describe file '/srv/minecraft/minecraft_server.jar' do
   it {
     should be_symlink
-    should be_linked_to '/srv/minecraft/minecraft_server.1.8.8.jar'
+    should be_linked_to '/srv/minecraft/minecraft_server.1.9.jar'
   }
 end
 

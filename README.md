@@ -37,7 +37,9 @@ The following variable defaults are defined in `defaults/main.yml`.
 
 * `minecraft_version`
 
-    Minecraft version to install (default: `1.8.8`)
+    Minecraft version to install (default: `1.9`)
+
+    **N.B.** The default behaviour is to install the latest available minor release in a major release series (e.g., `1.8.x`). Override this default to install a specific minor release (e.g., `1.8.8`).
 
 * `minecraft_url`
 

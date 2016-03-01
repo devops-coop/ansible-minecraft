@@ -1,4 +1,9 @@
 ---
-- hosts: all
+- hosts: all:!trusty64
   roles:
-   - { role: "benwebber.minecraft" }
+   - role: benwebber.minecraft
+
+- hosts: trusty64
+  roles:
+   - role: benwebber.minecraft
+     minecraft_process_control: supervisor

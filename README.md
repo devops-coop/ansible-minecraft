@@ -1,6 +1,6 @@
 # ansible-minecraft
 
-This role installs vanilla [Minecraft](https://minecraft.net/) and configures it to run under [Supervisor](http://supervisord.org/) or [systemd](https://wiki.freedesktop.org/www/Software/systemd/).
+This role installs vanilla [Minecraft](https://minecraft.net/) and configures it to run under [systemd](https://wiki.freedesktop.org/www/Software/systemd/) or [Supervisor](http://supervisord.org/).
 
 ## Requirements
 
@@ -30,10 +30,6 @@ In the context of semantic versioning, consider the role contract to be defined 
 * Changes that require user intervention will increase the **major** version. This includes changing the default value of a role variable.
 * Changes that do not require user intervention, but add backwards-compatible features, will increase the **minor** version.
 * Bug fixes will increase the **patch** version.
-
-### Upcoming changes
-
-* **DEPRECATION NOTICE:** In version 2.0.0, the default process supervisor (`minecraft_process_control`) will switch from `supervisor` to `systemd`.
 
 ## Role variables
 
@@ -73,7 +69,7 @@ The following variable defaults are defined in `defaults/main.yml`.
 
 * `minecraft_process_control`
 
-    Choose between `supervisor` and `systemd` (default: `supervisor`).
+    Choose between `systemd` and `supervisor` (default: `systemd`).
 
 * `minecraft_whitelist`
 

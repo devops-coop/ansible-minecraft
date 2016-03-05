@@ -52,3 +52,7 @@ end
 describe port 25565 do
   it { should be_listening }
 end
+
+describe port 25564 do
+  it { should be_listening }
+end

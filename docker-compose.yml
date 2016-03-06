@@ -1,0 +1,15 @@
+version: '2'
+services:
+  jessie64:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.jessie64
+    privileged: true
+    entrypoint: /lib/systemd/systemd
+    hostname: jessie64
+  trusty64:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.trusty64
+    entrypoint: /sbin/init
+    hostname: trusty64

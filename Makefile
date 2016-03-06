@@ -25,6 +25,9 @@ endef
 all:
 	vagrant up --parallel
 
+test-harness:
+	docker-compose build
+
 clean:
 ifeq (,$(findstring $(firstword $(MAKECMDGOALS)), $(BOXES)))
 	$(error `clean` requires a machine name, see `make help`)
@@ -43,8 +46,8 @@ ifeq (,$(findstring $(firstword $(MAKECMDGOALS)), $(BOXES)))
 endif
 	vagrant provision --provision-with serverspec $(filter-out test,$(MAKECMDGOALS))
 
-testall: all
-	vagrant provision --provision-with serverspec
+testall:
+	./scripts/ci.sh
 
 $(BOXES):
 ifeq (,$(findstring clean,$(MAKECMDGOALS)))
@@ -56,5 +59,6 @@ endif
 		cleanall \
 		help \
         test \
+        test-harness \
         testall \
         $(BOXES)

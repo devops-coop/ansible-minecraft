@@ -2,7 +2,7 @@
 set -euxo pipefail
 IFS=$'\n\t'
 
-declare -r WORKSPACE="${WORKSPACE:-/srv}"
+declare -r WORKSPACE="${WORKSPACE:-/tmp/ansible-minecraft}"
 
 function cleanup() {
   #docker-compose down --rmi all

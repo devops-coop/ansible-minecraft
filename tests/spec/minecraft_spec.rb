@@ -1,3 +1,5 @@
+require_relative 'spec_helper'
+
 describe user 'minecraft' do
   it { should exist }
 end

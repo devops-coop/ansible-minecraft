@@ -4,8 +4,6 @@ services:
     build: docker/jessie64/
     privileged: true
     entrypoint: /lib/systemd/systemd
-    hostname: jessie64
   trusty64:
     build: docker/trusty64/
     entrypoint: /sbin/init
-    hostname: trusty64

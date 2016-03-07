@@ -2,38 +2,42 @@
 set -euxo pipefail
 IFS=$'\n\t'
 
-declare -r WORKSPACE="${WORKSPACE:-/tmp/ansible-minecraft}"
+declare -r OS=${1:-${OS}}
+declare -r PROCESS_CONTROL=${2:-${PROCESS_CONTROL}}
+declare -r WORKSPACE=${WORKSPACE:-/tmp/ansible-minecraft}
 
 function cleanup() {
-  #docker-compose down --rmi all
-  docker-compose down
+  docker-compose stop "${OS}"
+  docker-compose rm -f "${OS}"
 }
 
 function main() {
-  docker-compose up -d
+  docker-compose up -d "${OS}"
 
-  for container in $(docker-compose ps -q); do
-    # Install role.
-    docker cp . "${container}:${WORKSPACE}"
+  local container="$(docker-compose ps -q "${OS}")"
 
-    # Validate syntax
-    docker exec -t "${container}" ansible-playbook \
-                -i "${WORKSPACE}/tests/inventory" \
-                --syntax-check \
-                "${WORKSPACE}/tests/site.yml"
+  # Install role.
+  docker cp . "${container}:${WORKSPACE}"
 
-    # Install Minecraft.
-    docker exec -t "${container}" ansible-playbook \
-                -i "${WORKSPACE}/tests/inventory" \
-                -c local \
-                "${WORKSPACE}/tests/site.yml"
+  # Validate syntax
+  docker exec -t "${container}" ansible-playbook \
+              -i "${WORKSPACE}/tests/inventory" \
+              --syntax-check \
+              --extra-vars="minecraft_process_control=${PROCESS_CONTROL}" \
+              "${WORKSPACE}/tests/site.yml"
 
-    # Sleep to allow Minecraft to boot.
-    sleep 5
+  # Install Minecraft.
+  docker exec -t "${container}" ansible-playbook \
+              -i "${WORKSPACE}/tests/inventory" \
+              -c local \
+              --extra-vars="minecraft_process_control=${PROCESS_CONTROL}" \
+              "${WORKSPACE}/tests/site.yml"
 
-    # Run tests.
-    docker exec -t "${container}" rspec "${WORKSPACE}/tests/spec/minecraft_spec.rb"
-  done
+  # Sleep to allow Minecraft to boot.
+  sleep 5
+
+  # Run tests.
+  docker exec -t "${container}" rspec "${WORKSPACE}/tests/spec/minecraft_spec.rb"
 }
 
 trap cleanup EXIT

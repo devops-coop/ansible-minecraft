@@ -1,6 +1,5 @@
 BOXES := $(notdir $(wildcard docker/*))
 
-OS              ?= jessie64
 PROCESS_CONTROL ?= systemd
 
 define USAGE

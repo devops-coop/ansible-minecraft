@@ -1,6 +1,4 @@
-BOXES := centos7 \
-         jessie64 \
-         trusty64
+BOXES := $(notdir $(wildcard docker/*))
 
 OS              ?= jessie64
 PROCESS_CONTROL ?= systemd

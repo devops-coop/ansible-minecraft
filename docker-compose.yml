@@ -1,5 +1,9 @@
 version: '2'
 services:
+  centos7:
+    build: docker/centos7/
+    privileged: true
+    entrypoint: /usr/lib/systemd/systemd
   jessie64:
     build: docker/jessie64/
     privileged: true

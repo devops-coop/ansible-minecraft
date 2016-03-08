@@ -1,0 +1,13 @@
+---
+sudo: required
+services:
+  - docker
+env:
+  matrix:
+    - OS=jessie64 PROCESS_CONTROL=systemd
+    - OS=jessie64 PROCESS_CONTROL=supervisor
+    - OS=trusty64 PROCESS_CONTROL=supervisor
+    - OS=centos7  PROCESS_CONTROL=systemd
+install: true
+script:
+  - make "${OS}" test

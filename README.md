@@ -1,5 +1,7 @@
 # ansible-minecraft
 
+[![Build Status](https://travis-ci.org/benwebber/ansible-minecraft.svg?branch=master)](https://travis-ci.org/benwebber/ansible-minecraft)
+
 This role installs vanilla [Minecraft](https://minecraft.net/) and configures it to run under [systemd](https://wiki.freedesktop.org/www/Software/systemd/) or [Supervisor](http://supervisord.org/).
 
 ## Requirements

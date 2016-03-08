@@ -13,7 +13,7 @@ import stat
 import tempfile
 import uuid
 
-from datetime import datetime
+from datetime import datetime as dt
 
 MINECRAFT_API_URL = 'https://api.mojang.com/profiles/minecraft'
 ACL_CHOICES = ['ops', 'whitelist', 'banned-players', 'banned-ips']
@@ -43,7 +43,7 @@ class Banlist(ACL):
     """
     def __init__(self, created=None, expires=None, reason=None):
         super(Banlist, self).__init__()
-        self.created = created if created else datetime.utcnow()
+        self.created = created if created else dt.utcnow()
         self.expires = expires if expires else DEFAULT_BAN_EXPIRES
         self.reason = reason if reason else DEFAULT_BAN_REASON
         self.template = {

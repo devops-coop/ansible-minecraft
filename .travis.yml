@@ -12,7 +12,7 @@ env:
     - OS=trusty64 PROCESS_CONTROL=supervisor
     - OS=centos7  PROCESS_CONTROL=systemd
 before_install:
-  - sudo ./scripts/install-docker-compose.sh
+  - sudo -E ./scripts/install-docker-compose.sh
 install: true
 script:
   - make "${OS}" test

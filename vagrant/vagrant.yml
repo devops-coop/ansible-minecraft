@@ -1,5 +1,0 @@
-- hosts: all
-  tasks:
-    - name: update apt cache
-      command: apt-get update -y
-      when: ansible_os_family == 'Debian'

@@ -105,16 +105,11 @@ Pull requests are welcome. Among other features, this role lacks support for cus
 
 ### Testing
 
-This role includes a `Vagrantfile` to set up the development/testing environment using [Vagrant](http://vagrantup.com).
+This role includes a Docker-based test harness for integration testing.
 
-1. Install [Vagrant](http://vagrantup.com/).
-2. Install [vagrant-serverspec](https://github.com/jvoorhis/vagrant-serverspec) to run RSpec tests. [Serverspec](http://serverspec.org/) is a declarative testing framework for server configuration.
+1. Install [Docker](https://docs.docker.com/engine/installation/) and [Docker Compose](https://docs.docker.com/compose/).
 
-    ```
-    vagrant plugin install vagrant-serverspec
-    ```
-
-3. Run tests with `make`. See `make help` for more information.
+2. Run tests with `make`. See `make help` for more information.
 
     ```
     make jessie64 test

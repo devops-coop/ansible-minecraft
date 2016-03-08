@@ -5,6 +5,7 @@ services:
   - docker
 env:
   global:
+    - DOCKER_VERSION=1.10.2
     - DOCKER_COMPOSE_VERSION=1.6.2
   matrix:
     - OS=jessie64 PROCESS_CONTROL=systemd
@@ -12,7 +13,7 @@ env:
     - OS=trusty64 PROCESS_CONTROL=supervisor
     - OS=centos7  PROCESS_CONTROL=systemd
 before_install:
-  - sudo -E ./scripts/install-docker-compose.sh
+  - sudo -E ./scripts/install-docker.sh
 install: true
 script:
   - make "${OS}" test

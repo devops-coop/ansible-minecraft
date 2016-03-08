@@ -17,3 +17,5 @@ before_install:
 install: true
 script:
   - make "${OS}" test
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

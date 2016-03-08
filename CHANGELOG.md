@@ -1,5 +1,9 @@
 # ansible-minecraft changelog
 
+## 2.1.1 (2016-03-08)
+
+* Notify Galaxy on successful build.
+
 ## 2.1.0 (2016-03-08)
 
 ### Changes

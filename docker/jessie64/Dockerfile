@@ -10,8 +10,8 @@ ENV TERM=xterm
 RUN systemctl set-default multi-user.target
 
 RUN apt-get update -y \
-    && apt-get -t jessie-backports install -y ansible \
-    && apt-get install -y \
+    && apt-get -t jessie-backports install --no-install-recommends -y ansible \
+    && apt-get --no-install-recommends install -y \
       net-tools \
       ruby \
     && rm -rf /var/lib/apt/lists/*

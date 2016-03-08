@@ -12,6 +12,8 @@ RUN apt-get install -y software-properties-common \
       ansible \
       net-tools \
       ruby2.0 \
+    && apt-get autoremove \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 RUN gem2.0 install serverspec

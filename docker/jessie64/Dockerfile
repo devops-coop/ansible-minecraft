@@ -14,6 +14,8 @@ RUN apt-get update -y \
     && apt-get --no-install-recommends install -y \
       net-tools \
       ruby \
+    && apt-get autoremove \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 RUN gem install serverspec

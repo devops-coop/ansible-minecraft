@@ -4,6 +4,11 @@
 - include: supervisor/RedHat.yml
   when: ansible_os_family == 'RedHat'
 
+- name: start Supervisor
+  service:
+    name=supervisor
+    state=started
+
 - name: configure Supervisor
   template:
     src=minecraft.conf.j2

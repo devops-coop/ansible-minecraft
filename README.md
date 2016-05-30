@@ -20,7 +20,7 @@ This role installs vanilla [Minecraft](https://minecraft.net/) and configures it
     | CentOS 7     |            | ✓       |
 
 * safely stops the server using [`stop`](http://minecraft.gamepedia.com/Commands#stop) when running under **systemd**
-* uses [Vagrant](http://vagrantup.com/) and [Serverspec](http://serverspec.org/) to run integration tests
+* uses [Docker](https://www.docker.com/) and [Serverspec](http://serverspec.org/) to run integration tests
 * manages user ACLs
 
 ## Versioning

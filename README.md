@@ -7,6 +7,7 @@ This role installs vanilla [Minecraft](https://minecraft.net/) and configures it
 ## Requirements
 
 * Python 2.7 on the Ansible control machine to generate user ACLs
+* **Optional:** Ansible 2.0.2+, `httplib2`, or `curl` on the control machine to fetch the latest Minecraft version
 
 ## Features
 
@@ -33,6 +34,12 @@ In the context of semantic versioning, consider the role contract to be defined 
 * Changes that do not require user intervention, but add backwards-compatible features, will increase the **minor** version.
 * Bug fixes will increase the **patch** version.
 
+### Upcoming changes
+
+#### Change to default server version
+
+In the next major release (3), the default server version (`minecraft_version`) will change from `1.9` to `latest`. The role will query the [launcher API](https://launchermeta.mojang.com/mc/game/version_manifest.json) to determine the latest release.
+
 ## Role variables
 
 The following variable defaults are defined in `defaults/main.yml`.
@@ -42,6 +49,10 @@ The following variable defaults are defined in `defaults/main.yml`.
     Minecraft version to install (default: `1.9`)
 
     **N.B.** The default behaviour is to install the latest available minor release in a major release series (e.g., `1.8.x`). Override this default to install a specific minor release (e.g., `1.8.8`).
+
+    To install the latest stable release, set `minecraft_version: latest`.
+
+    To install a snapshot, use the snapshot version: `minecraft_version: 16w21a`.
 
 * `minecraft_url`
 

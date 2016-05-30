@@ -1,0 +1,6 @@
+- name: retrieve version manifest
+  command: "curl {{ minecraft_version_manifest_url }}"
+
+- name: find and set latest version
+  set_fact:
+    minecraft_version_latest: "{{ (version_manifest.stdout | from_json).latest.release }}"

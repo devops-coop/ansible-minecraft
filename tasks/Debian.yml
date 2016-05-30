@@ -3,4 +3,4 @@
     name={{ item }}
     state=present
     install_recommends=no
-  with_items: dependencies
+  with_items: "{{ dependencies }}"

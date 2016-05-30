@@ -2,4 +2,4 @@
   yum:
     name={{ item }}
     state=present
-  with_items: dependencies
+  with_items: "{{ dependencies }}"

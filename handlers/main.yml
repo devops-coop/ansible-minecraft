@@ -32,7 +32,7 @@
 
 - name: enable service (supervisor)
   command: supervisorctl update
-  sudo: true
+  become: true
   when: minecraft_process_control == 'supervisor'
 
 - name: enable service (systemd)

@@ -5,7 +5,8 @@ FROM ubuntu:trusty
 # Colour output.
 ENV TERM=xterm
 
-RUN apt-get install -y software-properties-common \
+RUN apt-get update -y \
+    && apt-get install -y software-properties-common \
     && apt-add-repository ppa:ansible/ansible \
     && apt-get update -y \
     && apt-get --no-install-recommends install -y \

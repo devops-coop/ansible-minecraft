@@ -1,5 +1,10 @@
 # ansible-minecraft changelog
 
+## 2.2.0 (2016-05-30)
+
+* It is now possible to install the latest major release of Minecraft using `minecraft_version: latest`. This will be the default behaviour in the next major version of this role (3).
+* Only generate ACL JSON files if the variables (e.g., `minecraft_ops`) are non-empty.
+
 ## 2.1.1 (2016-03-08)
 
 * Notify Galaxy on successful build.

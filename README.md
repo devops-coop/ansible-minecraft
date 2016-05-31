@@ -6,7 +6,7 @@ This role installs vanilla [Minecraft](https://minecraft.net/) and configures it
 
 ## Requirements
 
-* Python 2.7 on the Ansible control machine to generate user ACLs
+* **Optional:** Python 2.7 on the Ansible control machine to generate user ACLs
 * **Optional:** Ansible 2.0.2+ or `curl` on the control machine to fetch the latest Minecraft version
 
 ## Features

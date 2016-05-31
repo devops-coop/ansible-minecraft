@@ -74,6 +74,7 @@
     group: "{{ minecraft_user }}"
   notify:
     - restart Minecraft
+  when: minecraft_whitelist | length > 0
 
 - name: update ops
   minecraft_acl:
@@ -84,6 +85,7 @@
     group: "{{ minecraft_user }}"
   notify:
     - restart Minecraft
+  when: minecraft_ops | length > 0
 
 - name: update banned-players
   minecraft_acl:
@@ -94,6 +96,7 @@
     group: "{{ minecraft_user }}"
   notify:
     - restart Minecraft
+  when: minecraft_banned_players | length > 0
 
 - name: update banned-ips
   minecraft_acl:
@@ -104,3 +107,4 @@
     group: "{{ minecraft_user }}"
   notify:
     - restart Minecraft
+  when: minecraft_banned_ips | length > 0

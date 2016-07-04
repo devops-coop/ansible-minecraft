@@ -16,7 +16,8 @@ import uuid
 from datetime import datetime as dt
 
 MINECRAFT_API_URL = 'https://api.mojang.com/profiles/minecraft'
-SERVER_FILE_CHOICES = ['ops', 'whitelist', 'banned-players', 'banned-ips']
+SERVER_FILE_CHOICES = ['ops', 'whitelist', 'banned-players', 'banned-ips',
+                       'server-properties']
 DEFAULT_BAN_EXPIRES = 'forever'
 DEFAULT_BAN_REASON = 'Banned by an operator.'
 MINECRAFT_OP_CODE = 4
@@ -109,6 +110,51 @@ class ServerFile(object):
         Indicates whether the content changed or not.
         """
         raise NotImplementedError
+
+
+class ServerProperties(ServerFile):
+    """
+    The Minecraft server.properties file.
+
+    The module "values" argument should be a list of strings in the format
+    "<name>=<value>".
+    """
+    def __init__(self, module):
+        super(ServerProperties, self).__init__(module)
+        self._content_changed = False
+        self.newlines = []
+        properties = {}
+
+        for a in self.values:
+            name, eq, val = a.partition('=')
+            if not eq:
+                raise BadValueException(name)
+            properties[name] = val
+
+        filein = file(self.stats.path)
+
+        for line in filein:
+            if line.startswith('#'):
+                self.newlines.append(line)
+            else:
+                name, eq, val = line.strip().partition('=')
+                if eq and name in properties:
+                    self.newlines.append('%s=%s\n' % (name, properties[name]))
+                    if properties[name] != val:
+                        self._content_changed = True
+                    del properties[name]
+                else:
+                    self.newlines.append(line)
+
+        for name, value in properties.iteritems():
+            self.newlines.append('%s=%s\n' % (name, value))
+            self._content_changed = True
+
+    def content(self):
+        return ''.join(self.newlines)
+
+    def content_changed(self):
+        return self._content_changed
 
 
 class ACL(ServerFile):
@@ -268,6 +314,7 @@ def main(argv=None):
         'ops': Oplist,
         'banned-players': BannedPlayers,
         'banned-ips': BannedIPs,
+        'server-properties': ServerProperties,
     }
 
     try:

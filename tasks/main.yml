@@ -67,7 +67,7 @@
 
 - name: update whitelist
   minecraft_acl:
-    acl: whitelist
+    server_file: whitelist
     values: "{{ minecraft_whitelist }}"
     path: "{{ minecraft_home }}/whitelist.json"
     owner: "{{ minecraft_user }}"
@@ -78,7 +78,7 @@
 
 - name: update ops
   minecraft_acl:
-    acl: ops
+    server_file: ops
     values: "{{ minecraft_ops }}"
     path: "{{ minecraft_home }}/ops.json"
     owner: "{{ minecraft_user }}"
@@ -89,7 +89,7 @@
 
 - name: update banned-players
   minecraft_acl:
-    acl: banned-players
+    server_file: banned-players
     values: "{{ minecraft_banned_players }}"
     path: "{{ minecraft_home }}/banned-players.json"
     owner: "{{ minecraft_user }}"
@@ -100,7 +100,7 @@
 
 - name: update banned-ips
   minecraft_acl:
-    acl: banned-ips
+    server_file: banned-ips
     values: "{{ minecraft_banned_ips }}"
     path: "{{ minecraft_home }}/banned-ips.json"
     owner: "{{ minecraft_user }}"

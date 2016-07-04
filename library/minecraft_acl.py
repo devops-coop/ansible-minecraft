@@ -16,19 +16,125 @@ import uuid
 from datetime import datetime as dt
 
 MINECRAFT_API_URL = 'https://api.mojang.com/profiles/minecraft'
-ACL_CHOICES = ['ops', 'whitelist', 'banned-players', 'banned-ips']
-DEFAULT_ACL = 'whitelist'
+SERVER_FILE_CHOICES = [
+    'banned-ips',
+    'banned-players',
+    'ops',
+    'whitelist',
+]
 DEFAULT_BAN_EXPIRES = 'forever'
 DEFAULT_BAN_REASON = 'Banned by an operator.'
 MINECRAFT_OP_CODE = 4
 
 
-class ACL(object):
+class MissingArgsException(Exception):
+
+    def __init__(self, missing_args):
+        super(MissingArgsException, self).__init__(
+            'missing required arguments: {}'.format(', '.join(missing_args)))
+
+
+class FileStats(object):
+    """
+    Compare and update file stats.
+    """
+    REQUIRED_ARGS = ['owner', 'group']
+
+    def __init__(self, module):
+        self.module = module
+        missing_args = [x for x in self.REQUIRED_ARGS
+                        if not self.module.params[x]]
+        if missing_args:
+            raise MissingArgsException(missing_args)
+
+        self.path = os.path.expanduser(module.params['path'])
+        self.owner = module.params['owner']
+        self.group = module.params['group']
+        self.mode = module.params['mode'] if module.params['mode'] else 0644
+
+    @property
+    def changed(self):
+        try:
+            st = os.stat(self.path)
+        except OSError:
+            # If the file doesn't exist or isn't read, this is the same as
+            # the stat values being wrong.
+            return True
+
+        current_mode = st.st_mode & stat.S_IMODE(st.st_mode)
+        # We cannot look up non-existant uids and gids when we compare the
+        # current state to desired state. Instead, get the usernames and
+        # groups now to make comparison easier.
+        current_uid, current_gid = self.module.user_and_group(self.path)
+        current_user = pwd.getpwuid(current_uid).pw_name
+        current_group = grp.getgrgid(current_gid).gr_name
+
+        return any([
+            self.owner != current_user,
+            self.group != current_group,
+            self.mode != current_mode,
+        ])
+
+    def update(self):
+        self.module.set_owner_if_different(self.path, self.owner, False)
+        self.module.set_group_if_different(self.path, self.group, False)
+        self.module.set_mode_if_different(self.path, self.mode, False)
+
+
+class ServerFile(object):
+    """
+    Abstract class representing any server file.
+    """
+    def __init__(self, module):
+        self.module = module
+        self.values = self.module.params['values']
+        self.stats = FileStats(module)
+
+    @property
+    def content(self):
+        """
+        Return content in its native format (e.g. dict).
+        """
+        raise NotImplementedError
+
+    def as_str(self):
+        """
+        Return content as a string, for saving to a file.
+        """
+        return self.content
+
+    @property
+    def changed(self):
+        """
+        Indicates whether the content changed or not.
+        """
+        raise NotImplementedError
+
+
+class ACL(ServerFile):
     """
     A Minecraft ACL.
     """
-    def __init__(self):
+    def __init__(self, module):
+        super(ACL, self).__init__(module)
         self.acl = []
+
+    @property
+    def changed(self):
+        try:
+            with open(self.stats.path, 'r') as f:
+                current_acl = json.load(f)
+        except (IOError, OSError):
+            current_acl = []
+
+        return current_acl != self.acl
+
+    @property
+    def content(self):
+        return self.acl
+
+    def as_str(self):
+        return self.json()
 
     def json(self):
         """
@@ -41,8 +147,8 @@ class Banlist(ACL):
     """
     A generic Minecraft banlist.
     """
-    def __init__(self, created=None, expires=None, reason=None):
-        super(Banlist, self).__init__()
+    def __init__(self, module, created=None, expires=None, reason=None):
+        super(Banlist, self).__init__(module)
         self.created = created if created else dt.utcnow()
         self.expires = expires if expires else DEFAULT_BAN_EXPIRES
         self.reason = reason if reason else DEFAULT_BAN_REASON
@@ -59,10 +165,12 @@ class Banlist(ACL):
 class BannedPlayers(Banlist):
     """
     A list of banned players.
+
+    The module "values" argument should be a list of usernames.
     """
-    def __init__(self, usernames):
-        super(BannedPlayers, self).__init__()
-        uuids = get_uuids(usernames)
+    def __init__(self, module):
+        super(BannedPlayers, self).__init__(module)
+        uuids = get_uuids(self.values)
         for username, u in uuids.items():
             entry = self.template.copy()
             entry['name'] = username
@@ -73,10 +181,12 @@ class BannedPlayers(Banlist):
 class BannedIPs(Banlist):
     """
     A list of banned IPs.
+
+    The module "values" argument should be a list of IP addresses.
     """
-    def __init__(self, ips):
-        super(BannedIPs, self).__init__()
-        for ip in ips:
+    def __init__(self, module):
+        super(BannedIPs, self).__init__(module)
+        for ip in self.values:
             entry = self.template.copy()
             entry['ip'] = ip
             self.acl.append(entry)
@@ -85,13 +195,15 @@ class BannedIPs(Banlist):
 class Whitelist(ACL):
     """
     A Minecraft whitelist.
+
+    The module "values" argument should be a list of usernames.
     """
-    def __init__(self, usernames):
+    def __init__(self, module):
         """
         Generate a Minecraft whitelist from a list of usernames.
         """
-        super(Whitelist, self).__init__()
-        uuids = get_uuids(usernames)
+        super(Whitelist, self).__init__(module)
+        uuids = get_uuids(self.values)
         for username, u in uuids.items():
             self.acl.append({'name': username, 'uuid': u})
 
@@ -99,12 +211,14 @@ class Whitelist(ACL):
 class Oplist(Whitelist):
     """
     A Minecraft oplist (list of server operators).
+
+    The module "values" argument should be a list of usernames.
     """
-    def __init__(self, usernames):
+    def __init__(self, module):
         """
         Generate a Minecraft oplist from a list of usernames.
         """
-        super(Oplist, self).__init__(usernames)
+        super(Oplist, self).__init__(module)
         for entry in self.acl:
             entry['level'] = MINECRAFT_OP_CODE
 
@@ -133,9 +247,9 @@ def get_uuids(usernames, url=None):
 def main(argv=None):
     module = AnsibleModule(
         argument_spec=dict(
-            acl=dict(
-                default=DEFAULT_ACL,
-                choices=ACL_CHOICES,
+            server_file=dict(
+                required=True,
+                choices=SERVER_FILE_CHOICES,
                 type='str',
             ),
             path=dict(
@@ -150,17 +264,6 @@ def main(argv=None):
         supports_check_mode=True,
     )
 
-    # Check required file parameters.
-    required_args = ['owner', 'group']
-    missing_args = [x for x in required_args if not module.params[x]]
-    if missing_args:
-        module.fail_json(msg='missing required arguments: {}'.format(', '.join(missing_args)))
-
-    path = os.path.expanduser(module.params['path'])
-    owner = module.params['owner']
-    group = module.params['group']
-    mode = module.params['mode'] if module.params['mode'] else 0644
-
     # Generate appropriate ACL.
     dispatch = {
         'whitelist': Whitelist,
@@ -168,52 +271,34 @@ def main(argv=None):
         'banned-players': BannedPlayers,
         'banned-ips': BannedIPs,
     }
-    acl = dispatch[module.params['acl']](module.params['values'])
 
-    # Compare ACL against existing ACL.
     try:
-        with open(path, 'r') as f:
-            current_acl = json.load(f)
-        st = os.stat(path)
-        current_mode = st.st_mode & stat.S_IMODE(st.st_mode)
-        # We cannot look up non-existant uids and gids when we compare the
-        # current state to desired state. Instead, get the usernames and groups
-        # now to make comparison easier.
-        current_uid, current_gid = module.user_and_group(path)
-        current_user = pwd.getpwuid(current_uid).pw_name
-        current_group = grp.getgrgid(current_gid).gr_name
-    # Cannot read the file or the file does not exist.
-    except (IOError, OSError):
-        current_acl = []
-        current_user, current_group, current_mode = None, None, None
+        server_file = dispatch[module.params['server_file']](module)
+    except MissingArgsException as e:
+        module.fail_json(e.message)
 
-    changed = any([
-        acl.acl != current_acl,
-        owner != current_user,
-        group != current_group,
-        mode != current_mode,
-    ])
+    changed = server_file.stats.changed or server_file.changed
 
     if module.check_mode:
-        module.exit_json(content=acl.acl, path=path, changed=changed)
+        module.exit_json(content=server_file.content,
+                         path=server_file.stats.path,
+                         changed=changed)
         return
 
-    # Write ACL to temporary file; let Ansible clean it up.
-    tmp = tempfile.NamedTemporaryFile(delete=False)
-    module.add_cleanup_file(tmp.name)
-    with open(tmp.name, 'w') as f:
-        f.write(acl.json())
+    if changed:
+        # Write to temporary file; let Ansible clean it up.
+        tmp = tempfile.NamedTemporaryFile(delete=False)
+        module.add_cleanup_file(tmp.name)
+        with open(tmp.name, 'w') as f:
+            f.write(server_file.as_str())
 
-    module.atomic_move(tmp.name, path)
+        module.atomic_move(tmp.name, server_file.stats.path)
+        server_file.stats.update()
 
-    changed = any([
-        changed,
-        module.set_owner_if_different(path, owner, False),
-        module.set_group_if_different(path, group, False),
-        module.set_mode_if_different(path, mode, False),
-    ])
+    module.exit_json(content=server_file.content,
+                     path=server_file.stats.path,
+                     changed=changed)
 
-    module.exit_json(content=acl.acl, path=path, changed=changed)
 
 # import module snippets
 from ansible.module_utils.basic import *

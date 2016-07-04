@@ -14,3 +14,4 @@ minecraft_banned_ips: []
 minecraft_console_fifo: /run/minecraft/console
 minecraft_console_fifo_mode: '0666'
 minecraft_process_control: systemd
+minecraft_server_properties: []

@@ -18,6 +18,10 @@ machine targets:
 machines:
 
   $(BOXES)
+
+variables:
+
+  PROCESS_CONTROL   Choose from 'supervisor' or 'systemd'. Default: 'systemd'.
 endef
 
 is_machine_target = $(if $(findstring $(firstword $(MAKECMDGOALS)),$(BOXES)),true,false)

@@ -120,11 +120,19 @@ This role includes a Docker-based test harness for integration testing.
 
 1. Install [Docker](https://docs.docker.com/engine/installation/) and [Docker Compose](https://docs.docker.com/compose/).
 
-2. Run tests with `make`. See `make help` for more information.
-
+2. Run tests with `make`.
     ```
     make jessie64 test
     ```
+
+Integration tests use **systemd** by default. Set `PROCESS_CONTROL` to
+change this:
+
+```
+make trusty64 test PROCESS_CONTROL=supervisor
+```
+
+See `make help` for more information.
 
 ## License
 

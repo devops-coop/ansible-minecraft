@@ -66,7 +66,7 @@
     - enable service
 
 - name: update whitelist
-  minecraft_acl:
+  minecraft_server_file:
     server_file: whitelist
     values: "{{ minecraft_whitelist }}"
     path: "{{ minecraft_home }}/whitelist.json"
@@ -77,7 +77,7 @@
   when: minecraft_whitelist | length > 0
 
 - name: update ops
-  minecraft_acl:
+  minecraft_server_file:
     server_file: ops
     values: "{{ minecraft_ops }}"
     path: "{{ minecraft_home }}/ops.json"
@@ -88,7 +88,7 @@
   when: minecraft_ops | length > 0
 
 - name: update banned-players
-  minecraft_acl:
+  minecraft_server_file:
     server_file: banned-players
     values: "{{ minecraft_banned_players }}"
     path: "{{ minecraft_home }}/banned-players.json"
@@ -99,7 +99,7 @@
   when: minecraft_banned_players | length > 0
 
 - name: update banned-ips
-  minecraft_acl:
+  minecraft_server_file:
     server_file: banned-ips
     values: "{{ minecraft_banned_ips }}"
     path: "{{ minecraft_home }}/banned-ips.json"

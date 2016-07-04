@@ -20,11 +20,20 @@ SERVER_FILE_CHOICES = [
     'banned-ips',
     'banned-players',
     'ops',
+    'server-properties',
     'whitelist',
 ]
 DEFAULT_BAN_EXPIRES = 'forever'
 DEFAULT_BAN_REASON = 'Banned by an operator.'
 MINECRAFT_OP_CODE = 4
+
+
+class BadValuesTypeException(Exception):
+
+    def __init__(self, expected_type, actual_type):
+        super(BadValuesTypeException, self).__init__(
+            'expected "values" to be {} but got {}'.format(
+                expected_type, actual_type))
 
 
 class MissingArgsException(Exception):
@@ -85,9 +94,16 @@ class ServerFile(object):
     """
     Abstract class representing any server file.
     """
+
+    # Override this with the expected type of the 'values' parameter.
+    VALUES_TYPE = list
+
     def __init__(self, module):
         self.module = module
         self.values = self.module.params['values']
+        actual_values_type = type(self.values)
+        if actual_values_type is not self.VALUES_TYPE:
+            raise BadValuesTypeException(self.VALUES_TYPE, actual_values_type)
         self.stats = FileStats(module)
 
     @property
@@ -109,6 +125,60 @@ class ServerFile(object):
         Indicates whether the content changed or not.
         """
         raise NotImplementedError
+
+
+class ServerProperties(ServerFile):
+    """
+    The Minecraft server.properties file.
+
+    The module "values" argument should be a list containing a single item,
+    a dictionary of property names and values.
+    """
+    VALUES_TYPE = dict
+
+    def __init__(self, module):
+        super(ServerProperties, self).__init__(module)
+        self._content_changed = False
+        self.newlines = []
+        properties = self.values.copy()
+
+        # Convert all values to strings.  The default booleans in
+        # server.properties are represented by "true" and "false" instead of
+        # Python's "True" and "False", so convert them explicitly.
+        for name, value in properties.iteritems():
+            if type(value) is bool:
+                properties[name] = 'true' if value else 'false'
+            else:
+                properties[name] = str(value)
+
+        filein = file(self.stats.path)
+
+        for line in filein:
+            if line.startswith('#'):
+                self.newlines.append(line)
+            else:
+                name, eq, val = [x.strip() for x
+                                 in line.strip().partition('=')]
+                if eq and name in properties:
+                    self.newlines.append('%s=%s\n' % (name, properties[name]))
+                    if properties[name] != val:
+                        file('/tmp/ansible_log', 'a').write('"{}" changed: from [{}] to [{}]'.format(name, val, properties[name]))
+                        self._content_changed = True
+                    del properties[name]
+                else:
+                    self.newlines.append(line)
+
+        for name, value in properties.iteritems():
+            self.newlines.append('%s=%s\n' % (name, value))
+            self._content_changed = True
+
+    @property
+    def content(self):
+        return ''.join(self.newlines)
+
+    @property
+    def changed(self):
+        return self._content_changed
 
 
 class ACL(ServerFile):
@@ -257,7 +327,8 @@ def main(argv=None):
                 type='str',
             ),
             values=dict(
-                type='list',
+                required=True,
+                type='raw',
             )
         ),
         add_file_common_args=True,
@@ -270,12 +341,15 @@ def main(argv=None):
         'ops': Oplist,
         'banned-players': BannedPlayers,
         'banned-ips': BannedIPs,
+        'server-properties': ServerProperties,
     }
 
     try:
         server_file = dispatch[module.params['server_file']](module)
     except MissingArgsException as e:
-        module.fail_json(e.message)
+        module.fail_json(msg=e)
+    except BadValuesTypeException as e:
+        module.fail_json(msg=e)
 
     changed = server_file.stats.changed or server_file.changed
 

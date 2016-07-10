@@ -102,6 +102,10 @@ The following variable defaults are defined in `defaults/main.yml`.
 
     list of IP addresses to ban (default: `[]`)
 
+* `minecraft_server_properties`
+
+    dictionary of server.properties entries (e.g. `server-port: 25565`) to set (default: `{}`)
+
 ## Example
 
 ```yaml

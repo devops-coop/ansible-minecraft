@@ -66,8 +66,8 @@
     - enable service
 
 - name: update whitelist
-  minecraft_acl:
-    acl: whitelist
+  minecraft_server_file:
+    server_file: whitelist
     values: "{{ minecraft_whitelist }}"
     path: "{{ minecraft_home }}/whitelist.json"
     owner: "{{ minecraft_user }}"
@@ -77,8 +77,8 @@
   when: minecraft_whitelist | length > 0
 
 - name: update ops
-  minecraft_acl:
-    acl: ops
+  minecraft_server_file:
+    server_file: ops
     values: "{{ minecraft_ops }}"
     path: "{{ minecraft_home }}/ops.json"
     owner: "{{ minecraft_user }}"
@@ -88,8 +88,8 @@
   when: minecraft_ops | length > 0
 
 - name: update banned-players
-  minecraft_acl:
-    acl: banned-players
+  minecraft_server_file:
+    server_file: banned-players
     values: "{{ minecraft_banned_players }}"
     path: "{{ minecraft_home }}/banned-players.json"
     owner: "{{ minecraft_user }}"
@@ -99,8 +99,8 @@
   when: minecraft_banned_players | length > 0
 
 - name: update banned-ips
-  minecraft_acl:
-    acl: banned-ips
+  minecraft_server_file:
+    server_file: banned-ips
     values: "{{ minecraft_banned_ips }}"
     path: "{{ minecraft_home }}/banned-ips.json"
     owner: "{{ minecraft_user }}"
@@ -108,3 +108,24 @@
   notify:
     - restart Minecraft
   when: minecraft_banned_ips | length > 0
+
+# The only way to generate a server.properties file is to start Minecraft.
+# We send the stop command to the stdin to stop the server right after it
+# starts.
+- name: generate server.properties
+  shell: echo "/stop" | java -jar minecraft_server.jar nogui
+  args:
+    creates: server.properties
+    chdir: "{{ minecraft_home }}"
+  become: yes
+  become_user: "{{ minecraft_user }}"
+
+- name: update server.properties
+  minecraft_server_file:
+    server_file: server-properties
+    values: "{{ minecraft_server_properties }}"
+    path: "{{ minecraft_home }}/server.properties"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_user }}"
+  notify:
+    - restart Minecraft

@@ -2,3 +2,8 @@
 - hosts: all
   roles:
    - role: benwebber.minecraft
+     minecraft_server_properties:
+       server-port: 25565
+       rcon.port: 25564
+       enable-rcon: true
+       rcon.password: password

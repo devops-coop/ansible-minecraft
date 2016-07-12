@@ -4,6 +4,10 @@
 
 This role installs vanilla [Minecraft](https://minecraft.net/) and configures it to run under [systemd](https://wiki.freedesktop.org/www/Software/systemd/) or [Supervisor](http://supervisord.org/).
 
+**If you're viewing this at https://github.com/benwebber/ansible-minecraft/, you're reading the documentation for the master branch.
+[View documentation for the latest release
+ (2.2.0).](https://github.com/benwebber/ansible-minecraft/tree/v2.2.0#ansible-minecraft)**
+
 ## Requirements
 
 * **Optional:** Python 2.7 on the Ansible control machine to generate user ACLs

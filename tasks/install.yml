@@ -1,0 +1,19 @@
+- name: symlink Minecraft server
+  file:
+    src={{ minecraft_home }}/minecraft_server.{{ minecraft_version_latest | default(minecraft_version) }}.jar
+    path={{ minecraft_home }}/minecraft_server.jar
+    owner={{ minecraft_user }}
+    group={{ minecraft_group }}
+    state=link
+  notify:
+    - restart Minecraft
+
+- name: agree to EULA
+  copy:
+    src=eula.txt
+    dest={{ minecraft_home }}/eula.txt
+    mode=0644
+    owner={{ minecraft_user }}
+    group={{ minecraft_group }}
+  notify:
+    - enable service

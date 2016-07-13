@@ -1,0 +1,20 @@
+# The only way to generate a server.properties file is to start Minecraft.
+# We send the stop command to the stdin to stop the server right after it
+# starts.
+- name: generate server.properties
+  shell: echo "/stop" | java -jar minecraft_server.jar nogui
+  args:
+    creates: server.properties
+    chdir: "{{ minecraft_home }}"
+  become: yes
+  become_user: "{{ minecraft_user }}"
+
+- name: update server.properties
+  minecraft_server_file:
+    server_file: server-properties
+    values: "{{ minecraft_server_properties }}"
+    path: "{{ minecraft_home }}/server.properties"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_user }}"
+  notify:
+    - restart Minecraft

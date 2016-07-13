@@ -1,0 +1,24 @@
+- name: include OS-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: include Debian-specific tasks
+  include: Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: include Red Hat-specific tasks
+  include: RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: create Minecraft group
+  group:
+    state=present
+    name={{ minecraft_group }}
+    system=yes
+
+- name: create Minecraft user
+  user:
+    state=present
+    name={{ minecraft_user }}
+    group={{ minecraft_group }}
+    home={{ minecraft_home }}
+

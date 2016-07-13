@@ -4,6 +4,8 @@
     that:
       - "ansible_os_family in supported_ansible_os_families"
 
+- include: "{{ minecraft_hook_before_setup | default('empty.yml') }}"
+
 - include: setup.yml
 
 - include: supervisor.yml
@@ -12,10 +14,26 @@
 - include: systemd.yml
   when: minecraft_process_control == 'systemd'
 
+- include: "{{ minecraft_hook_after_setup | default('empty.yml') }}"
+
+- include: "{{ minecraft_hook_before_download | default('empty.yml') }}"
+
 - include: download.yml
 
+- include: "{{ minecraft_hook_after_download | default('empty.yml') }}"
+
+- include: "{{ minecraft_hook_before_install | default('empty.yml') }}"
+
 - include: install.yml
+
+- include: "{{ minecraft_hook_after_install | default('empty.yml') }}"
 
 - include: acl.yml
 
 - include: configure.yml
+
+- include: "{{ minecraft_hook_before_start | default('empty.yml') }}"
+
+- meta: flush_handlers
+
+- include: "{{ minecraft_hook_after_start | default('empty.yml') }}"

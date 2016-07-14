@@ -3,3 +3,4 @@
   lineinfile:
     dest: /tmp/hooks
     line: after_install
+    create: true

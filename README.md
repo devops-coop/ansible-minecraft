@@ -110,6 +110,69 @@ The following variable defaults are defined in `defaults/main.yml`.
 
     dictionary of server.properties entries (e.g. `server-port: 25565`) to set (default: `{}`)
 
+## Hooks and run stages
+
+**ansible-minecraft** organizes execution into a number of run stages:
+
+* `setup`
+    * install prerequisites (e.g., Java)
+    * create Minecraft user and group
+* `download`
+    * fetch the latest version of from the launcher API
+    * download Minecraft
+* `install`
+    * symlink version to `minecraft_server.jar`
+    * agree to EULA
+* `acl`
+    * configure server ACLs (whitelist, banned players, etc.)
+* `configure`
+    * set `server.properties`
+* `start`
+    * (re)start server
+
+You can execute custom tasks before or after specific stages. Simply specify a [task include file](https://docs.ansible.com/ansible/playbooks_roles.html#task-include-files-and-encouraging-reuse) using the relevant role variable:
+
+```yaml
+- hosts: minecraft
+  roles:
+    - role: benwebber.minecraft
+      minecraft_hook_before_start: "{{ playbook_dir }}/download-world-from-s3.yml"
+```
+
+The available hooks are:
+
+* `minecraft_hook_before_setup`
+
+    run before `setup` tasks
+
+* `minecraft_hook_after_setup`
+
+    run after `setup` tasks
+
+* `minecraft_hook_before_download`
+
+    run before `download` tasks
+
+* `minecraft_hook_after_download`
+
+    run after `download` tasks
+
+* `minecraft_hook_before_install`
+
+    run before `install` tasks
+
+* `minecraft_hook_after_install`
+
+    run after `install` tasks
+
+* `minecraft_hook_before_start`
+
+    run before `start` tasks
+
+* `minecraft_hook_after_start`
+
+    run after `start` tasks
+
 ## Example
 
 ```yaml

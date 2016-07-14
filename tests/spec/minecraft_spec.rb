@@ -56,3 +56,18 @@ end
 describe port 25564 do
   it { should be_listening }
 end
+
+expected_hook_log = <<EOF
+before_setup
+after_setup
+before_download
+after_download
+before_install
+after_install
+before_start
+after_start
+EOF
+
+describe file '/tmp/hooks' do
+  its(:content) { should eq expected_hook_log }
+end

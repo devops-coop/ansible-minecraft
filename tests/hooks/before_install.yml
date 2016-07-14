@@ -1,0 +1,5 @@
+---
+- name: test before_install hook
+  lineinfile:
+    dest: /tmp/hooks
+    line: before_install

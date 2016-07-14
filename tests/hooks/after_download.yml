@@ -1,0 +1,5 @@
+---
+- name: test after_download hook
+  lineinfile:
+    dest: /tmp/hooks
+    line: after_download

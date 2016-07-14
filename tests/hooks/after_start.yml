@@ -1,0 +1,5 @@
+---
+- name: test after_start hook
+  lineinfile:
+    dest: /tmp/hooks
+    line: after_start

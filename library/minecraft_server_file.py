@@ -146,10 +146,7 @@ class ServerProperties(ServerFile):
         # server.properties are represented by "true" and "false" instead of
         # Python's "True" and "False", so convert them explicitly.
         for name, value in properties.iteritems():
-            if type(value) is bool:
-                properties[name] = 'true' if value else 'false'
-            else:
-                properties[name] = str(value)
+            properties[name] = str(value).lower() if isinstance(value, bool) else str(value)
 
         filein = file(self.stats.path)
 

@@ -148,22 +148,21 @@ class ServerProperties(ServerFile):
         for name, value in properties.iteritems():
             properties[name] = str(value).lower() if isinstance(value, bool) else str(value)
 
-        filein = file(self.stats.path)
-
-        for line in filein:
-            if line.startswith('#'):
-                self.newlines.append(line)
-            else:
-                name, eq, val = [x.strip() for x
-                                 in line.strip().partition('=')]
-                if eq and name in properties:
-                    self.newlines.append('%s=%s\n' % (name, properties[name]))
-                    if properties[name] != val:
-                        file('/tmp/ansible_log', 'a').write('"{}" changed: from [{}] to [{}]'.format(name, val, properties[name]))
-                        self._content_changed = True
-                    del properties[name]
-                else:
+        with open(self.stats.path) as filein:
+            for line in filein:
+                if line.startswith('#'):
                     self.newlines.append(line)
+                else:
+                    name, eq, val = [x.strip() for x
+                                     in line.strip().partition('=')]
+                    if eq and name in properties:
+                        self.newlines.append('%s=%s\n' % (name, properties[name]))
+                        if properties[name] != val:
+                            file('/tmp/ansible_log', 'a').write('"{}" changed: from [{}] to [{}]'.format(name, val, properties[name]))
+                            self._content_changed = True
+                        del properties[name]
+                    else:
+                        self.newlines.append(line)
 
         for name, value in properties.iteritems():
             self.newlines.append('%s=%s\n' % (name, value))

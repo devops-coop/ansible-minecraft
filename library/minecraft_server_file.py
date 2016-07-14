@@ -158,7 +158,6 @@ class ServerProperties(ServerFile):
                     if eq and name in properties:
                         self.newlines.append('%s=%s\n' % (name, properties[name]))
                         if properties[name] != val:
-                            file('/tmp/ansible_log', 'a').write('"{}" changed: from [{}] to [{}]'.format(name, val, properties[name]))
                             self._content_changed = True
                         del properties[name]
                     else:

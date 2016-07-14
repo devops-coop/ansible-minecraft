@@ -156,7 +156,7 @@ class ServerProperties(ServerFile):
                     name, eq, val = [x.strip() for x
                                      in line.strip().partition('=')]
                     if eq and name in properties:
-                        self.newlines.append('%s=%s\n' % (name, properties[name]))
+                        self.newlines.append('{0}={1}\n'.format(name, properties[name]))
                         if properties[name] != val:
                             self._content_changed = True
                         del properties[name]
@@ -164,7 +164,7 @@ class ServerProperties(ServerFile):
                         self.newlines.append(line)
 
         for name, value in properties.iteritems():
-            self.newlines.append('%s=%s\n' % (name, value))
+            self.newlines.append('{0}={1}\n'.format(name, value))
             self._content_changed = True
 
     @property

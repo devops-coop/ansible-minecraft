@@ -137,7 +137,7 @@ class ServerProperties(ServerFile):
     VALUES_TYPE = dict
 
     def __init__(self, module):
-        super(ServerProperties, self).__init__(module)
+        super(self.__class__, self).__init__(module)
         self._content_changed = False
         self.newlines = []
         properties = self.values.copy()
@@ -182,7 +182,7 @@ class ACL(ServerFile):
     A Minecraft ACL.
     """
     def __init__(self, module):
-        super(ACL, self).__init__(module)
+        super(self.__class__, self).__init__(module)
         self.acl = []
 
     @property
@@ -214,7 +214,7 @@ class Banlist(ACL):
     A generic Minecraft banlist.
     """
     def __init__(self, module, created=None, expires=None, reason=None):
-        super(Banlist, self).__init__(module)
+        super(self.__class__, self).__init__(module)
         self.created = created if created else dt.utcnow()
         self.expires = expires if expires else DEFAULT_BAN_EXPIRES
         self.reason = reason if reason else DEFAULT_BAN_REASON
@@ -235,7 +235,7 @@ class BannedPlayers(Banlist):
     The module "values" argument should be a list of usernames.
     """
     def __init__(self, module):
-        super(BannedPlayers, self).__init__(module)
+        super(self.__class__, self).__init__(module)
         uuids = get_uuids(self.values)
         for username, u in uuids.items():
             entry = self.template.copy()
@@ -251,7 +251,7 @@ class BannedIPs(Banlist):
     The module "values" argument should be a list of IP addresses.
     """
     def __init__(self, module):
-        super(BannedIPs, self).__init__(module)
+        super(self.__class__, self).__init__(module)
         for ip in self.values:
             entry = self.template.copy()
             entry['ip'] = ip
@@ -268,7 +268,7 @@ class Whitelist(ACL):
         """
         Generate a Minecraft whitelist from a list of usernames.
         """
-        super(Whitelist, self).__init__(module)
+        super(self.__class__, self).__init__(module)
         uuids = get_uuids(self.values)
         for username, u in uuids.items():
             self.acl.append({'name': username, 'uuid': u})
@@ -284,7 +284,7 @@ class Oplist(Whitelist):
         """
         Generate a Minecraft oplist from a list of usernames.
         """
-        super(Oplist, self).__init__(module)
+        super(self.__class__, self).__init__(module)
         for entry in self.acl:
             entry['level'] = MINECRAFT_OP_CODE
 

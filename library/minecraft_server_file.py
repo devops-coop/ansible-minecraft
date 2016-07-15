@@ -152,16 +152,17 @@ class ServerProperties(ServerFile):
             for line in filein:
                 if line.startswith('#'):
                     self.newlines.append(line)
+                    continue
+
+                name, eq, val = [x.strip() for x
+                                 in line.strip().partition('=')]
+                if eq and name in properties:
+                    self.newlines.append('{0}={1}\n'.format(name, properties[name]))
+                    if properties[name] != val:
+                        self._content_changed = True
+                    del properties[name]
                 else:
-                    name, eq, val = [x.strip() for x
-                                     in line.strip().partition('=')]
-                    if eq and name in properties:
-                        self.newlines.append('{0}={1}\n'.format(name, properties[name]))
-                        if properties[name] != val:
-                            self._content_changed = True
-                        del properties[name]
-                    else:
-                        self.newlines.append(line)
+                    self.newlines.append(line)
 
         for name, value in properties.iteritems():
             self.newlines.append('{0}={1}\n'.format(name, value))

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Generate Minecraft ACLs.
+Generate Minecraft server files (ACLs and server.properties).
 """
 
 import grp
@@ -131,8 +131,8 @@ class ServerProperties(ServerFile):
     """
     The Minecraft server.properties file.
 
-    The module "values" argument should be a list containing a single item,
-    a dictionary of property names and values.
+    The module "values" argument should be a dictionary of property names and
+    values.
     """
     VALUES_TYPE = dict
 

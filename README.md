@@ -46,13 +46,16 @@ The following variable defaults are defined in `defaults/main.yml`.
 
 * `minecraft_version`
 
-    Minecraft version to install (default: `1.9`)
+    Minecraft version to install (default: `latest`)
 
-    **N.B.** The default behaviour is to install the latest available minor release in a major release series (e.g., `1.8.x`). Override this default to install a specific minor release (e.g., `1.8.8`).
+    Examples:
 
-    To install the latest stable release, set `minecraft_version: latest`.
-
-    To install a snapshot, use the snapshot version: `minecraft_version: 16w21a`.
+    ```yaml
+    minecraft_version: latest
+    minecraft_version: 1.10
+    minecraft_version: 1.9.1
+    minecraft_version: 16w21a
+    ```
 
 * `minecraft_url`
 

@@ -158,9 +158,9 @@ class ServerProperties(ServerFile):
                                  in line.strip().partition('=')]
                 if eq and name in properties:
                     self.newlines.append('{0}={1}\n'.format(name, properties[name]))
-                    if properties[name] != val:
+                    current = properties.pop(name)
+                    if current != val:
                         self._content_changed = True
-                    del properties[name]
                 else:
                     self.newlines.append(line)
 

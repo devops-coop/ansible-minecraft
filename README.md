@@ -38,11 +38,7 @@ In the context of semantic versioning, consider the role contract to be defined 
 * Changes that do not require user intervention, but add backwards-compatible features, will increase the **minor** version.
 * Bug fixes will increase the **patch** version.
 
-### Upcoming changes
-
-#### Change to default server version
-
-In the next major release (3), the default server version (`minecraft_version`) will change from `1.9` to `latest`. The role will query the [launcher API](https://launchermeta.mojang.com/mc/game/version_manifest.json) to determine the latest release.
+Refer to the [change log](CHANGELOG.md) for upcoming changes.
 
 ## Role variables
 

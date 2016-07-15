@@ -1,5 +1,5 @@
 ---
-minecraft_version: 1.9
+minecraft_version: latest
 minecraft_url: https://s3.amazonaws.com/Minecraft.Download/versions
 minecraft_user: minecraft
 minecraft_group: minecraft

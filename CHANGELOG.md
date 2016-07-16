@@ -4,8 +4,8 @@
 
 ### Added
 
-* (#5) Manage `server.properties` by setting `minecraft_server_properties` (Mark Côté).
-* (#6) Hooks: Include additional tasks at specific points during execution.
+* ([#5][]) Manage `server.properties` by setting `minecraft_server_properties` (Mark Côté).
+* ([#6][]) Hooks: Include additional tasks at specific points during execution.
 
 ### Changed
 
@@ -13,7 +13,7 @@
 
 ### Fixed
 
-* (#4) Improve build documentation.
+* ([#4][]) Improve build documentation.
 
 ## 2.2.0 (2016-05-30)
 
@@ -113,3 +113,7 @@
 ## 1.0.0 (2015-11-23)
 
 Initial release
+
+[#4]: https://github.com/benwebber/ansible-minecraft/issues/4
+[#5]: https://github.com/benwebber/ansible-minecraft/pull/5
+[#6]: https://github.com/benwebber/ansible-minecraft/issues/6

@@ -27,6 +27,8 @@ This role installs vanilla [Minecraft](https://minecraft.net/) and configures it
 * safely stops the server using [`stop`](http://minecraft.gamepedia.com/Commands#stop) when running under **systemd**
 * uses [Docker](https://www.docker.com/) and [Serverspec](http://serverspec.org/) to run integration tests
 * manages user ACLs
+* manages `server.properties`
+* hooks: include arbitrary tasks at specific stages during execution
 
 ## Versioning
 

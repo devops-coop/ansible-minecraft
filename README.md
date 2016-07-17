@@ -83,9 +83,13 @@ The following variable defaults are defined in `defaults/main.yml`.
 
     Java initial memory (`-Xms`) to allocate (default: `1024M`)
 
+* `minecraft_service_name`
+
+    systemd service name or Supervisor program name (default: `minecraft`)
+
 * `minecraft_supervisor_name`
 
-    Supervisor program name (default: `minecraft`)
+    **DEPRECATED:** Supervisor program name (default: `{{ minecraft_service_name }}`)
 
 * `minecraft_process_control`
 

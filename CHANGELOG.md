@@ -1,5 +1,11 @@
 # ansible-minecraft changelog
 
+## Unreleased
+
+### Deprecated
+
+* Deprecate `minecraft_supervisor_name` in favour of `minecraft_service_name`.
+
 ## 3.0.0 (2016-07-15)
 
 ### Added

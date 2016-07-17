@@ -10,6 +10,12 @@ Deprecated
 -  Deprecate ``minecraft_supervisor_name`` in favour of
    ``minecraft_service_name``.
 
+Fixed
+~~~~~
+
+- When using ``curl`` to check the latest release, execute the task locally
+  instead of on the remote host.
+
 3.0.0 (2016-07-15)
 ------------------
 

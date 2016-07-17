@@ -1,5 +1,5 @@
 - name: retrieve version manifest
-  command: "curl {{ minecraft_version_manifest_url }}"
+  local_action: command curl {{ minecraft_version_manifest_url }}
   register: version_manifest
 
 - name: find and set latest version

@@ -1,6 +1,6 @@
 # ansible-minecraft changelog
 
-## 3.0.0 (Unreleased)
+## 3.0.0 (2016-07-15)
 
 ### Added
 

@@ -68,8 +68,7 @@ Role variables
 
 The following variable defaults are defined in ``defaults/main.yml``.
 
--  ``minecraft_version``
-
+``minecraft_version``
    Minecraft version to install (default: ``latest``)
 
    Examples:
@@ -81,63 +80,49 @@ The following variable defaults are defined in ``defaults/main.yml``.
        minecraft_version: 1.9.1
        minecraft_version: 16w21a
 
--  ``minecraft_url``
-
+``minecraft_url``
    Minecraft download URL (default:
    ``https://s3.amazonaws.com/Minecraft.Download/versions``)
 
--  ``minecraft_user``
-
+``minecraft_user``
    system user Minecraft runs as (default: ``minecraft``)
 
--  ``minecraft_group``
-
+``minecraft_group``
    system group Minecraft runs as (default: ``minecraft``)
 
--  ``minecraft_home``
-
+``minecraft_home``
    directory to install Minecraft to (default: ``/srv/minecraft``)
 
--  ``minecraft_max_memory``
-
+``minecraft_max_memory``
    Java max memory (``-Xmx``) to allocate (default: ``1024M``)
 
--  ``minecraft_initial_memory``
-
+``minecraft_initial_memory``
    Java initial memory (``-Xms``) to allocate (default: ``1024M``)
 
--  ``minecraft_service_name``
-
+``minecraft_service_name``
    systemd service name or Supervisor program name (default:
    ``minecraft``)
 
--  ``minecraft_supervisor_name``
-
+``minecraft_supervisor_name``
    **DEPRECATED:** Supervisor program name (default:
    ``{{ minecraft_service_name }}``)
 
--  ``minecraft_process_control``
-
+``minecraft_process_control``
    Choose between ``systemd`` and ``supervisor`` (default: ``systemd``).
 
--  ``minecraft_whitelist``
-
+``minecraft_whitelist``
    list of Minecraft usernames to whitelist (default: ``[]``)
 
--  ``minecraft_ops``
-
+``minecraft_ops``
    list of Minecraft usernames to make server ops (default: ``[]``)
 
--  ``minecraft_banned_players``
-
+``minecraft_banned_players``
    list of Minecraft usernames to ban (default: ``[]``)
 
--  ``minecraft_banned_ips``
-
+``minecraft_banned_ips``
    list of IP addresses to ban (default: ``[]``)
 
--  ``minecraft_server_properties``
-
+``minecraft_server_properties``
    dictionary of server.properties entries (e.g. ``server-port: 25565``)
    to set (default: ``{}``)
 
@@ -146,31 +131,25 @@ Hooks and run stages
 
 **ansible-minecraft** organizes execution into a number of run stages:
 
--  ``setup``
-
+``setup``
    -  install prerequisites (e.g., Java)
    -  create Minecraft user and group
 
--  ``download``
-
+``download``
    -  fetch the latest version of from the launcher API
    -  download Minecraft
 
--  ``install``
-
+``install``
    -  symlink version to ``minecraft_server.jar``
    -  agree to EULA
 
--  ``acl``
-
+``acl``
    -  configure server ACLs (whitelist, banned players, etc.)
 
--  ``configure``
-
+``configure``
    -  set ``server.properties``
 
--  ``start``
-
+``start``
    -  (re)start server
 
 You can execute custom tasks before or after specific stages. Simply
@@ -187,36 +166,28 @@ using the relevant role variable:
 
 The available hooks are:
 
--  ``minecraft_hook_before_setup``
-
+``minecraft_hook_before_setup``
    run before ``setup`` tasks
 
--  ``minecraft_hook_after_setup``
-
+``minecraft_hook_after_setup``
    run after ``setup`` tasks
 
--  ``minecraft_hook_before_download``
-
+``minecraft_hook_before_download``
    run before ``download`` tasks
 
--  ``minecraft_hook_after_download``
-
+``minecraft_hook_after_download``
    run after ``download`` tasks
 
--  ``minecraft_hook_before_install``
-
+``minecraft_hook_before_install``
    run before ``install`` tasks
 
--  ``minecraft_hook_after_install``
-
+``minecraft_hook_after_install``
    run after ``install`` tasks
 
--  ``minecraft_hook_before_start``
-
+``minecraft_hook_before_start``
    run before ``start`` tasks
 
--  ``minecraft_hook_after_start``
-
+``minecraft_hook_after_start``
    run after ``start`` tasks
 
 Example

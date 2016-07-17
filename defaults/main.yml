@@ -2,12 +2,12 @@
 minecraft_server: minecraft
 minecraft_version: latest
 minecraft_url: https://s3.amazonaws.com/Minecraft.Download/versions
-minecraft_user: minecraft
-minecraft_group: minecraft
-minecraft_home: /srv/minecraft
+minecraft_user: "{{ minecraft_server }}"
+minecraft_group: "{{ minecraft_server }}"
+minecraft_home: /srv/{{ minecraft_server }}
 minecraft_max_memory: 1024M
 minecraft_initial_memory: 1024M
-minecraft_service_name: minecraft
+minecraft_service_name: "{{ minecraft_server }}"
 minecraft_supervisor_name: "{{ minecraft_service_name }}"
 minecraft_whitelist: []
 minecraft_ops: []

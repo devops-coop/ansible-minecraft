@@ -1,2 +1,2 @@
-- include: install/minecraft.yml
+- include: minecraft.yml
   when: minecraft_server == 'minecraft'

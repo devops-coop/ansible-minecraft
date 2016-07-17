@@ -1,2 +1,2 @@
-- include: download/minecraft.yml
+- include: minecraft.yml
   when: minecraft_server == 'minecraft'

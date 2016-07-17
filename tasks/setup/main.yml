@@ -22,3 +22,9 @@
     group={{ minecraft_group }}
     home={{ minecraft_home }}
 
+- include: supervisor.yml
+  when: minecraft_process_control == 'supervisor'
+
+- include: systemd.yml
+  when: minecraft_process_control == 'systemd'
+

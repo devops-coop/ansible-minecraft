@@ -1,7 +1,7 @@
 [Unit]
-Description=Minecraft Server
+Description={{ minecraft_service_name | title }} Server
 After=network.target
-Requires=minecraft.socket
+Requires={{ minecraft_service_name }}.socket
 
 # The server will sometimes crash after issuing `stop`. Thus we `save-all` and
 # consider 143 a successful exit code. See: <https://bugs.mojang.com/browse/MC-38134>

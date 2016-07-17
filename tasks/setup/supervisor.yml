@@ -12,7 +12,7 @@
 - name: configure Supervisor
   template:
     src=minecraft.conf.j2
-    dest=/etc/supervisor/conf.d/minecraft.conf
+    dest=/etc/supervisor/conf.d/{{ minecraft_service_name }}.conf
     owner=root
     group=root
     mode=0644

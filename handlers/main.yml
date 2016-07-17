@@ -18,7 +18,7 @@
 
 - name: restart Minecraft (systemd)
   service:
-    name=minecraft
+    name={{ minecraft_service_name}}
     state=restarted
   when: minecraft_process_control == 'systemd'
 
@@ -41,6 +41,6 @@
     state=started
     enabled=true
   with_items:
-    - minecraft.service
-    - minecraft.socket
+    - "{{ minecraft_service_name }}.service"
+    - "{{ minecraft_service_name }}.socket"
   when: minecraft_process_control == 'systemd'

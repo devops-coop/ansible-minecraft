@@ -4,6 +4,11 @@
     that:
       - "ansible_os_family in supported_ansible_os_families"
 
+- name: check for supported server implementation
+  assert:
+    that:
+      - "minecraft_server in supported_minecraft_servers"
+
 - include: "{{ minecraft_hook_before_setup | default('empty.yml') }}"
 
 - include: setup.yml

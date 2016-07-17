@@ -1,4 +1,4 @@
-[program:{{ minecraft_supervisor_name }}]
+[program:{{ minecraft_service_name }}]
 command=/usr/bin/java -Xmx{{ minecraft_max_memory}} -Xms{{ minecraft_initial_memory }} -jar minecraft_server.jar nogui
 directory={{ minecraft_home }}
 user={{ minecraft_user }}

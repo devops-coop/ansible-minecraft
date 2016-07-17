@@ -12,7 +12,7 @@
 
 - name: restart Minecraft (supervisor)
   supervisorctl:
-    name={{ minecraft_supervisor_name }}
+    name={{ minecraft_service_name }}
     state=restarted
   when: minecraft_process_control == 'supervisor'
 

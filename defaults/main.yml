@@ -7,7 +7,8 @@ minecraft_group: minecraft
 minecraft_home: /srv/minecraft
 minecraft_max_memory: 1024M
 minecraft_initial_memory: 1024M
-minecraft_supervisor_name: minecraft
+minecraft_service_name: minecraft
+minecraft_supervisor_name: "{{ minecraft_service_name }}"
 minecraft_whitelist: []
 minecraft_ops: []
 minecraft_banned_players: []

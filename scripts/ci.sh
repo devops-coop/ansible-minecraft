@@ -23,6 +23,7 @@ function main() {
   docker exec -t "${container}" ansible-playbook \
               -i "${WORKSPACE}/tests/inventory" \
               --syntax-check \
+              -v \
               --extra-vars="minecraft_process_control=${PROCESS_CONTROL}" \
               "${WORKSPACE}/tests/site.yml"
 
@@ -30,6 +31,7 @@ function main() {
   docker exec -t "${container}" ansible-playbook \
               -i "${WORKSPACE}/tests/inventory" \
               -c local \
+              -v \
               --extra-vars="minecraft_process_control=${PROCESS_CONTROL}" \
               "${WORKSPACE}/tests/site.yml"
 

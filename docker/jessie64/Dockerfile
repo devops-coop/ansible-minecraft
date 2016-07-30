@@ -14,13 +14,17 @@ RUN grep -rl httpredir.debian.org /etc/apt/sources.list* \
 
 RUN apt-get update -y \
     && apt-get --no-install-recommends install -y \
+      default-jdk \
       gcc \
-      python-dev \
+      git \
       libffi-dev \
       libssl-dev \
-      python-pip \
       net-tools \
+      python-dev \
+      python-pip \
       ruby \
+      sudo \
+      tar \
     && apt-get autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*

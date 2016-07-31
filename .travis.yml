@@ -8,10 +8,14 @@ env:
     - DOCKER_VERSION=1.10.2-0~trusty
     - DOCKER_COMPOSE_VERSION=1.6.2
   matrix:
-    - OS=jessie64 PROCESS_CONTROL=systemd
-    - OS=jessie64 PROCESS_CONTROL=supervisor
-    - OS=trusty64 PROCESS_CONTROL=supervisor
-    - OS=centos7  PROCESS_CONTROL=systemd
+    - OS=jessie64 SERVER=minecraft PROCESS_CONTROL=systemd
+    - OS=jessie64 SERVER=minecraft PROCESS_CONTROL=supervisor
+    - OS=trusty64 SERVER=minecraft PROCESS_CONTROL=supervisor
+    - OS=centos7  SERVER=minecraft PROCESS_CONTROL=systemd
+    - OS=jessie64 SERVER=spigot    PROCESS_CONTROL=systemd
+    - OS=jessie64 SERVER=spigot    PROCESS_CONTROL=supervisor
+    - OS=trusty64 SERVER=spigot    PROCESS_CONTROL=supervisor
+    - OS=centos7  SERVER=spigot    PROCESS_CONTROL=systemd
 before_install:
   - sudo -E ./scripts/install-docker.sh
 install: true

@@ -1,0 +1,19 @@
+---
+- hosts: all
+  roles:
+   - role: benwebber.minecraft
+     minecraft_server: spigot
+     minecraft_version: 1.9
+     minecraft_server_properties:
+       server-port: 25565
+       rcon.port: 25564
+       enable-rcon: true
+       rcon.password: password
+     minecraft_hook_before_setup: "{{ playbook_dir }}/hooks/before_setup.yml"
+     minecraft_hook_after_setup: "{{ playbook_dir }}/hooks/after_setup.yml"
+     minecraft_hook_before_download: "{{ playbook_dir }}/hooks/before_download.yml"
+     minecraft_hook_after_download: "{{ playbook_dir }}/hooks/after_download.yml"
+     minecraft_hook_before_install: "{{ playbook_dir }}/hooks/before_install.yml"
+     minecraft_hook_after_install: "{{ playbook_dir }}/hooks/after_install.yml"
+     minecraft_hook_before_start: "{{ playbook_dir }}/hooks/before_start.yml"
+     minecraft_hook_after_start: "{{ playbook_dir }}/hooks/after_start.yml"

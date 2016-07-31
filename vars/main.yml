@@ -4,3 +4,4 @@ supported_ansible_os_families:
   - RedHat
 supported_minecraft_servers:
   - minecraft
+  - spigot

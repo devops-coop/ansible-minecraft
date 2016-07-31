@@ -1,0 +1,15 @@
+- name: create Spigot build directory
+  file:
+    path: "{{ minecraft_home }}/build"
+    state: directory
+    mode: 0755
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+
+- name: download Spigot build tools
+  get_url:
+    url: "{{ minecraft_spigot_url }}"
+    dest: "{{ minecraft_home }}/build"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: 0755

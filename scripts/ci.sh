@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 declare -r OS=${1:-${OS}}
 declare -r PROCESS_CONTROL=${2:-${PROCESS_CONTROL}}
+declare -r SERVER=${3:-${SERVER}}
 declare -r WORKSPACE=${WORKSPACE:-/tmp/ansible-minecraft}
 
 function cleanup() {
@@ -24,23 +25,23 @@ function main() {
               -i "${WORKSPACE}/tests/inventory" \
               --syntax-check \
               -v \
-              --extra-vars="minecraft_process_control=${PROCESS_CONTROL}" \
-              "${WORKSPACE}/tests/site.yml"
+              --extra-vars="minecraft_process_control=${PROCESS_CONTROL} minecraft_server=${SERVER}" \
+              "${WORKSPACE}/tests/${SERVER}.yml"
 
   # Install Minecraft.
   docker exec -t "${container}" ansible-playbook \
               -i "${WORKSPACE}/tests/inventory" \
               -c local \
               -v \
-              --extra-vars="minecraft_process_control=${PROCESS_CONTROL}" \
-              "${WORKSPACE}/tests/site.yml"
+              --extra-vars="minecraft_process_control=${PROCESS_CONTROL} minecraft_server=${SERVER}" \
+              "${WORKSPACE}/tests/${SERVER}.yml"
 
   # Sleep to allow Minecraft to boot.
   # FIXME: A retry loop checking if it has launched yet would be better.
   sleep 10
 
   # Run tests.
-  docker exec -t "${container}" rspec "${WORKSPACE}/tests/spec/minecraft_spec.rb"
+  docker exec -t "${container}" rspec "${WORKSPACE}/tests/spec/${SERVER}_spec.rb"
 }
 
 trap cleanup EXIT

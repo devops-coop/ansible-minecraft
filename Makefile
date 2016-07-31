@@ -1,6 +1,7 @@
 BOXES := $(notdir $(wildcard docker/*))
 
 PROCESS_CONTROL ?= systemd
+SERVER          ?= minecraft
 
 define USAGE
 targets:
@@ -22,6 +23,7 @@ machines:
 variables:
 
   PROCESS_CONTROL   Choose from 'supervisor' or 'systemd'. Default: 'systemd'.
+  SERVER            Choose from 'minecraft' or 'spigot'. Default: 'minecraft'.
 endef
 
 is_machine_target = $(if $(findstring $(firstword $(MAKECMDGOALS)),$(BOXES)),true,false)
@@ -41,7 +43,7 @@ help:
 
 test:
 ifeq (true,$(call is_machine_target))
-	./scripts/ci.sh $(firstword $(MAKECMDGOALS)) $(PROCESS_CONTROL)
+	./scripts/ci.sh $(firstword $(MAKECMDGOALS)) $(PROCESS_CONTROL) $(SERVER)
 else
 	$(error `test` requires a machine name, see `make help`)
 endif

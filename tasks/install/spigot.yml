@@ -1,0 +1,30 @@
+- include: latest.yml
+  when: minecraft_version == 'latest'
+
+- name: build Spigot server
+  command: java -jar BuildTools.jar --rev "{{ minecraft_version_latest | default(minecraft_version) }}"
+  args:
+    creates: spigot-{{ minecraft_version_latest | default(minecraft_version) }}.jar
+    chdir: "{{ minecraft_home }}/build"
+  become: true
+  become_user: "{{ minecraft_user }}"
+
+- name: symlink Spigot server
+  file:
+    src: "{{ minecraft_home }}/build/spigot-{{ minecraft_version_latest | default(minecraft_version) }}.jar"
+    path: "{{ minecraft_home }}/spigot.jar"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    state: link
+  notify:
+    - restart Minecraft
+
+- name: agree to EULA
+  copy:
+    src: eula.txt
+    dest: "{{ minecraft_home }}/eula.txt"
+    mode: 0644
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+  notify:
+    - enable service

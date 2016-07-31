@@ -4,3 +4,11 @@
     state=present
     install_recommends=no
   with_items: "{{ dependencies }}"
+
+- name: install Spigot dependencies
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - git
+    - tar
+  when: minecraft_server == 'spigot'

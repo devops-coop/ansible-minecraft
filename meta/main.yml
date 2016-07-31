@@ -3,7 +3,7 @@ galaxy_info:
   author: Ben Webber
   description: Provision a vanilla Minecraft server
   license: Apache 2.0
-  min_ansible_version: 1.8
+  min_ansible_version: 1.9
   platforms:
     - name: Ubuntu
       versions:

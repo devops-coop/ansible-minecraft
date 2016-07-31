@@ -2,7 +2,7 @@
 # We send the stop command to the stdin to stop the server right after it
 # starts.
 - name: generate server.properties
-  shell: echo "/stop" | java -jar {{ minecraft_jar }} nogui
+  shell: echo "stop" | java -jar {{ minecraft_jar }} nogui
   args:
     creates: server.properties
     chdir: "{{ minecraft_home }}"

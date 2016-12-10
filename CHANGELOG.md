@@ -1,5 +1,22 @@
 # ansible-minecraft changelog
 
+## 3.1.0 (2016-12-10)
+
+### Added
+
+* Add support for Ubuntu 16.04 LTS (using systemd).
+
+### Fixed
+
+* Downgrade Travis CI Docker version by force to resolve build error.
+* Remove unsupported Debian version from Galaxy metadata.
+
+## 3.0.1 (2016-12-10)
+
+### Fixed
+
+* ([#9][]) Fixed `RuntimeError` regression when building ACL files.
+
 ## 3.0.0 (2016-07-15)
 
 ### Added
@@ -117,3 +134,4 @@ Initial release
 [#4]: https://github.com/benwebber/ansible-minecraft/issues/4
 [#5]: https://github.com/benwebber/ansible-minecraft/pull/5
 [#6]: https://github.com/benwebber/ansible-minecraft/issues/6
+[#9]: https://github.com/benwebber/ansible-minecraft/issues/9

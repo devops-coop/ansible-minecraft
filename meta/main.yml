@@ -11,7 +11,6 @@ galaxy_info:
       - xenial
     - name: Debian
       versions:
-      - wheezy
       - jessie
     - name: EL
       versions:

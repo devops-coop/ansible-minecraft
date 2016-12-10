@@ -15,13 +15,14 @@ This role installs vanilla [Minecraft](https://minecraft.net/) and configures it
 
 ## Features
 
-* supports Debian 8, Ubuntu 14.04, and RHEL/CentOS 7
+* supports Debian 8, Ubuntu 14.04, Ubuntu 16.04, and RHEL/CentOS 7
 * supports different process supervisors on different platforms
 
     | OS           | Supervisor | systemd |
     |--------------|:----------:|:-------:|
     | Debian 8     | ✓          | ✓       |
     | Ubuntu 14.04 | ✓          |         |
+    | Ubuntu 16.04 |            | ✓       |
     | CentOS 7     |            | ✓       |
 
 * safely stops the server using [`stop`](http://minecraft.gamepedia.com/Commands#stop) when running under **systemd**

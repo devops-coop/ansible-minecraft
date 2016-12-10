@@ -8,6 +8,7 @@ galaxy_info:
     - name: Ubuntu
       versions:
       - trusty
+      - xenial
     - name: Debian
       versions:
       - wheezy

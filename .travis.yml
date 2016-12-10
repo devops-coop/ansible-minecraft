@@ -11,6 +11,7 @@ env:
     - OS=jessie64 PROCESS_CONTROL=systemd
     - OS=jessie64 PROCESS_CONTROL=supervisor
     - OS=trusty64 PROCESS_CONTROL=supervisor
+    - OS=xenial64 PROCESS_CONTROL=systemd
     - OS=centos7  PROCESS_CONTROL=systemd
 before_install:
   - sudo -E ./scripts/install-docker.sh

@@ -6,7 +6,7 @@ This role installs vanilla [Minecraft](https://minecraft.net/) and configures it
 
 **If you're viewing this at https://github.com/benwebber/ansible-minecraft/, you're reading the documentation for the master branch.
 [View documentation for the latest release
- (3.0.1).](https://github.com/benwebber/ansible-minecraft/tree/v3.0.1#ansible-minecraft)**
+ (3.1.0).](https://github.com/benwebber/ansible-minecraft/tree/v3.1.0#ansible-minecraft)**
 
 ## Requirements
 

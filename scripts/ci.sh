@@ -38,7 +38,7 @@ function main() {
 
   # Sleep to allow Minecraft to boot.
   # FIXME: A retry loop checking if it has launched yet would be better.
-  sleep 10
+  sleep 30
 
   # Run tests.
   docker exec -t "${container}" rspec "${WORKSPACE}/tests/spec/${SERVER}_spec.rb"

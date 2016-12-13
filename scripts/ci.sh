@@ -12,6 +12,11 @@ function cleanup() {
   docker-compose rm -f "${OS}"
 }
 
+function debug() {
+  local container="$(docker-compose ps -q "${OS}")"
+  docker exec -it "${container}" /bin/bash
+}
+
 function main() {
   docker-compose up -d "${OS}"
 
@@ -44,6 +49,7 @@ function main() {
   docker exec -t "${container}" rspec "${WORKSPACE}/tests/spec/${SERVER}_spec.rb"
 }
 
+[[ -z "${CI:-}" ]] && trap debug ERR
 trap cleanup EXIT
 
 main "${@}"

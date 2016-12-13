@@ -6,6 +6,8 @@
   args:
     creates: spigot-{{ minecraft_version_latest | default(minecraft_version) }}.jar
     chdir: "{{ minecraft_home }}/build"
+  environment:
+    SHELL: /bin/bash
   become: true
   become_user: "{{ minecraft_user }}"
 

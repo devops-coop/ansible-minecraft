@@ -3,24 +3,15 @@ ansible-minecraft
 
 |Build Status|
 
-This role installs vanilla `Minecraft <https://minecraft.net/>`__ and
-configures it to run under
-`systemd <https://wiki.freedesktop.org/www/Software/systemd/>`__ or
-`Supervisor <http://supervisord.org/>`__.
+This role installs vanilla `Minecraft <https://minecraft.net/>`__ and configures it to run under `systemd <https://wiki.freedesktop.org/www/Software/systemd/>`__ or `Supervisor <http://supervisord.org/>`__.
 
-**If you're viewing this at
-https://github.com/benwebber/ansible-minecraft/, you're reading the
-documentation for the master branch. `View documentation for the latest
-release
-(3.0.0). <https://github.com/benwebber/ansible-minecraft/tree/v3.0.0#ansible-minecraft>`__**
+**If you're viewing this at https://github.com/benwebber/ansible-minecraft/, you're reading the documentation for the master branch. `View documentation for the latest release (3.0.0). <https://github.com/benwebber/ansible-minecraft/tree/v3.0.0#ansible-minecraft>`__**
 
 Requirements
 ------------
 
--  **Optional:** Python 2.7 on the Ansible control machine to generate
-   user ACLs
--  **Optional:** Ansible 2.0.2+ or ``curl`` on the control machine to
-   fetch the latest Minecraft version
+-  **Optional:** Python 2.7 on the Ansible control machine to generate user ACLs
+-  **Optional:** Ansible 2.0.2+ or ``curl`` on the control machine to fetch the latest Minecraft version
 
 Features
 --------
@@ -40,11 +31,8 @@ Features
    | CentOS 7       |              | ✓         |
    +----------------+--------------+-----------+
 
--  safely stops the server using
-   `stop <http://minecraft.gamepedia.com/Commands#stop>`__ when
-   running under **systemd**
--  uses `Docker <https://www.docker.com/>`__ and
-   `Serverspec <http://serverspec.org/>`__ to run integration tests
+-  safely stops the server using `stop <http://minecraft.gamepedia.com/Commands#stop>`__ when running under **systemd**
+-  uses `Docker <https://www.docker.com/>`__ and `Serverspec <http://serverspec.org/>`__ to run integration tests
 -  manages user ACLs
 -  manages ``server.properties``
 -  hooks: include arbitrary tasks at specific stages during execution
@@ -54,13 +42,10 @@ Versioning
 
 This project follows `semantic versioning <http://semver.org/>`__.
 
-In the context of semantic versioning, consider the role contract to be
-defined by the role variables.
+In the context of semantic versioning, consider the role contract to be defined by the role variables.
 
--  Changes that require user intervention will increase the **major**
-   version. This includes changing the default value of a role variable.
--  Changes that do not require user intervention, but add
-   backwards-compatible features, will increase the **minor** version.
+-  Changes that require user intervention will increase the **major** version. This includes changing the default value of a role variable.
+-  Changes that do not require user intervention, but add backwards-compatible features, will increase the **minor** version.
 -  Bug fixes will increase the **patch** version.
 
 Refer to the `change log <CHANGELOG.rst>`__ for upcoming changes.
@@ -102,12 +87,10 @@ The following variable defaults are defined in ``defaults/main.yml``.
    Java initial memory (``-Xms``) to allocate (default: ``1024M``)
 
 ``minecraft_service_name``
-   systemd service name or Supervisor program name (default:
-   ``minecraft``)
+   systemd service name or Supervisor program name (default: ``minecraft``)
 
 ``minecraft_supervisor_name``
-   **DEPRECATED:** Supervisor program name (default:
-   ``{{ minecraft_service_name }}``)
+   **DEPRECATED:** Supervisor program name (default: ``{{ minecraft_service_name }}``)
 
 ``minecraft_process_control``
    Choose between ``systemd`` and ``supervisor`` (default: ``systemd``).
@@ -125,8 +108,7 @@ The following variable defaults are defined in ``defaults/main.yml``.
    list of IP addresses to ban (default: ``[]``)
 
 ``minecraft_server_properties``
-   dictionary of server.properties entries (e.g. ``server-port: 25565``)
-   to set (default: ``{}``)
+   dictionary of server.properties entries (e.g. ``server-port: 25565``) to set (default: ``{}``)
 
 Hooks and run stages
 --------------------
@@ -154,10 +136,7 @@ Hooks and run stages
 ``start``
    -  (re)start server
 
-You can execute custom tasks before or after specific stages. Simply
-specify a `task include
-file <https://docs.ansible.com/ansible/playbooks_roles.html#task-include-files-and-encouraging-reuse>`__
-using the relevant role variable:
+You can execute custom tasks before or after specific stages. Simply specify a `task include file <https://docs.ansible.com/ansible/playbooks_roles.html#task-include-files-and-encouraging-reuse>`__ using the relevant role variable:
 
 .. code:: yaml
 
@@ -204,16 +183,14 @@ Example
 Contributing
 ------------
 
-Pull requests are welcome. Among other features, this role lacks support
-for custom Minecraft servers.
+Pull requests are welcome. Among other features, this role lacks support for custom Minecraft servers.
 
 Testing
 ~~~~~~~
 
 This role includes a Docker-based test harness for integration testing.
 
-1. Install `Docker <https://docs.docker.com/engine/installation/>`__ and
-   `Docker Compose <https://docs.docker.com/compose/>`__.
+1. Install `Docker <https://docs.docker.com/engine/installation/>`__ and `Docker Compose <https://docs.docker.com/compose/>`__.
 
 2. Run tests with ``make``.
 
@@ -221,8 +198,7 @@ This role includes a Docker-based test harness for integration testing.
 
        make jessie64 test
 
-Integration tests use **systemd** by default. Set ``PROCESS_CONTROL`` to
-change this:
+Integration tests use **systemd** by default. Set ``PROCESS_CONTROL`` to change this:
 
 ::
 
@@ -238,10 +214,6 @@ Apache 2.0
 Disclaimer
 ----------
 
-To automate the installation, this role automatically accepts the
-`Minecraft
-EULA <https://account.mojang.com/documents/minecraft_eula>`__. Be aware
-that by using this role, you implicitly accept the same EULA.
+To automate the installation, this role automatically accepts the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__. Be aware that by using this role, you implicitly accept the same EULA.
 
-.. |Build Status| image:: https://travis-ci.org/benwebber/ansible-minecraft.svg?branch=master
-   :target: https://travis-ci.org/benwebber/ansible-minecraft
+.. |Build Status| image:: https://travis-ci.org/benwebber/ansible-minecraft.svg?branch=master :target: https://travis-ci.org/benwebber/ansible-minecraft

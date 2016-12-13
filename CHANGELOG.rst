@@ -7,14 +7,12 @@ Unreleased
 Deprecated
 ~~~~~~~~~~
 
--  Deprecate ``minecraft_supervisor_name`` in favour of
-   ``minecraft_service_name``.
+-  Deprecate ``minecraft_supervisor_name`` in favour of ``minecraft_service_name``.
 
 Fixed
 ~~~~~
 
-- When using ``curl`` to check the latest release, execute the task locally
-  instead of on the remote host.
+- When using ``curl`` to check the latest release, execute the task locally instead of on the remote host.
 
 3.1.0 (2016-12-10)
 ------------------
@@ -44,11 +42,8 @@ Fixed
 Added
 ~~~~~
 
--  (`#5 <https://github.com/benwebber/ansible-minecraft/pull/5>`__)
-   Manage ``server.properties`` by setting
-   ``minecraft_server_properties`` (Mark Côté).
--  (`#6 <https://github.com/benwebber/ansible-minecraft/issues/6>`__)
-   Hooks: Include additional tasks at specific points during execution.
+-  (`#5 <https://github.com/benwebber/ansible-minecraft/pull/5>`__) Manage ``server.properties`` by setting ``minecraft_server_properties`` (Mark Côté).
+-  (`#6 <https://github.com/benwebber/ansible-minecraft/issues/6>`__) Hooks: Include additional tasks at specific points during execution.
 
 Changed
 ~~~~~~~
@@ -58,8 +53,7 @@ Changed
 Fixed
 ~~~~~
 
--  (`#4 <https://github.com/benwebber/ansible-minecraft/issues/4>`__)
-   Improve build documentation.
+-  (`#4 <https://github.com/benwebber/ansible-minecraft/issues/4>`__) Improve build documentation.
 
 2.2.0 (2016-05-30)
 ------------------
@@ -67,20 +61,17 @@ Fixed
 Added
 ~~~~~
 
--  It is now possible to install the latest major release of Minecraft
-   using ``minecraft_version: latest``.
+-  It is now possible to install the latest major release of Minecraft using ``minecraft_version: latest``.
 
 Deprecated
 ~~~~~~~~~~
 
--  The hard-coded default version (currently ``1.9``) will be replaced
-   with ``latest`` in the next major version.
+-  The hard-coded default version (currently ``1.9``) will be replaced with ``latest`` in the next major version.
 
 Fixed
 ~~~~~
 
--  Only generate ACL JSON files if the variables (e.g.,
-   ``minecraft_ops``) are non-empty.
+-  Only generate ACL JSON files if the variables (e.g., ``minecraft_ops``) are non-empty.
 -  Resolve deprecation warnings.
 
 2.1.1 (2016-03-08)
@@ -118,8 +109,7 @@ Changed
 ~~~~~~~
 
 -  Install latest 1.9 release by default.
--  Change default process supervisor (``minecraft_process_control``)
-   from ``supervisor`` to ``systemd``.
+-  Change default process supervisor (``minecraft_process_control``) from ``supervisor`` to ``systemd``.
 
 1.4.0 (2016-01-23)
 ------------------
@@ -148,14 +138,12 @@ Added
 Deprecated
 ----------
 
--  The default process supervisor (``minecraft_process_control``) will
-   change from ``supervisor`` to ``systemd`` in the next major version.
+-  The default process supervisor (``minecraft_process_control``) will change from ``supervisor`` to ``systemd`` in the next major version.
 
 Fixed
 -----
 
--  Configure Supervisor to run Java with absolute path
-   (``/usr/bin/java``).
+-  Configure Supervisor to run Java with absolute path (``/usr/bin/java``).
 -  Add RHEL/CentOS to supported platforms on Ansible Galaxy.
 
 1.2.0 (2015-11-26)
@@ -169,8 +157,7 @@ Added
 Fixed
 -----
 
--  Create ``/run/minecraft`` directory properly using
-   ``systemd-tmpfiles``
+-  Create ``/run/minecraft`` directory properly using ``systemd-tmpfiles``
 -  Fix socket permissions for systemd < 214.
 -  Do not update apt cache.
 -  Download server before starting the service for the first time.

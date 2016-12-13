@@ -16,6 +16,28 @@ Fixed
 - When using ``curl`` to check the latest release, execute the task locally
   instead of on the remote host.
 
+3.1.0 (2016-12-10)
+------------------
+
+Added
+~~~~~
+
+- Add support for Ubuntu 16.04 LTS (using systemd).
+
+Fixed
+~~~~~
+
+- Downgrade Travis CI Docker version by force to resolve build error.
+- Remove unsupported Debian version from Galaxy metadata.
+
+3.0.1 (2016-12-10)
+------------------
+
+Fixed
+~~~~~
+
+-  (`#9 <https://github.com/benwebber/ansible-minecraft/isues/9>`__) Fixed `RuntimeError` regression when building ACL files.
+
 3.0.0 (2016-07-15)
 ------------------
 

@@ -11,3 +11,7 @@ services:
   trusty64:
     build: docker/trusty64/
     entrypoint: /sbin/init
+  xenial64:
+    build: docker/xenial64/
+    privileged: true
+    entrypoint: /sbin/init

@@ -12,14 +12,14 @@
 
 - name: restart Minecraft (supervisor)
   supervisorctl:
-    name={{ minecraft_service_name }}
-    state=restarted
+    name: "{{ minecraft_service_name }}"
+    state: restarted
   when: minecraft_process_control == 'supervisor'
 
 - name: restart Minecraft (systemd)
   service:
-    name={{ minecraft_service_name}}
-    state=restarted
+    name: "{{ minecraft_service_name}}"
+    state: restarted
   when: minecraft_process_control == 'systemd'
 
 - name: enable service
@@ -37,9 +37,9 @@
 
 - name: enable service (systemd)
   service:
-    name={{ item }}
-    state=started
-    enabled=true
+    name: "{{ item }}"
+    state: started
+    enabled: true
   with_items:
     - "{{ minecraft_service_name }}.service"
     - "{{ minecraft_service_name }}.socket"

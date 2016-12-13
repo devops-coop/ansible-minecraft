@@ -11,16 +11,16 @@
 
 - name: create Minecraft group
   group:
-    state=present
-    name={{ minecraft_group }}
-    system=yes
+    state: present
+    name: "{{ minecraft_group }}"
+    system: yes
 
 - name: create Minecraft user
   user:
-    state=present
-    name={{ minecraft_user }}
-    group={{ minecraft_group }}
-    home={{ minecraft_home }}
+    state: present
+    name: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    home: "{{ minecraft_home }}"
 
 - name: set executable name (Minecraft)
   set_fact:

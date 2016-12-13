@@ -1,8 +1,8 @@
 - name: install Minecraft dependencies
   apt:
-    name={{ item }}
-    state=present
-    install_recommends=no
+    name: "{{ item }}"
+    state: present
+    install_recommends: no
   with_items: "{{ dependencies }}"
 
 - name: install Spigot dependencies

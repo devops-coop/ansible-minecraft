@@ -5,7 +5,7 @@ ansible-minecraft
 
 This role installs `Minecraft <https://minecraft.net/>`__ or `Spigot <https://www.spigotmc.org/>__` and configures it to run under `systemd <https://wiki.freedesktop.org/www/Software/systemd/>`__ or `Supervisor <http://supervisord.org/>`__.
 
-**If you're viewing this at https://github.com/benwebber/ansible-minecraft/, you're reading the documentation for the master branch. `View documentation for the latest release (3.0.0). <https://github.com/benwebber/ansible-minecraft/tree/v3.0.0#ansible-minecraft>`__**
+**If you're viewing this at https://github.com/benwebber/ansible-minecraft/, you're reading the documentation for the master branch. `View documentation for the latest release (3.1.0). <https://github.com/benwebber/ansible-minecraft/tree/v3.1.0#ansible-minecraft>`__**
 
 Requirements
 ------------

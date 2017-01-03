@@ -187,7 +187,13 @@ Example
 Contributing
 ------------
 
-Pull requests are welcome. Among other features, this role lacks support for custom Minecraft servers.
+The best way to contribute is to use this role to deploy your own Minecraft server! We really appreciate bug reports from the wild.
+
+If you'd like to help with the project itself, here are some other ways you can contribute:
+
+-  Add support for additional servers like `Cuberite <https://cuberite.org/>__`.
+-  Write integration tests for Minecraft- or Spigot-specific configuration.
+-  Share useful hooks.
 
 Testing
 ~~~~~~~

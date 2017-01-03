@@ -4,6 +4,11 @@ ansible-minecraft changelog
 Unreleased
 ----------
 
+Added
+~~~~~
+
+- (`#7 <https://github.com/benwebber/ansible-minecraft/issues/7>`__) Support `Spigot <https://www.spigotmc.org/>`__.
+
 Deprecated
 ~~~~~~~~~~
 

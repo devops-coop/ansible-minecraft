@@ -3,7 +3,7 @@ ansible-minecraft
 
 |Build Status|
 
-This role installs vanilla `Minecraft <https://minecraft.net/>`__ and configures it to run under `systemd <https://wiki.freedesktop.org/www/Software/systemd/>`__ or `Supervisor <http://supervisord.org/>`__.
+This role installs `Minecraft <https://minecraft.net/>`__ or `Spigot <https://www.spigotmc.org/>__` and configures it to run under `systemd <https://wiki.freedesktop.org/www/Software/systemd/>`__ or `Supervisor <http://supervisord.org/>`__.
 
 **If you're viewing this at https://github.com/benwebber/ansible-minecraft/, you're reading the documentation for the master branch. `View documentation for the latest release (3.0.0). <https://github.com/benwebber/ansible-minecraft/tree/v3.0.0#ansible-minecraft>`__**
 
@@ -16,6 +16,7 @@ Requirements
 Features
 --------
 
+-  supports `vanilla Minecraft <https://minecraft.net>__` and `Spigot <https://spigotmc.org/>__`
 -  supports Debian 8, Ubuntu 14.04, Ubuntu 16.04, and RHEL/CentOS 7
 -  supports different process supervisors on different platforms
 
@@ -109,6 +110,9 @@ The following variable defaults are defined in ``defaults/main.yml``.
 
 ``minecraft_server_properties``
    dictionary of server.properties entries (e.g. ``server-port: 25565``) to set (default: ``{}``)
+
+``minecraft_server``
+  choose between ``minecraft`` or ``spigot`` (default: ``minecraft``)
 
 Hooks and run stages
 --------------------

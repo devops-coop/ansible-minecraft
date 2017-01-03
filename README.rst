@@ -3,9 +3,9 @@ ansible-minecraft
 
 |Build Status|
 
-This role installs `Minecraft <https://minecraft.net/>`__ or `Spigot <https://www.spigotmc.org/>__` and configures it to run under `systemd <https://wiki.freedesktop.org/www/Software/systemd/>`__ or `Supervisor <http://supervisord.org/>`__.
+This role installs `Minecraft <https://minecraft.net/>`__ or `Spigot <https://www.spigotmc.org/>`__ and configures it to run under `systemd <https://wiki.freedesktop.org/www/Software/systemd/>`__ or `Supervisor <http://supervisord.org/>`__.
 
-**If you're viewing this at https://github.com/benwebber/ansible-minecraft/, you're reading the documentation for the master branch. `View documentation for the latest release (3.1.0). <https://github.com/benwebber/ansible-minecraft/tree/v3.1.0#ansible-minecraft>`__**
+**If you're viewing this at** https://github.com/benwebber/ansible-minecraft/**, you're reading the documentation for the master branch.** `View documentation for the latest release (3.1.0). <https://github.com/benwebber/ansible-minecraft/tree/v3.1.0#ansible-minecraft>`__
 
 Requirements
 ------------
@@ -16,7 +16,7 @@ Requirements
 Features
 --------
 
--  supports `vanilla Minecraft <https://minecraft.net>__` and `Spigot <https://spigotmc.org/>__`
+-  supports `vanilla Minecraft <https://minecraft.net>`__ and `Spigot <https://spigotmc.org/>`__
 -  supports Debian 8, Ubuntu 14.04, Ubuntu 16.04, and RHEL/CentOS 7
 -  supports different process supervisors on different platforms
 
@@ -191,7 +191,7 @@ The best way to contribute is to use this role to deploy your own Minecraft serv
 
 If you'd like to help with the project itself, here are some other ways you can contribute:
 
--  Add support for additional servers like `Cuberite <https://cuberite.org/>__`.
+-  Add support for additional servers like `Cuberite <https://cuberite.org/>`__.
 -  Write integration tests for Minecraft- or Spigot-specific configuration.
 -  Share useful hooks.
 

@@ -16,9 +16,9 @@ Requirements
 Install
 -------
 
-   ::
+::
 
-       ansible-galaxy install devops-coop.minecraft
+   ansible-galaxy install devops-coop.minecraft
 
 
 Features

@@ -5,7 +5,7 @@ ansible-minecraft
 
 This role installs `Minecraft <https://minecraft.net/>`__ or `Spigot <https://www.spigotmc.org/>`__ and configures it to run under `systemd <https://wiki.freedesktop.org/www/Software/systemd/>`__ or `Supervisor <http://supervisord.org/>`__.
 
-**If you're viewing this at** https://github.com/benwebber/ansible-minecraft/**, you're reading the documentation for the master branch.** `View documentation for the latest release (3.1.0). <https://github.com/benwebber/ansible-minecraft/tree/v3.1.0#ansible-minecraft>`__
+**If you're viewing this at** https://github.com/devops-coop/ansible-minecraft/**, you're reading the documentation for the master branch.** `View documentation for the latest release (3.1.0). <https://github.com/devops-coop/ansible-minecraft/tree/v3.1.0#ansible-minecraft>`__
 
 Requirements
 ------------
@@ -146,7 +146,7 @@ You can execute custom tasks before or after specific stages. Simply specify a `
 
     - hosts: minecraft
       roles:
-        - role: benwebber.minecraft
+        - role: devops-coop.minecraft
           minecraft_hook_before_start: "{{ playbook_dir }}/download-world-from-s3.yml"
 
 The available hooks are:
@@ -182,7 +182,7 @@ Example
 
     - hosts: minecraft
       roles:
-         - { role: benwebber.minecraft, minecraft_whitelist: ["jeb_", "dinnerbone"]}
+         - { role: devops-coop.minecraft, minecraft_whitelist: ["jeb_", "dinnerbone"]}
 
 Contributing
 ------------
@@ -226,4 +226,4 @@ Disclaimer
 
 To automate the installation, this role automatically accepts the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__. Be aware that by using this role, you implicitly accept the same EULA.
 
-.. |Build Status| image:: https://travis-ci.org/benwebber/ansible-minecraft.svg?branch=master :target: https://travis-ci.org/benwebber/ansible-minecraft
+.. |Build Status| image:: https://travis-ci.org/devops-coop/ansible-minecraft.svg?branch=master :target: https://travis-ci.org/devops-coop/ansible-minecraft

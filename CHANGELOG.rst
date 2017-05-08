@@ -7,7 +7,7 @@ Unreleased
 Added
 ~~~~~
 
-- (`#7 <https://github.com/benwebber/ansible-minecraft/issues/7>`__) Support `Spigot <https://www.spigotmc.org/>`__.
+- (`#7 <https://github.com/devops-coop/ansible-minecraft/issues/7>`__) Support `Spigot <https://www.spigotmc.org/>`__.
 
 Deprecated
 ~~~~~~~~~~
@@ -39,7 +39,7 @@ Fixed
 Fixed
 ~~~~~
 
--  (`#9 <https://github.com/benwebber/ansible-minecraft/isues/9>`__) Fixed `RuntimeError` regression when building ACL files.
+-  (`#9 <https://github.com/devops-coop/ansible-minecraft/isues/9>`__) Fixed `RuntimeError` regression when building ACL files.
 
 3.0.0 (2016-07-15)
 ------------------
@@ -47,8 +47,8 @@ Fixed
 Added
 ~~~~~
 
--  (`#5 <https://github.com/benwebber/ansible-minecraft/pull/5>`__) Manage ``server.properties`` by setting ``minecraft_server_properties`` (Mark Côté).
--  (`#6 <https://github.com/benwebber/ansible-minecraft/issues/6>`__) Hooks: Include additional tasks at specific points during execution.
+-  (`#5 <https://github.com/devops-coop/ansible-minecraft/pull/5>`__) Manage ``server.properties`` by setting ``minecraft_server_properties`` (Mark Côté).
+-  (`#6 <https://github.com/devops-coop/ansible-minecraft/issues/6>`__) Hooks: Include additional tasks at specific points during execution.
 
 Changed
 ~~~~~~~
@@ -58,7 +58,7 @@ Changed
 Fixed
 ~~~~~
 
--  (`#4 <https://github.com/benwebber/ansible-minecraft/issues/4>`__) Improve build documentation.
+-  (`#4 <https://github.com/devops-coop/ansible-minecraft/issues/4>`__) Improve build documentation.
 
 2.2.0 (2016-05-30)
 ------------------

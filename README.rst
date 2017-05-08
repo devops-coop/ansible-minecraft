@@ -13,6 +13,14 @@ Requirements
 -  **Optional:** Python 2.7 on the Ansible control machine to generate user ACLs
 -  **Optional:** Ansible 2.0.2+ or ``curl`` on the control machine to fetch the latest Minecraft version
 
+Install
+-------
+
+   ::
+
+       ansible-galaxy install devops-coop.minecraft
+
+
 Features
 --------
 

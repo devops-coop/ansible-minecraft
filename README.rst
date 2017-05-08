@@ -1,7 +1,7 @@
 ansible-minecraft
 =================
 
-|Build Status|
+|Install from Ansible Galaxy| |Travis CI build status| |Chat on gitter.im|
 
 This role installs `Minecraft <https://minecraft.net/>`__ or `Spigot <https://www.spigotmc.org/>`__ and configures it to run under `systemd <https://wiki.freedesktop.org/www/Software/systemd/>`__ or `Supervisor <http://supervisord.org/>`__.
 
@@ -234,4 +234,9 @@ Disclaimer
 
 To automate the installation, this role automatically accepts the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__. Be aware that by using this role, you implicitly accept the same EULA.
 
-.. |Build Status| image:: https://travis-ci.org/devops-coop/ansible-minecraft.svg?branch=master :target: https://travis-ci.org/devops-coop/ansible-minecraft
+.. |Travis CI build status| image:: https://travis-ci.org/devops-coop/ansible-minecraft.svg?branch=master
+    :target: https://travis-ci.org/devops-coop/ansible-minecraft
+.. |Install from Ansible Galaxy| image:: https://img.shields.io/badge/role-devops--coop.minecraft-blue.svg
+    :target: https://galaxy.ansible.com/devops-coop/minecraft/
+.. |Chat on gitter.im| image:: https://badges.gitter.im/gitterHQ/gitter.png
+    :target: https://gitter.im/devops-coop/ansible-minecraft

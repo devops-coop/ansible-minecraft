@@ -25,6 +25,9 @@ function main() {
   # Install role.
   docker cp . "${container}:${WORKSPACE}"
 
+  docker exec -t "${container}" mkdir "${WORKSPACE}/tests/roles" 
+  docker exec -t "${container}" ln -s "${WORKSPACE}/" "${WORKSPACE}/tests/roles/devops-coop.minecraft" 
+  
   # Validate syntax
   docker exec -t "${container}" ansible-playbook \
               -i "${WORKSPACE}/tests/inventory" \

@@ -14,10 +14,12 @@
     - minecraft.socket
   notify:
     - restart Minecraft
+  register: systemd_service_config
 
 - name: reload systemd
   command: systemctl daemon-reload
   become: true
+  when: systemd_service_config.changed
 
 - name: configure console directory
   template:
@@ -27,6 +29,12 @@
     group: root
     mode: '0644'
 
+- name: check if tmpfile exists
+  stat:
+    path: /etc/tmpfiles.d/{{ minecraft_service_name }}.conf
+  register: minecraft_tmpfile
+
 - name: create console directory
   command: systemd-tmpfiles --create /etc/tmpfiles.d/{{ minecraft_service_name }}.conf
   become: true
+  when: minecraft_tmpfile.stat.islnk

@@ -205,16 +205,24 @@ If you'd like to help with the project itself, here are some other ways you can 
 
 Testing
 ~~~~~~~
+This role includes a Vagrantfile used with a Docker-based test harness for integration testing. Using Vagrant allows all contributors to test on the same platform and avoid false test failures due to untested or incompatible docker versions.
 
-This role includes a Docker-based test harness for integration testing.
+1. Install `Vagrant <https://www.vagrantup.com/>`__ and `VirtualBox <https://www.virtualbox.org/>`__.
 
-1. Install `Docker <https://docs.docker.com/engine/installation/>`__ and `Docker Compose <https://docs.docker.com/compose/>`__.
+2. Run ``vagrant up`` from the same directory as the Vagrantfile in this repository.
 
-2. Run tests with ``make``.
+3. SSH into the VM with: ``vagrant ssh`` or ``ssh 127.0.0.1:2222`` or ``ssh 10.1.15.10``
 
-   ::
+4. Change directories into **/vagrant** with the command: ``cd /vagrant``
+
+5. Test the role against each Dockerfile with ``make``:
+
+  ::
 
        make jessie64 test
+       make centos7 test
+       make xenial64 test
+
 
 Integration tests use **systemd** by default. Set ``PROCESS_CONTROL`` to change this:
 

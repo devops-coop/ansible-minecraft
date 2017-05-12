@@ -217,12 +217,11 @@ This role includes a Vagrantfile used with a Docker-based test harness for integ
 
 5. Test the role against each Dockerfile with ``make``:
 
-  ::
+   ::
 
        make jessie64 test
        make centos7 test
        make xenial64 test
-
 
 Integration tests use **systemd** by default. Set ``PROCESS_CONTROL`` to change this:
 

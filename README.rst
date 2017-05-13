@@ -205,8 +205,35 @@ If you'd like to help with the project itself, here are some other ways you can 
 
 Testing
 ~~~~~~~
+Testing can be done using the provided Vagrantfile or by installing `Docker <https://docs.docker.com/engine/installation/>`__ and `Docker Compose <https://docs.docker.com/compose/>`__ locally.
 
-This role includes a Docker-based test harness for integration testing.
+Testing with Vagrant
+"""""""""""""""""""""
+This role includes a Vagrantfile used with a Docker-based test harness that approximates the Travis CI setup for integration testing. Using Vagrant allows all contributors to test on the same platform and avoid false test failures due to untested or incompatible docker versions.
+
+1. Install `Vagrant <https://www.vagrantup.com/>`__ and `VirtualBox <https://www.virtualbox.org/>`__.
+
+2. Run ``vagrant up`` from the same directory as the Vagrantfile in this repository.
+
+3. SSH into the VM with: ``vagrant ssh``
+
+4. Run tests with ``make``.
+
+   ::
+
+       make -C /vagrant xenial64 test
+
+Integration tests use **systemd** by default. Set ``PROCESS_CONTROL`` to change this:
+
+::
+
+    make -C /vagrant trusty64 test PROCESS_CONTROL=supervisor
+
+See ``make help`` for more information including a full list of available targets.
+
+Testing with Docker and Docker Compose locally
+""""""""""""""""""""""""""""""""""""""""""""""""
+Alternatively, you can install `Docker <https://docs.docker.com/engine/installation/>`__ and `Docker Compose <https://docs.docker.com/compose/>`__ to run these tests locally on your machine.
 
 1. Install `Docker <https://docs.docker.com/engine/installation/>`__ and `Docker Compose <https://docs.docker.com/compose/>`__.
 
@@ -222,7 +249,7 @@ Integration tests use **systemd** by default. Set ``PROCESS_CONTROL`` to change 
 
     make trusty64 test PROCESS_CONTROL=supervisor
 
-See ``make help`` for more information.
+See ``make help`` for more information including a full list of available targets.
 
 License
 -------

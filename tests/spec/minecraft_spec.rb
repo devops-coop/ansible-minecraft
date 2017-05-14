@@ -1,5 +1,3 @@
-require_relative 'spec_helper'
-
 describe user 'minecraft' do
   it { should exist }
 end
@@ -44,16 +42,15 @@ describe package java do
   it { should be_installed }
 end
 
-describe process 'java' do
-  its(:user) { should eq 'minecraft' }
-  its(:args) { should match /java -Xmx1024M -Xms1024M -jar minecraft_server\.jar nogui/ }
+describe processes(Regexp.new("java -Xmx1024M -Xms1024M -jar minecraft_server.jar nogui")) do
+  its('users') { should cmp 'minecraft' }
 end
 
-describe port 25565 do
+describe port(25565) do
   it { should be_listening }
 end
 
-describe port 25564 do
+describe port(25564) do
   it { should be_listening }
 end
 

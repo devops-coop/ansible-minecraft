@@ -67,7 +67,8 @@ function main() {
   sleep 30
 
   # Run tests.
-  docker exec -t "${container}" rspec "${WORKSPACE}/tests/spec/${SERVER}_spec.rb"
+  docker exec -t "${container}" inspec exec "${WORKSPACE}/tests/spec/${SERVER}_spec.rb"
+
 }
 
 [[ -z "${CI:-}" ]] && trap debug ERR

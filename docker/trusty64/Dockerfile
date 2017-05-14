@@ -11,14 +11,16 @@ RUN apt-get update -y \
     && apt-get update -y \
     && apt-get --no-install-recommends install -y \
       ansible \
-      default-jdk \
-      git \
+      wget \
+      coreutils \
       net-tools \
-      ruby2.0 \
-      sudo \
-      tar \
     && apt-get autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN gem2.0 install serverspec
+## https://downloads.chef.io/inspec/1.24.0
+RUN wget -q https://packages.chef.io/files/stable/inspec/1.24.0/ubuntu/14.04/inspec_1.24.0-1_amd64.deb \
+  && echo "33e8ab3dd4ed7eb2285310ae9d0a32e0cc45d5b6d057a29541f93870c2f9e30a  inspec_1.24.0-1_amd64.deb" \
+  | sha256sum -c \
+  && dpkg -i inspec_1.24.0-1_amd64.deb \
+  && rm inspec_1.24.0-1_amd64.deb

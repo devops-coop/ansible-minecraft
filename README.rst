@@ -41,7 +41,7 @@ Features
    +----------------+--------------+-----------+
 
 -  safely stops the server using `stop <http://minecraft.gamepedia.com/Commands#stop>`__ when running under **systemd**
--  uses `Docker <https://www.docker.com/>`__ and `Serverspec <http://serverspec.org/>`__ to run integration tests
+-  uses `Docker <https://www.docker.com/>`__ and `Inspec <https://www.chef.io/inspec/>`__ to run integration tests
 -  manages user ACLs
 -  manages ``server.properties``
 -  hooks: include arbitrary tasks at specific stages during execution

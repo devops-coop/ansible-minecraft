@@ -6,7 +6,10 @@ FROM ubuntu:trusty
 ENV TERM=xterm
 
 RUN apt-get update -y \
-    && apt-get install -y apt-transport-https software-properties-common
+    && apt-get install -y apt-transport-https software-properties-common \
+    && apt-get autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY chef.asc /tmp/chef.asc
 COPY chef-stable.list /etc/apt/sources.list.d/chef-stable.list

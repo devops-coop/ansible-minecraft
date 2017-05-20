@@ -33,8 +33,9 @@ describe file '/srv/minecraft/eula.txt' do
   its(:content) { should match 'true' }
 end
 
-java = case os[:family]
-       when 'redhat' then 'java-1.8.0-openjdk'
+java = case os[:name]
+       when 'centos' then 'java-1.8.0-openjdk'
+       when 'debian' then 'openjdk-8-jdk'
        else 'default-jdk'
        end
 

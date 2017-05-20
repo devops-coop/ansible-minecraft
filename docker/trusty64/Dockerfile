@@ -6,19 +6,23 @@ FROM ubuntu:trusty
 ENV TERM=xterm
 
 RUN apt-get update -y \
-    && apt-get install -y software-properties-common \
-    && apt-add-repository ppa:ansible/ansible \
-    && apt-get update -y \
-    && apt-get --no-install-recommends install -y \
-      ansible \
-      default-jdk \
-      git \
-      net-tools \
-      ruby2.0 \
-      sudo \
-      tar \
+    && apt-get install -y apt-transport-https software-properties-common \
     && apt-get autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN gem2.0 install serverspec
+COPY chef.asc /tmp/chef.asc
+COPY chef-stable.list /etc/apt/sources.list.d/chef-stable.list
+
+RUN apt-key add /tmp/chef.asc \
+    && apt-add-repository ppa:ansible/ansible \
+    && apt-get update -y \
+    && apt-get --no-install-recommends install -y \
+      ansible \
+      inspec=1.25.0-1 \
+      wget \
+      coreutils \
+      net-tools \
+    && apt-get autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*

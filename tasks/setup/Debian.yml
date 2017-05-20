@@ -1,8 +1,15 @@
+# Required for Java 1.8
+- name: install jessie-backports repository
+  apt_repository:
+    repo: deb http://ftp.debian.org/debian jessie-backports main
+  when: ansible_distribution_release == 'jessie'
+
 - name: install Minecraft dependencies
   apt:
     name: "{{ item }}"
     state: present
     install_recommends: no
+    default_release: "{{ (ansible_distribution_release == 'jessie') | ternary('jessie-backports', omit) }}"
   with_items: "{{ dependencies }}"
 
 - name: install Spigot dependencies

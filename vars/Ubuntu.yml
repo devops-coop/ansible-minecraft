@@ -1,4 +1,4 @@
 ---
 dependencies:
-  - openjdk-8-jdk
+  - default-jdk
   - sudo

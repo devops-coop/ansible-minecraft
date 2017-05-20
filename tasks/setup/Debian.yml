@@ -9,6 +9,7 @@
     name: "{{ item }}"
     state: present
     install_recommends: no
+    default_release: "{{ (ansible_distribution_release == 'jessie') | ternary('jessie-backports', omit) }}"
   with_items: "{{ dependencies }}"
 
 - name: install Spigot dependencies

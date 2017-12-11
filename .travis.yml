@@ -16,6 +16,14 @@ env:
     - OS=jessie64 SERVER=spigot    PROCESS_CONTROL=supervisor
     - OS=xenial64 SERVER=spigot    PROCESS_CONTROL=systemd
     - OS=centos7  SERVER=spigot    PROCESS_CONTROL=systemd
+matrix:
+  allow_failures:
+    env:
+      - OS=centos7  SERVER=spigot    PROCESS_CONTROL=systemd
+      - OS=jessie64 SERVER=spigot    PROCESS_CONTROL=systemd
+      - OS=jessie64 SERVER=spigot    PROCESS_CONTROL=supervisor
+      - OS=xenial64 SERVER=spigot    PROCESS_CONTROL=systemd
+      - OS=centos7  SERVER=spigot    PROCESS_CONTROL=systemd
 before_install:
   - sudo -E ./scripts/install-docker.sh
 install: true

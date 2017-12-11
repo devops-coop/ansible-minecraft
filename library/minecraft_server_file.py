@@ -59,7 +59,9 @@ class FileStats(object):
         self.path = os.path.expanduser(module.params['path'])
         self.owner = module.params['owner']
         self.group = module.params['group']
-        self.mode = module.params['mode'] if module.params['mode'] else 0644
+        # Python version agnostic way of setting permissions 0644
+        perm_0644 = stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH
+        self.mode = module.params['mode'] if module.params['mode'] else perm_0644
 
     @property
     def changed(self):

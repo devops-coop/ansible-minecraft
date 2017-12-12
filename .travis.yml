@@ -5,8 +5,7 @@ services:
   - docker
 env:
   global:
-    - DOCKER_VERSION=1.10.2-0~trusty
-    - DOCKER_COMPOSE_VERSION=1.6.2
+    - DOCKER_COMPOSE_VERSION=1.17.1
   matrix:
     - OS=jessie64 SERVER=minecraft PROCESS_CONTROL=systemd
     - OS=jessie64 SERVER=minecraft PROCESS_CONTROL=supervisor

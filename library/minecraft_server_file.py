@@ -59,7 +59,7 @@ class FileStats(object):
         self.path = os.path.expanduser(module.params['path'])
         self.owner = module.params['owner']
         self.group = module.params['group']
-        self.mode = module.params['mode'] if module.params['mode'] else 0644
+        self.mode = module.params['mode'] if module.params['mode'] else 0o644
 
     @property
     def changed(self):

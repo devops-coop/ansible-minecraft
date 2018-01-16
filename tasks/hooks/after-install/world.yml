@@ -1,0 +1,29 @@
+- name: create world directory
+  file:
+    path: "{{ minecraft_home }}/world"
+    state: directory
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_user }}"
+
+- name: create temp directory
+  file:
+    path: /tmp/ansible-minecraft
+    state: directory
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_user }}"
+
+- name: download world
+  get_url:
+    url: "{{ minecraft_world_url }}"
+    dest: /tmp/ansible-minecraft/world
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_user }}"
+
+- name: unarchive world
+  unarchive:
+    creates: "{{ minecraft_home }}/world/data"
+    copy: no
+    src: /tmp/ansible-minecraft/world
+    dest: "{{ minecraft_home }}/world"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_user }}"

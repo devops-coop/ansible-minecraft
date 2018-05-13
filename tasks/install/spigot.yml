@@ -1,4 +1,4 @@
-- include: latest.yml
+- include: download/latest.yml
   when: minecraft_version == 'latest'
 
 - name: build Spigot server

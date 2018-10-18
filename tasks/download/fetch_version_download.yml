@@ -1,0 +1,8 @@
+---
+- name: fetch latest version using uri module
+  include: fetch_version_download-uri.yml
+  when: ansible_version.full is version_compare('2.0.2', '>=')
+
+- name: fetch latest version using curl
+  include: fetch_version_download-curl.yml
+  when: minecraft_server_download_url is not defined

@@ -20,7 +20,7 @@ before_install:
   - sudo -E ./scripts/install-docker.sh
 install: true
 script:
-  - make "${OS}" test
+  - travis_wait 60 make "${OS}" test
 notifications:
   email: false
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

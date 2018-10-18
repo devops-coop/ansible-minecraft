@@ -1,10 +1,11 @@
-- include: latest.yml
-  when: minecraft_version == 'latest'
+- include: fetch_version_download.yml
+  when: minecraft_server_download_url is undefined
 
 - name: download Minecraft server
   get_url:
-    url: "{{ minecraft_url }}/{{ minecraft_version_latest | default(minecraft_version) }}/minecraft_server.{{ minecraft_version_latest | default(minecraft_version) }}.jar"
+    url: "{{ minecraft_server_download_url }}"
     dest: "{{ minecraft_home }}/minecraft_server.{{ minecraft_version_latest | default(minecraft_version) }}.jar"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
+    checksum: "{{minecraft_server_download_checksum}}"
     mode: '0755'

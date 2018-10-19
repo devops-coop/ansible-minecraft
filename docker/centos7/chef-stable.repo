@@ -1,5 +1,0 @@
-[chef-stable]
-name=chef-stable
-baseurl=https://packages.chef.io/repos/yum/stable/el/7/\$basearch/
-gpgcheck=1
-enabled=1

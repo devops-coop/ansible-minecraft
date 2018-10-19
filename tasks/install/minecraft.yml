@@ -9,8 +9,8 @@
     - restart Minecraft
 
 - name: agree to EULA
-  copy:
-    src: eula.txt
+  template:
+    src: eula.txt.j2
     dest: "{{ minecraft_home }}/eula.txt"
     mode: '0644'
     owner: "{{ minecraft_user }}"

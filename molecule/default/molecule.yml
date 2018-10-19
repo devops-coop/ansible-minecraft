@@ -1,0 +1,91 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+  enabled: false
+platforms:
+  - name: debian
+    image: debian:jessie
+    command: /sbin/init
+    groups:
+      - minecraftserver
+    security_opts:
+      - seccomp=unconfined
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+  - name: ubuntu16
+    image: solita/ubuntu-systemd:16.04
+    groups:
+      - minecraftserver
+    command: /sbin/init
+    security_opts:
+      - seccomp=unconfined
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+  - name: ubuntu18
+    image: solita/ubuntu-systemd:18.04
+    groups:
+      - minecraftserver
+    command: /sbin/init
+    security_opts:
+      - seccomp=unconfined
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+  - name: centos7
+    image: centos:latest
+    groups:
+      - minecraftserver
+    command: /usr/sbin/init
+    security_opts:
+      - seccomp=unconfined
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      minecraftserver:
+        user_accept_minecraft_eula: ${mc_accept_eula}
+  playbooks:
+    converge: ../resources/playbooks/minecraft.yml
+  lint:
+    name: ansible-lint
+    enabled: false
+    options:
+      x:
+        - ANSIBLE0010
+scenario:
+  name: default
+verifier:
+  name: testinfra
+  directory: ../../resources/tests/
+  additional_files_or_dirs:
+    - ../tests_vanilla/
+  lint:
+    name: flake8

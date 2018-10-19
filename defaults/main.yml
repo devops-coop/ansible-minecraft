@@ -17,5 +17,5 @@ minecraft_console_fifo: /run/{{ minecraft_service_name }}/console
 minecraft_console_fifo_mode: '0666'
 minecraft_process_control: systemd
 minecraft_server_properties: {}
-
+minecraft_eula_accept: false
 minecraft_spigot_url: https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar

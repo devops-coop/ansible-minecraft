@@ -9,7 +9,7 @@
   roles:
    - role: "{{ playbook_dir }}/./../../../"
      minecraft_server: spigot
-     minecraft_version: 1.9
+     minecraft_version: "{{mc_version | default(1.9) }}"
      minecraft_eula_accept: "{{user_accept_minecraft_eula}}"
      minecraft_server_properties:
        server-port: 25565

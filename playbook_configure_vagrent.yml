@@ -2,7 +2,7 @@
 - hosts: all
   roles:
    - role: "{{ playbook_dir }}"
-     minecraft_version: 1.9
+     minecraft_version: 1.13.1
      minecraft_eula_accept: "{{user_accept_minecraft_eula}}"
      minecraft_server_properties:
        server-port: 25565

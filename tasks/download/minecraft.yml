@@ -1,6 +1,3 @@
-- include: fetch_version_download.yml
-  when: minecraft_server_download_url is undefined
-
 - name: download Minecraft server
   get_url:
     url: "{{ minecraft_server_download_url }}"

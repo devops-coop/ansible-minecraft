@@ -84,7 +84,7 @@ scenario:
   name: default
 verifier:
   name: testinfra
-  directory: ../../resources/tests/
+  directory: ../resources/tests/
   additional_files_or_dirs:
     - ../tests_vanilla/
   lint:

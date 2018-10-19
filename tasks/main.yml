@@ -11,6 +11,8 @@
 
 - include: "{{ minecraft_hook_before_setup | default('empty.yml') }}"
 
+- include: fetchversion/main.yml
+
 - include: setup/main.yml
 
 - include: "{{ minecraft_hook_after_setup | default('empty.yml') }}"

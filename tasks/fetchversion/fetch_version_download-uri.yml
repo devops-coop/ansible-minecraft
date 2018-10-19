@@ -10,14 +10,11 @@
     minecraft_version: "{{minecraft_versions.json.latest.release}}"
   when: minecraft_version == "latest"
 
-- name: use the configured minecraft version number
-  set_fact:
-    minecraft_version: "{{minecraft_version}}"
-  when: minecraft_version != "latest"
-
 - name: extract version specific mainfest file
   set_fact:
-    minecraft_version_manifest_url: "{{ minecraft_versions.json.versions | selectattr('id','equalto', (minecraft_version|string) ) | map(attribute='url')  | list | first }}"
+    minecraft_version_manifest_url: "{{ item.url }}"
+  when: item.id == (minecraft_version|string)
+  with_items: "{{ minecraft_versions.json.versions }}"
 
 - name: Download the version specific mainfest file
   uri:

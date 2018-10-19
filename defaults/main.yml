@@ -1,7 +1,7 @@
 ---
 minecraft_server: minecraft
 minecraft_version: latest
-minecraft_url: https://s3.amazonaws.com/Minecraft.Download/versions
+minecraft_url: https://launcher.mojang.com/v1/objects
 minecraft_user: "{{ minecraft_server }}"
 minecraft_group: "{{ minecraft_server }}"
 minecraft_home: /srv/{{ minecraft_server }}

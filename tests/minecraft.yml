@@ -2,7 +2,7 @@
 - hosts: all
   roles:
    - role: devops-coop.minecraft
-     minecraft_version: 1.9
+     minecraft_version: "1.9"
      minecraft_server_properties:
        server-port: 25565
        rcon.port: 25564

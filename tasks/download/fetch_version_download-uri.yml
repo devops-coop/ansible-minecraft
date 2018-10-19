@@ -1,0 +1,31 @@
+---
+- name: load version informations
+  uri:
+    url: "{{minecraft_version_manifest_url}}"
+    return_content: yes
+  register: minecraft_versions
+
+- name: find latest release version
+  set_fact:
+    minecraft_version: "{{minecraft_versions.json.latest.release}}"
+  when: minecraft_version == "latest"
+
+- name: use the configured minecraft version number
+  set_fact:
+    minecraft_version: "{{minecraft_version}}"
+  when: minecraft_version != "latest"
+
+- name: extract version specific mainfest file
+  set_fact:
+    minecraft_version_manifest_url: "{{ minecraft_versions.json.versions | selectattr('id','match', (minecraft_version|string) ) | map(attribute='url')  | list | first }}"
+
+- name: Download the version specific mainfest file
+  uri:
+    url: "{{minecraft_version_manifest_url}}"
+    return_content: yes
+  register: minecraft_version_info
+
+- name: "extract the download url from version manifest"
+  set_fact:
+    minecraft_server_download_url: "{{minecraft_version_info.json.downloads.server.url}}"
+    minecraft_server_download_checksum: "sha1:{{minecraft_version_info.json.downloads.server.sha1}}"

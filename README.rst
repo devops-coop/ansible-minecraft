@@ -28,20 +28,24 @@ Features
 -  supports Debian 8, Ubuntu 14.04, Ubuntu 16.04, and RHEL/CentOS 7
 -  supports different process supervisors on different platforms
 
-   +----------------+--------------+-----------+
-   | OS             | Supervisor   | systemd   |
-   +================+==============+===========+
-   | Debian 8       | ✓            | ✓         |
-   +----------------+--------------+-----------+
-   | Ubuntu 14.04   | ✓            |           |
-   +----------------+--------------+-----------+
-   | Ubuntu 16.04   |              | ✓         |
-   +----------------+--------------+-----------+
-   | CentOS 7       |              | ✓         |
-   +----------------+--------------+-----------+
+   +----------------+------------------+------------------+
+   | OS             |     Supervisor   |      systemd     |
+   |                +---------+--------+---------+--------+
+   |                | vanilla | spigot | vanilla | spigot |
+   +================+=========+========+=========+========+
+   | Debian 8       | ✓       | ✓      | ✓       | ✓      |
+   +----------------+---------+--------+---------+--------+
+   | Ubuntu 14.04   | ✓       | ✓      | ✗       | ✗      |
+   +----------------+---------+--------+---------+--------+
+   | Ubuntu 16.04   | ✓       | ✓      | ✓       | ✓      |
+   +----------------+---------+--------+---------+--------+
+   | Ubuntu 18.04   | ✗       | ✗      | ✓       | ✗      |
+   +----------------+---------+--------+---------+--------+
+   | CentOS 7       | ✗       | ✗      | ✓       |  ✓     |
+   +----------------+---------+--------+---------+--------+
 
 -  safely stops the server using `stop <http://minecraft.gamepedia.com/Commands#stop>`__ when running under **systemd**
--  uses `Docker <https://www.docker.com/>`__ and `Inspec <https://www.chef.io/inspec/>`__ to run integration tests
+-  uses `Docker <https://www.docker.com/>`__ and `Molecule <https://molecule.readthedocs.io/>`__ to run integration tests
 -  manages user ACLs
 -  manages ``server.properties``
 -  hooks: include arbitrary tasks at specific stages during execution
@@ -75,6 +79,9 @@ The following variable defaults are defined in ``defaults/main.yml``.
        minecraft_version: 1.10
        minecraft_version: 1.9.1
        minecraft_version: 16w21a
+
+``minecraft_eula_accept``
+  accept the Minecraft eula License, must accepted by the Role User (default: ``false``)
 
 ``minecraft_url``
    Minecraft download URL (default:
@@ -205,7 +212,21 @@ If you'd like to help with the project itself, here are some other ways you can 
 
 Testing
 ~~~~~~~
-Testing can be done using the provided Vagrantfile or by installing `Docker <https://docs.docker.com/engine/installation/>`__ and `Docker Compose <https://docs.docker.com/compose/>`__ locally.
+Testing can be done using the provided Vagrantfile or by installing `Docker <https://docs.docker.com/engine/installation/>`__ and use `Molecule <https://molecule.readthedocs.io/>`__ locally.
+
+For execute the molecule test you can use the Docker Image described at `Molecule <https://molecule.readthedocs.io/en/latest/examples.html#docker>`__ page.
+
+.. code:: bash
+
+     docker run --rm -it \
+         -v $(pwd):/tmp/$(basename "${PWD}"):ro \
+         -v /var/run/docker.sock:/var/run/docker.sock \
+         -e mc_accept_eula=${mc_accept_eula} \
+         -w /tmp/$(basename "${PWD}") \
+         retr0h/molecule:latest \
+         sudo molecule test --all
+
+after execute drink a pot of tee, coffee or some beer, all molecule scenarios will be run more than 40 minute
 
 Testing with Vagrant
 """""""""""""""""""""
@@ -215,41 +236,9 @@ This role includes a Vagrantfile used with a Docker-based test harness that appr
 
 2. Run ``vagrant up`` from the same directory as the Vagrantfile in this repository.
 
-3. SSH into the VM with: ``vagrant ssh``
+Now you can Connect with your Game again the Testserver on ``localhost:25565`` and test your server.
 
-4. Run tests with ``make``.
-
-   ::
-
-       make -C /vagrant xenial64 test
-
-Integration tests use **systemd** by default. Set ``PROCESS_CONTROL`` to change this:
-
-::
-
-    make -C /vagrant trusty64 test PROCESS_CONTROL=supervisor
-
-See ``make help`` for more information including a full list of available targets.
-
-Testing with Docker and Docker Compose locally
-""""""""""""""""""""""""""""""""""""""""""""""""
-Alternatively, you can install `Docker <https://docs.docker.com/engine/installation/>`__ and `Docker Compose <https://docs.docker.com/compose/>`__ to run these tests locally on your machine.
-
-1. Install `Docker <https://docs.docker.com/engine/installation/>`__ and `Docker Compose <https://docs.docker.com/compose/>`__.
-
-2. Run tests with ``make``.
-
-   ::
-
-       make jessie64 test
-
-Integration tests use **systemd** by default. Set ``PROCESS_CONTROL`` to change this:
-
-::
-
-    make trusty64 test PROCESS_CONTROL=supervisor
-
-See ``make help`` for more information including a full list of available targets.
+3. for manual lookups you can connect over SSH into the VM with: ``vagrant ssh``
 
 License
 -------

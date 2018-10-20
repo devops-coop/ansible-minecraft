@@ -1,6 +1,3 @@
-- include: latest.yml
-  when: minecraft_version == 'latest'
-
 - name: build Spigot server
   command: java -jar BuildTools.jar --rev "{{ minecraft_version_latest | default(minecraft_version) }}"
   args:
@@ -22,8 +19,8 @@
     - restart Minecraft
 
 - name: agree to EULA
-  copy:
-    src: eula.txt
+  template:
+    src: eula.txt.j2
     dest: "{{ minecraft_home }}/eula.txt"
     mode: 0644
     owner: "{{ minecraft_user }}"

@@ -1,15 +1,31 @@
-- name: create Spigot build directory
-  file:
-    path: "{{ minecraft_home }}/build"
-    state: directory
-    mode: 0755
-    owner: "{{ minecraft_user }}"
-    group: "{{ minecraft_group }}"
-
 - name: download Spigot build tools
   get_url:
     url: "{{ minecraft_spigot_url }}"
-    dest: "{{ minecraft_home }}/build"
+    dest: "{{ deploy_helper.new_release_path }}"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
     mode: 0755
+
+- name: build Spigot server
+  command: java -jar BuildTools.jar --rev "{{ minecraft_version_latest | default(minecraft_version) }}"
+  args:
+    creates: "spigot-{{minecraft_version}}.jar"
+    chdir: "{{ deploy_helper.new_release_path }}"
+  environment:
+    SHELL: /bin/bash
+  async: 1200
+  poll: 0
+  changed_when: false
+  register: spigot_sleeper
+  become: true
+  become_user: "{{ minecraft_user }}"
+
+- name: 'spigot build - check on async task'
+  async_status:
+    jid: "{{ spigot_sleeper.ansible_job_id }}"
+  register: job_result
+  become: true
+  become_user: "{{ minecraft_user }}"
+  until: job_result.finished
+  retries: 60
+  delay: 30

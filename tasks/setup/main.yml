@@ -23,7 +23,7 @@
     state: present
     name: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
-    home: "{{ minecraft_home }}"
+    system: true
 
 - name: set executable name (Minecraft)
   set_fact:
@@ -34,10 +34,3 @@
   set_fact:
     minecraft_jar: spigot.jar
   when: minecraft_server == 'spigot'
-
-- include: supervisor.yml
-  when: minecraft_process_control == 'supervisor'
-
-- include: systemd.yml
-  when: minecraft_process_control == 'systemd'
-

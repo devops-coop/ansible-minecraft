@@ -1,9 +1,9 @@
 [program:{{ minecraft_service_name }}]
 command=/usr/bin/java -Xmx{{ minecraft_max_memory}} -Xms{{ minecraft_initial_memory }} -jar {{ minecraft_jar }} nogui
-directory={{ minecraft_home }}
+directory={{ deploy_helper.shared_path }}
 user={{ minecraft_user }}
 group={{ minecraft_group }}
 autostart=true
 autorestart=true
-stdout_logfile={{ minecraft_home }}/logs/latest.log
+stdout_logfile={{ deploy_helper.shared_path }}/logs/latest.log
 redirect_stderr=true

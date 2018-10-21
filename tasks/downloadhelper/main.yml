@@ -1,0 +1,14 @@
+---
+- name: Initialize the Minecraft Servers Versions Basedir
+  deploy_helper:
+    path: "{{minecraft_home}}"
+    release: "{{minecraft_version}}"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+
+- name: check release folder is present
+  file:
+    path: "{{deploy_helper.new_release_path}}"
+    state: directory
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"

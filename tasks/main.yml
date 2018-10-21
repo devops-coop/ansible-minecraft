@@ -15,9 +15,15 @@
 
 - include: setup/main.yml
 
+
+- include: plugins/main.yml
+  when: "minecraft_plugin_sets is defined and (0 < minecraft_plugin_sets | length )"
+
 - include: "{{ minecraft_hook_after_setup | default('empty.yml') }}"
 
 - include: "{{ minecraft_hook_before_download | default('empty.yml') }}"
+
+- include: downloadhelper/main.yml
 
 - include: download/main.yml
 
@@ -25,13 +31,29 @@
 
 - include: "{{ minecraft_hook_before_install | default('empty.yml') }}"
 
+- name: Finalize the deploy, removing the unfinished file and switching the symlink
+  deploy_helper:
+    path: "{{minecraft_home}}"
+    release: '{{ deploy_helper.new_release }}'
+    state: finalize
+
 - include: install/main.yml
 
 - include: "{{ minecraft_hook_after_install | default('empty.yml') }}"
 
 - include: acl.yml
 
+
 - include: configure.yml
+
+- include: setup/supervisor.yml
+  when: minecraft_process_control == 'supervisor'
+
+- include: setup/systemd.yml
+  when: minecraft_process_control == 'systemd'
+
+
+
 
 - include: "{{ minecraft_hook_before_start | default('empty.yml') }}"
 

@@ -21,7 +21,7 @@
 
 - name: create log directory
   file:
-    path: "{{ minecraft_home }}/logs"
+    path: "{{ deploy_helper.shared_path }}/logs"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
     mode: '0755'

@@ -8,7 +8,7 @@ Requires={{ minecraft_service_name }}.socket
 [Service]
 User={{ minecraft_user }}
 Group={{ minecraft_group }}
-WorkingDirectory={{ minecraft_home }}
+WorkingDirectory={{ deploy_helper.shared_path }}
 StandardInput=socket
 StandardOutput=journal
 StandardError=journal

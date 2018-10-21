@@ -1,0 +1,11 @@
+- file:
+    path: "{{deploy_helper.new_release_path}}/{{ plugin_config_item.dest | dirname }}"
+    state: directory
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+
+- template:
+    src: "{{ plugin_config_item.src }}"
+    dest:  "{{deploy_helper.new_release_path}}/{{ plugin_config_item.dest }}"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"

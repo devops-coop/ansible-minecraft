@@ -17,7 +17,7 @@ install:
   - pip install docker-py
   # - pip install required driver (e.g. docker, python-vagrant, shade)
 script:
-  - travis_wait 40 molecule test -s ${SCENARIO_NAME}
+  - molecule test -s ${SCENARIO_NAME}
 # notifications:
 #   email: false
 #   webhooks: https://galaxy.ansible.com/api/v1/notifications/

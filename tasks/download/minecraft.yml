@@ -1,7 +1,7 @@
 - name: download Minecraft server
   get_url:
     url: "{{ minecraft_server_download_url }}"
-    dest: "{{ minecraft_home }}/minecraft_server.{{ minecraft_version_latest | default(minecraft_version) }}.jar"
+    dest: "{{ deploy_helper.new_release_path }}/minecraft_server.jar"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
     checksum: "{{minecraft_server_download_checksum}}"

@@ -5,15 +5,30 @@
   shell: echo "stop" | java -Xmx{{ minecraft_max_memory }} -Xms{{ minecraft_initial_memory }} -jar {{ minecraft_jar }} nogui
   args:
     creates: server.properties
-    chdir: "{{ minecraft_home }}"
+    chdir: "{{ deploy_helper.shared_path }}"
+  async: 600
+  poll: 0
+  changed_when: false
+  register: mc_config_init_sleeper
   become: yes
   become_user: "{{ minecraft_user }}"
+
+- name: 'server init started - check on async task'
+  async_status:
+    jid: "{{ mc_config_init_sleeper.ansible_job_id }}"
+  register: mc_config_init_result
+  become: true
+  become_user: "{{ minecraft_user }}"
+  until: mc_config_init_result.finished
+  retries: 40
+  delay: 15
+
 
 - name: update server.properties
   minecraft_server_file:
     server_file: server-properties
     values: "{{ minecraft_server_properties }}"
-    path: "{{ minecraft_home }}/server.properties"
+    path: "{{ deploy_helper.shared_path }}/server.properties"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_user }}"
   notify:

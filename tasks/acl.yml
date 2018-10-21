@@ -2,7 +2,7 @@
   minecraft_server_file:
     server_file: whitelist
     values: "{{ minecraft_whitelist }}"
-    path: "{{ minecraft_home }}/whitelist.json"
+    path: "{{ deploy_helper.shared_path }}/whitelist.json"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_user }}"
   notify:
@@ -13,7 +13,7 @@
   minecraft_server_file:
     server_file: ops
     values: "{{ minecraft_ops }}"
-    path: "{{ minecraft_home }}/ops.json"
+    path: "{{ deploy_helper.shared_path }}/ops.json"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_user }}"
   notify:
@@ -24,7 +24,7 @@
   minecraft_server_file:
     server_file: banned-players
     values: "{{ minecraft_banned_players }}"
-    path: "{{ minecraft_home }}/banned-players.json"
+    path: "{{ deploy_helper.shared_path }}/banned-players.json"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_user }}"
   notify:
@@ -35,7 +35,7 @@
   minecraft_server_file:
     server_file: banned-ips
     values: "{{ minecraft_banned_ips }}"
-    path: "{{ minecraft_home }}/banned-ips.json"
+    path: "{{ deploy_helper.shared_path }}/banned-ips.json"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_user }}"
   notify:

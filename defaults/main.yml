@@ -1,10 +1,11 @@
 ---
 minecraft_server: minecraft
 minecraft_version: latest
-minecraft_url: https://launcher.mojang.com/v1/objects
 minecraft_user: "{{ minecraft_server }}"
 minecraft_group: "{{ minecraft_server }}"
-minecraft_home: /srv/{{ minecraft_server }}
+minecraft_basedir: "/opt/minecraft"
+minecraft_home: /{{minecraft_basedir}}/server
+minecraft_plugins: /{{minecraft_basedir}}/plugins
 minecraft_max_memory: 1024M
 minecraft_initial_memory: 1024M
 minecraft_service_name: "{{ minecraft_server }}"
@@ -18,4 +19,5 @@ minecraft_console_fifo_mode: '0666'
 minecraft_process_control: systemd
 minecraft_server_properties: {}
 minecraft_eula_accept: false
-minecraft_spigot_url: https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+minecraft_spigot_url: https://hub.spigotmc.org/jenkins/job/BuildTools/78/artifact/target/BuildTools.jar
+  #https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar

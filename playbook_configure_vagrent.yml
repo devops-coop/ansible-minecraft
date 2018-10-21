@@ -3,7 +3,16 @@
   roles:
    - role: "{{ playbook_dir }}"
      minecraft_version: 1.13.1
+     minecraft_server: spigot
      minecraft_eula_accept: "{{user_accept_minecraft_eula}}"
+     minecraft_plugins_set_version: "minimal"
+     minecraft_plugin_sets:
+       minimal:
+         vault:
+           src: https://media.forgecdn.net/files/2615/750/Vault.jar
+         tne:
+           src: https://github.com/TheNewEconomy/TNE-Bukkit/releases/download/Beta-1.1.3/Beta.1.1.3.zip
+           type: "archive"
      minecraft_server_properties:
        server-port: 25565
        rcon.port: 25564

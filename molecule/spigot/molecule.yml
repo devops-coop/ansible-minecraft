@@ -37,22 +37,6 @@ platforms:
       - /tmp
       - /run
       - /run/lock
-# Not supported needs java Downgrade to JAVA_8 !!!!
-#  - name: ubuntu18
-#    image: solita/ubuntu-systemd:18.04
-#    groups:
-#      - minecraftserver
-#    command: /sbin/init
-#    security_opts:
-#      - seccomp=unconfined
-#    capabilities:
-#      - SYS_ADMIN
-#    volumes:
-#      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-#    tmpfs:
-#      - /tmp
-#      - /run
-#      - /run/lock
   - name: centos7
     image: centos:latest
     groups:

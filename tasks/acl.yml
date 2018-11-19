@@ -1,3 +1,4 @@
+---
 - name: update whitelist
   minecraft_server_file:
     server_file: whitelist

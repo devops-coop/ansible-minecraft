@@ -1,3 +1,4 @@
+---
 - name: download Spigot build tools
   get_url:
     url: "{{ minecraft_spigot_url }}"

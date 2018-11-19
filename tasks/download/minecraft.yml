@@ -1,3 +1,4 @@
+---
 - name: download Minecraft server
   get_url:
     url: "{{ minecraft_server_download_url }}"

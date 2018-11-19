@@ -1,8 +1,10 @@
+---
 # The only way to generate a server.properties file is to start Minecraft.
 # We send the stop command to the stdin to stop the server right after it
 # starts.
 - name: generate server.properties
-  shell: echo "stop" | java -Xmx{{ minecraft_max_memory }} -Xms{{ minecraft_initial_memory }} -jar {{ minecraft_jar }} nogui
+  shell: |
+    echo "stop" | java -Xmx{{ minecraft_max_memory }} -Xms{{ minecraft_initial_memory }} -jar {{ minecraft_jar }} nogui
   args:
     creates: server.properties
     chdir: "{{ deploy_helper.shared_path }}"
@@ -10,7 +12,7 @@
   poll: 0
   changed_when: false
   register: mc_config_init_sleeper
-  become: yes
+  become: true
   become_user: "{{ minecraft_user }}"
 
 - name: 'server init started - check on async task'

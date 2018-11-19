@@ -5,7 +5,6 @@ driver:
   name: docker
 lint:
   name: yamllint
-  enabled: false
 platforms:
   - name: debian
     image: debian:jessie
@@ -76,7 +75,6 @@ provisioner:
     converge: ../resources/playbooks/minecraft.yml
   lint:
     name: ansible-lint
-    enabled: false
     options:
       x:
         - ANSIBLE0010

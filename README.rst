@@ -129,6 +129,10 @@ The following variable defaults are defined in ``defaults/main.yml``.
 ``minecraft_server``
   choose between ``minecraft`` or ``spigot`` (default: ``minecraft``)
 
+```minecraft_server_java_ops```
+   additional java ops like remote debug ``-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+``  (default: *none*)
+
 Hooks and run stages
 --------------------
 

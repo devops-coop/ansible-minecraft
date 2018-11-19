@@ -1,6 +1,8 @@
 ansible-minecraft
 =================
 
+** This is a fork from the https://github.com/devops-coop/ansible-minecraft/ Project, thanks for the basement!!!**
+
 |Install from Ansible Galaxy| |Travis CI build status| |Chat on gitter.im|
 
 This role installs `Minecraft <https://minecraft.net/>`__ or `Spigot <https://www.spigotmc.org/>`__ and configures it to run under `systemd <https://wiki.freedesktop.org/www/Software/systemd/>`__ or `Supervisor <http://supervisord.org/>`__.
@@ -81,7 +83,7 @@ The following variable defaults are defined in ``defaults/main.yml``.
        minecraft_version: 16w21a
 
 ``minecraft_eula_accept``
-  accept the Minecraft eula License, must accepted by the Role User (default: ``false``)
+   accept the Minecraft eula License, must accepted by the Role User (default: ``false``)
 
 ``minecraft_url``
    Minecraft download URL (default:
@@ -213,6 +215,7 @@ If you'd like to help with the project itself, here are some other ways you can 
 -  Add support for additional servers like `Cuberite <https://cuberite.org/>`__.
 -  Write integration tests for Minecraft- or Spigot-specific configuration.
 -  Share useful hooks.
+-  Fixing Typos ...
 
 Testing
 ~~~~~~~
@@ -254,9 +257,9 @@ Disclaimer
 
 To automate the installation, this role automatically accepts the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__. Be aware that by using this role, you implicitly accept the same EULA.
 
-.. |Travis CI build status| image:: https://travis-ci.org/devops-coop/ansible-minecraft.svg?branch=master
-    :target: https://travis-ci.org/devops-coop/ansible-minecraft
-.. |Install from Ansible Galaxy| image:: https://img.shields.io/badge/role-devops--coop.minecraft-blue.svg
-    :target: https://galaxy.ansible.com/devops-coop/minecraft/
+.. |Travis CI build status| image:: https://travis-ci.org/nolte/ansible-minecraft.svg?branch=master
+    :target: https://travis-ci.org/nolte/ansible-minecraft
+.. |Install from Ansible Galaxy| image:: https://img.shields.io/badge/role-nolte.minecraft-blue.svg
+    :target: https://galaxy.ansible.com/nolte/minecraft/
 .. |Chat on gitter.im| image:: https://badges.gitter.im/gitterHQ/gitter.png
     :target: https://gitter.im/devops-coop/ansible-minecraft

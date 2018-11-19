@@ -1,15 +1,22 @@
 ansible-minecraft changelog
 ===========================
 
-3.5.0 (Unreleased)
+4.0.0 (Unreleased)
 ----------
 
 Added
 ~~~~~
 
 - (`#7 <https://github.com/devops-coop/ansible-minecraft/issues/7>`__) Support `Spigot <https://www.spigotmc.org/>`__.
-- (`#26 <https://github.com/devops-coop/ansible-minecraft/issues/26>`__) Latest release download failing (s3 urls depricated )
 - Using `Molecule <https://molecule.readthedocs.io/>`__ for Role Integration Tests, Manual Docker build removed.
+- Using `Ansible Download Helper <https://docs.ansible.com/ansible/latest/modules/deploy_helper_module.html>`_ for easy version rollbacks.
+- Add Support for install and handle Plugins. 
+
+Fixed
+~~~~~
+
+- (`#26 <https://github.com/devops-coop/ansible-minecraft/issues/26>`__) Latest release download failing (s3 urls depricated )
+
 
 Deprecated
 ~~~~~~~~~~

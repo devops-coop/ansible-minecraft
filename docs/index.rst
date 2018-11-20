@@ -20,7 +20,7 @@ Role scope Description
 -----------------------------
 
 - initial installation
-- handle mc server verion updates
+- handle mc server version updates
 - handle plugins
 
 Out of Scope

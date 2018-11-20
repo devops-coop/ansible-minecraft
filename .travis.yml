@@ -15,11 +15,8 @@ before_install:
   - sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-ce
 install:
   - pip install tox
-#  - pip install docker-py
-#  - pip install required driver (e.g. docker, python-vagrant, shade)
 script:
   - tox -e ${SCENARIO_NAME}
-#  - molecule test -s ${SCENARIO_NAME}
 # notifications:
 #   email: false
 #   webhooks: https://galaxy.ansible.com/api/v1/notifications/

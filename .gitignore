@@ -1,5 +1,5 @@
 *~
-
+.tox
 #Vagrant Files
 .vagrant/*
 __pycache__

@@ -10,7 +10,8 @@ Added
 - (`#7 <https://github.com/devops-coop/ansible-minecraft/issues/7>`__) Support `Spigot <https://www.spigotmc.org/>`__.
 - Using `Molecule <https://molecule.readthedocs.io/>`__ for Role Integration Tests, Manual Docker build removed.
 - Using `Ansible Download Helper <https://docs.ansible.com/ansible/latest/modules/deploy_helper_module.html>`_ for easy version rollbacks.
-- Add Support for install and handle Plugins. 
+- Add Support for install and handle Plugins.
+- The User must Accept the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__ by using a System Property or Playbook vars, the default is ``false``!!
 
 Fixed
 ~~~~~

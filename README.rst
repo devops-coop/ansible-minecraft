@@ -90,13 +90,13 @@ The following variable defaults are defined in ``defaults/main.yml``.
    ``https://s3.amazonaws.com/Minecraft.Download/versions``)
 
 ``minecraft_user``
-   system user Minecraft runs as (default: ``minecraft``)
+   system user Minecraft runs as (default: ``{{ minecraft_server }}``)
 
 ``minecraft_group``
-   system group Minecraft runs as (default: ``minecraft``)
+   system group Minecraft runs as (default: ``{{ minecraft_server }}``)
 
 ``minecraft_home``
-   directory to install Minecraft to (default: ``/srv/minecraft``)
+   directory to install Minecraft to (default: ``/opt/minecraft``)
 
 ``minecraft_max_memory``
    Java max memory (``-Xmx``) to allocate (default: ``1024M``)
@@ -240,6 +240,7 @@ Testing with Vagrant
 This role includes a Vagrantfile used with a Docker-based test harness that approximates the Travis CI setup for integration testing. Using Vagrant allows all contributors to test on the same platform and avoid false test failures due to untested or incompatible docker versions.
 
 1. Install `Vagrant <https://www.vagrantup.com/>`__ and `VirtualBox <https://www.virtualbox.org/>`__.
+1.1 Accept the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__ with setting a Environment Property like: ```export mc_accept_eula=true && vagrant up```
 
 2. Run ``vagrant up`` from the same directory as the Vagrantfile in this repository.
 
@@ -255,7 +256,10 @@ Apache 2.0
 Disclaimer
 ----------
 
-To automate the installation, this role automatically accepts the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__. Be aware that by using this role, you implicitly accept the same EULA.
+For execute a automatical installation you must accept the accepts the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__. Be aware that by using this role, you implicitly accept the same EULA.
+You can handle the acception by using a Environment Property like: ```export mc_accept_eula=true```
+
+--To automate the installation, this role automatically accepts the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__. Be aware that by using this role, you implicitly accept the same EULA.--
 
 .. |Travis CI build status| image:: https://travis-ci.org/nolte/ansible-minecraft.svg?branch=master
     :target: https://travis-ci.org/nolte/ansible-minecraft

@@ -37,5 +37,16 @@ Releasing
 - `bumpversion <https://github.com/peritus/bumpversion/blob/master/README.rst>`_
 
 
+Testing
+--------------------
+
+The Tests are impemented with `Molecule <https://molecule.readthedocs.io>`_
+
+.. code-block:: shell
+
+  molecule test -s spigot
+
+
+
 .. |Travis CI build status| image:: https://travis-ci.org/nolte/ansible-minecraft.svg?branch=develop
     :target: https://travis-ci.org/nolte/ansible-minecraft

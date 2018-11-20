@@ -1,3 +1,5 @@
+---
+
 - include: minecraft.yml
   when: minecraft_server == 'minecraft'
 

@@ -7,20 +7,20 @@
         state: present
     - debug: var=playbook_dir
   roles:
-   - role: "{{ playbook_dir }}/./../../../"
-     minecraft_server: spigot
-     minecraft_version: "{{mc_version | default(1.9) }}"
-     minecraft_eula_accept: "{{user_accept_minecraft_eula}}"
-     minecraft_server_properties:
-       server-port: 25565
-       rcon.port: 25564
-       enable-rcon: true
-       rcon.password: password
-     minecraft_hook_before_setup: "{{ playbook_dir }}/hooks/before_setup.yml"
-     minecraft_hook_after_setup: "{{ playbook_dir }}/hooks/after_setup.yml"
-     minecraft_hook_before_download: "{{ playbook_dir }}/hooks/before_download.yml"
-     minecraft_hook_after_download: "{{ playbook_dir }}/hooks/after_download.yml"
-     minecraft_hook_before_install: "{{ playbook_dir }}/hooks/before_install.yml"
-     minecraft_hook_after_install: "{{ playbook_dir }}/hooks/after_install.yml"
-     minecraft_hook_before_start: "{{ playbook_dir }}/hooks/before_start.yml"
-     minecraft_hook_after_start: "{{ playbook_dir }}/hooks/after_start.yml"
+    - role: "{{ playbook_dir }}/./../../../"
+      minecraft_server: spigot
+      minecraft_version: "{{mc_version | default(1.9) }}"
+      minecraft_eula_accept: "{{user_accept_minecraft_eula}}"
+      minecraft_server_properties:
+        server-port: 25565
+        rcon.port: 25564
+        enable-rcon: true
+        rcon.password: password
+      minecraft_hook_before_setup: "{{ playbook_dir }}/hooks/before_setup.yml"
+      minecraft_hook_after_setup: "{{ playbook_dir }}/hooks/after_setup.yml"
+      minecraft_hook_before_download: "{{ playbook_dir }}/hooks/before_download.yml"
+      minecraft_hook_after_download: "{{ playbook_dir }}/hooks/after_download.yml"
+      minecraft_hook_before_install: "{{ playbook_dir }}/hooks/before_install.yml"
+      minecraft_hook_after_install: "{{ playbook_dir }}/hooks/after_install.yml"
+      minecraft_hook_before_start: "{{ playbook_dir }}/hooks/before_start.yml"
+      minecraft_hook_after_start: "{{ playbook_dir }}/hooks/after_start.yml"

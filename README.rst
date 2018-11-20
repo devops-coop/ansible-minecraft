@@ -1,11 +1,15 @@
 ansible-minecraft
 =================
 
+** This is a fork from the https://github.com/devops-coop/ansible-minecraft/ Project, thanks for the basement!!!**
+
 |Install from Ansible Galaxy| |Travis CI build status| |Chat on gitter.im|
 
 This role installs `Minecraft <https://minecraft.net/>`__ or `Spigot <https://www.spigotmc.org/>`__ and configures it to run under `systemd <https://wiki.freedesktop.org/www/Software/systemd/>`__ or `Supervisor <http://supervisord.org/>`__.
 
-**If you're viewing this at** https://github.com/devops-coop/ansible-minecraft/**, you're reading the documentation for the master branch.** `View documentation for the latest release (3.1.0). <https://github.com/devops-coop/ansible-minecraft/tree/v3.1.0#ansible-minecraft>`__
+Current Version: 4.0.0
+
+**If you're viewing this at** https://github.com/devops-coop/ansible-minecraft/**, you're reading the documentation for the master branch.** `View documentation for the latest release (4.0.0). <https://github.com/devops-coop/ansible-minecraft/tree/v4.0.0#ansible-minecraft>`__
 
 Requirements
 ------------
@@ -81,20 +85,20 @@ The following variable defaults are defined in ``defaults/main.yml``.
        minecraft_version: 16w21a
 
 ``minecraft_eula_accept``
-  accept the Minecraft eula License, must accepted by the Role User (default: ``false``)
+   accept the Minecraft eula License, must accepted by the Role User (default: ``false``)
 
 ``minecraft_url``
    Minecraft download URL (default:
    ``https://s3.amazonaws.com/Minecraft.Download/versions``)
 
 ``minecraft_user``
-   system user Minecraft runs as (default: ``minecraft``)
+   system user Minecraft runs as (default: ``{{ minecraft_server }}``)
 
 ``minecraft_group``
-   system group Minecraft runs as (default: ``minecraft``)
+   system group Minecraft runs as (default: ``{{ minecraft_server }}``)
 
 ``minecraft_home``
-   directory to install Minecraft to (default: ``/srv/minecraft``)
+   directory to install Minecraft to (default: ``/opt/minecraft``)
 
 ``minecraft_max_memory``
    Java max memory (``-Xmx``) to allocate (default: ``1024M``)
@@ -128,6 +132,10 @@ The following variable defaults are defined in ``defaults/main.yml``.
 
 ``minecraft_server``
   choose between ``minecraft`` or ``spigot`` (default: ``minecraft``)
+
+```minecraft_server_java_ops```
+   additional java ops like remote debug ``-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+``  (default: *none*)
 
 Hooks and run stages
 --------------------
@@ -209,6 +217,7 @@ If you'd like to help with the project itself, here are some other ways you can 
 -  Add support for additional servers like `Cuberite <https://cuberite.org/>`__.
 -  Write integration tests for Minecraft- or Spigot-specific configuration.
 -  Share useful hooks.
+-  Fixing Typos ...
 
 Testing
 ~~~~~~~
@@ -233,6 +242,7 @@ Testing with Vagrant
 This role includes a Vagrantfile used with a Docker-based test harness that approximates the Travis CI setup for integration testing. Using Vagrant allows all contributors to test on the same platform and avoid false test failures due to untested or incompatible docker versions.
 
 1. Install `Vagrant <https://www.vagrantup.com/>`__ and `VirtualBox <https://www.virtualbox.org/>`__.
+1.1 Accept the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__ with setting a Environment Property like: ```export mc_accept_eula=true && vagrant up```
 
 2. Run ``vagrant up`` from the same directory as the Vagrantfile in this repository.
 
@@ -248,11 +258,14 @@ Apache 2.0
 Disclaimer
 ----------
 
-To automate the installation, this role automatically accepts the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__. Be aware that by using this role, you implicitly accept the same EULA.
+For execute a automatical installation you must accept the accepts the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__. Be aware that by using this role, you implicitly accept the same EULA.
+You can handle the acception by using a Environment Property like: ```export mc_accept_eula=true```
 
-.. |Travis CI build status| image:: https://travis-ci.org/devops-coop/ansible-minecraft.svg?branch=master
-    :target: https://travis-ci.org/devops-coop/ansible-minecraft
-.. |Install from Ansible Galaxy| image:: https://img.shields.io/badge/role-devops--coop.minecraft-blue.svg
-    :target: https://galaxy.ansible.com/devops-coop/minecraft/
+--To automate the installation, this role automatically accepts the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__. Be aware that by using this role, you implicitly accept the same EULA.--
+
+.. |Travis CI build status| image:: https://travis-ci.org/nolte/ansible-minecraft.svg?branch=master
+    :target: https://travis-ci.org/nolte/ansible-minecraft
+.. |Install from Ansible Galaxy| image:: https://img.shields.io/badge/role-nolte.minecraft-blue.svg
+    :target: https://galaxy.ansible.com/nolte/minecraft/
 .. |Chat on gitter.im| image:: https://badges.gitter.im/gitterHQ/gitter.png
     :target: https://gitter.im/devops-coop/ansible-minecraft

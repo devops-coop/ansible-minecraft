@@ -1,3 +1,4 @@
+---
 - name: include OS-specific variables
   include_vars: "{{ item }}"
   with_first_found:
@@ -16,7 +17,7 @@
   group:
     state: present
     name: "{{ minecraft_group }}"
-    system: yes
+    system: true
 
 - name: create Minecraft user
   user:

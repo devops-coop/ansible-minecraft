@@ -1,7 +1,8 @@
+---
 - name: "Download {{plugin_item.key}}"
   get_url:
     url: "{{plugin_item.value.src}}"
-    dest:  "{{deploy_helper.new_release_path}}"
+    dest: "{{deploy_helper.new_release_path}}"
     validate_certs: false
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
@@ -10,8 +11,8 @@
 - name: "Download {{plugin_item.key}}"
   unarchive:
     src: "{{plugin_item.value.src}}"
-    dest:  "{{deploy_helper.new_release_path}}"
-    remote_src: yes
+    dest: "{{deploy_helper.new_release_path}}"
+    remote_src: true
     validate_certs: false
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"

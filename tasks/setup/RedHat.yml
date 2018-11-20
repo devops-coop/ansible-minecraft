@@ -1,3 +1,4 @@
+---
 - name: install Minecraft dependencies
   yum:
     name: "{{ item }}"

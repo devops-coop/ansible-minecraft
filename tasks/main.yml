@@ -15,7 +15,6 @@
 
 - include: setup/main.yml
 
-
 - include: plugins/main.yml
   when: "minecraft_plugin_sets is defined and (0 < minecraft_plugin_sets | length )"
 
@@ -43,7 +42,6 @@
 
 - include: acl.yml
 
-
 - include: configure.yml
 
 - include: setup/supervisor.yml
@@ -51,9 +49,6 @@
 
 - include: setup/systemd.yml
   when: minecraft_process_control == 'systemd'
-
-
-
 
 - include: "{{ minecraft_hook_before_start | default('empty.yml') }}"
 

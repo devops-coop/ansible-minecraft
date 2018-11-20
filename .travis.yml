@@ -16,7 +16,7 @@ before_install:
 install:
   - pip install tox
 #  - pip install docker-py
-  # - pip install required driver (e.g. docker, python-vagrant, shade)
+#  - pip install required driver (e.g. docker, python-vagrant, shade)
 script:
   - tox -e ${SCENARIO_NAME}
 #  - molecule test -s ${SCENARIO_NAME}

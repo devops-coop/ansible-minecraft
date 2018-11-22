@@ -1,6 +1,6 @@
 ---
 - file:
-    path: "{{deploy_helper.new_release_path}}/{{ plugin_config_item.dest | dirname }}"
+    path: "{{ deploy_helper.new_release_path }}/{{ plugin_config_item.dest | dirname }}"
     state: directory
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"

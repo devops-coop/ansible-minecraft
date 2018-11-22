@@ -8,7 +8,7 @@
     state: link
   with_items:
     - path: spigot.jar
-      src: spigot-{{minecraft_version}}.jar
+      src: spigot-{{ minecraft_version }}.jar
   notify:
     - restart Minecraft
 

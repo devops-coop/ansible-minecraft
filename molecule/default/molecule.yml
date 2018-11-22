@@ -78,9 +78,9 @@ provisioner:
     options:
       x:
         - ANSIBLE0006
-        - ANSIBLE0010
         - ANSIBLE0011
         - ANSIBLE0016
+#        - ANSIBLE0010
 scenario:
   name: default
 verifier:

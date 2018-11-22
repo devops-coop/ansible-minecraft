@@ -1,25 +1,25 @@
 ---
 - name: Initialize the Minecraft Servers Plugins Basedir
   deploy_helper:
-    path: "{{minecraft_plugins}}"
-    release: "{{minecraft_plugins_set_version}}"
+    path: "{{ minecraft_plugins }}"
+    release: "{{ minecraft_plugins_set_version }}"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
 
 - name: check plugins release folder is present
   file:
-    path: "{{deploy_helper.new_release_path}}"
+    path: "{{ deploy_helper.new_release_path }}"
     state: directory
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
 
 - include_tasks: plugin_download.yml
-  with_dict: "{{minecraft_plugin_sets[minecraft_plugins_set_version]}}"
+  with_dict: "{{ minecraft_plugin_sets[minecraft_plugins_set_version] }}"
   loop_control:
     loop_var: plugin_item
 
 - name: Finalize the deploy, removing the unfinished file and switching the symlink
   deploy_helper:
-    path: "{{minecraft_plugins}}"
+    path: "{{ minecraft_plugins }}"
     release: '{{ deploy_helper.new_release }}'
     state: finalize

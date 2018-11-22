@@ -32,7 +32,7 @@
 
 - name: Finalize the deploy, removing the unfinished file and switching the symlink
   deploy_helper:
-    path: "{{minecraft_home}}"
+    path: "{{ minecraft_home }}"
     release: '{{ deploy_helper.new_release }}'
     state: finalize
 

@@ -1,12 +1,14 @@
 ---
-- file:
-    path: "{{ deploy_helper.new_release_path }}/{{ plugin_config_item.dest | dirname }}"
+- name: create plugin directory
+  file:
+    path: "{{ deploy_helper.shared_path }}/{{ plugin_config_item.dest | dirname }}"
     state: directory
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
 
-- template:
+- name: put config template to plugin dir
+  template:
     src: "{{ plugin_config_item.src }}"
-    dest: "{{ deploy_helper.new_release_path }}/{{ plugin_config_item.dest }}"
+    dest: "{{ deploy_helper.shared_path }}/{{ plugin_config_item.dest }}"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"

@@ -12,8 +12,9 @@ Overview
 .. toctree::
    :maxdepth: 2
 
+   usage/index
    development/index
-   maintenance/index
+
 
 
 Role scope Description
@@ -29,6 +30,7 @@ Out of Scope
 - executing backups and recovery
 - healthy checks like `Minecraft-Region-Fixer <https://github.com/Fenixin/Minecraft-Region-Fixer>`_
 - handle utility services like `filebeat <https://www.elastic.co/de/products/beats/filebeat>`_ or `prometheus <https://github.com/prometheus/node_exporter>`_
+- install additional Tools like `rcon-cli <https://github.com/itzg/rcon-cli>`_.
 
 **All of this is needet but not a part of this role!**
 

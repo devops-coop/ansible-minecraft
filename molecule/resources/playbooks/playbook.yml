@@ -2,21 +2,23 @@
 - hosts: minecraftserver
   pre_tasks:
     # required dependencies for testinfra tests (not needet for production)
-    - package:
-        name: net-tools
+    - name: install precondition package
+      package:
+        name: "{{ item }}"
         state: present
-    - debug: var=playbook_dir
+      with_items:
+        - net-tools
+        - unzip
+        - rsync
   roles:
     - role: "{{ playbook_dir }}/./../../../"
-      minecraft_server: spigot
-      minecraft_version: "{{mc_version | default(1.9) }}"
-      minecraft_eula_accept: "{{user_accept_minecraft_eula}}"
+      minecraft_version: "{{ mc_version | default('1.13.1') }}"
+      minecraft_eula_accept: "{{ user_accept_minecraft_eula }}"
       minecraft_server_properties:
         server-port: 25565
         rcon.port: 25564
         enable-rcon: true
         rcon.password: password
-      minecraft_hook_before_setup: "{{ playbook_dir }}/hooks/before_setup.yml"
       minecraft_hook_after_setup: "{{ playbook_dir }}/hooks/after_setup.yml"
       minecraft_hook_before_download: "{{ playbook_dir }}/hooks/before_download.yml"
       minecraft_hook_after_download: "{{ playbook_dir }}/hooks/after_download.yml"

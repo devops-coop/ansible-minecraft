@@ -31,9 +31,13 @@
     - enable service (systemd)
 
 - name: enable service (supervisor)
-  command: supervisorctl update
+  supervisorctl:
+    name: "{{ minecraft_service_name }}"
+    state: restarted
   become: true
   when: minecraft_process_control == 'supervisor'
+
+
 
 - name: enable service (systemd)
   service:

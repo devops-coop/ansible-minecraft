@@ -1,5 +1,5 @@
 ---
-- include: systemd/Ubuntu.yml
+- include: Ubuntu.yml
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version | version_compare('16.04', '<')
 
 - name: install units
@@ -14,12 +14,6 @@
     - minecraft.socket
   notify:
     - restart Minecraft
-  register: systemd_service_config
-
-- name: reload systemd
-  command: systemctl daemon-reload
-  become: true
-  when: systemd_service_config.changed
 
 - name: configure console directory
   template:

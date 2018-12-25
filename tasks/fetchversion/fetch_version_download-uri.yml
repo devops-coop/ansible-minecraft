@@ -7,14 +7,26 @@
 
 - name: find latest release version
   set_fact:
-    minecraft_version: "{{ minecraft_versions.json.latest.release }}"
+    minecraft_version_int: "{{ minecraft_versions.json.latest.release }}"
   when: minecraft_version == "latest"
+  no_log: true
+
+- name: find latest release version
+  set_fact:
+    minecraft_version_int: "{{ minecraft_version }}"
+  when: minecraft_version != "latest"
+  no_log: true
 
 - name: extract version specific mainfest file
   set_fact:
     minecraft_version_manifest_url: "{{ item.url }}"
-  when: item.id == (minecraft_version|string)
+  when: item.id == (minecraft_version_int|string)
   with_items: "{{ minecraft_versions.json.versions }}"
+  no_log: true
+
+- name: show located minecraft version
+  debug:
+    msg: "Download {{ minecraft_version_int }} from {{ minecraft_version_manifest_url }}"
 
 - name: Download the version specific mainfest file
   uri:
@@ -26,3 +38,4 @@
   set_fact:
     minecraft_server_download_url: "{{ minecraft_version_info.json.downloads.server.url }}"
     minecraft_server_download_checksum: "sha1:{{ minecraft_version_info.json.downloads.server.sha1 }}"
+  no_log: true

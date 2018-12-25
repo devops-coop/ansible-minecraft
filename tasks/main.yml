@@ -4,6 +4,8 @@
     that:
       - "ansible_os_family in supported_ansible_os_families"
 
+- debug: var=minecraft_server
+
 - name: check for supported server implementation
   assert:
     that:
@@ -44,11 +46,7 @@
 
 - include: configure.yml
 
-- include: setup/supervisor.yml
-  when: minecraft_process_control == 'supervisor'
-
-- include: setup/systemd.yml
-  when: minecraft_process_control == 'systemd'
+- include: process_controll/main.yml
 
 - include: "{{ minecraft_hook_before_start | default('empty.yml') }}"
 

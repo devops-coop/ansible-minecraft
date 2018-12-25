@@ -19,10 +19,23 @@ As build script we use `Tox <https://tox.readthedocs.io/en/latest/config.html>`_
 
   tox -e spigot
 
+**Possible Tox Envs**
+
++-------------+--------------------------------------------------------------------------------------------------------------------------------+
+| env         | Description                                                                                                                    |
++-------------+--------------------------------------------------------------------------------------------------------------------------------+
+| ``docs``    | generates the sphinx documentation page (generated to ``.tox/docs/tmp/html/``)                                                 |
++-------------+--------------------------------------------------------------------------------------------------------------------------------+
+| ``default`` | Execute an Molecule tests for the classic vanilla Minecraft server (Tested ``CentOS7``,``Ubuntu1604``,``Ubuntu18``,``Debian``) |
++-------------+--------------------------------------------------------------------------------------------------------------------------------+
+| ``spigot``  | Execute the Molecule tests for a spigot server.                                                                                |
++-------------+--------------------------------------------------------------------------------------------------------------------------------+
+
+
 Versioning
 ************************************
 
-This project follows `semantic versioning <http://semver.org/>`__.
+This project follows `semantic versioning <http://semver.org/>`_.
 
 In the context of semantic versioning, consider the role contract to be defined by the role variables.
 
@@ -36,6 +49,13 @@ Releasing
 
 - `bumpversion <https://github.com/peritus/bumpversion/blob/master/README.rst>`_
 
+a simple version update can be manual executed with:
+
+.. code-block:: shell
+
+    bumpversion minor
+
+the updateable files are listed at ``.bumpversion.cfg`` at the project root directory.
 
 Testing
 --------------------
@@ -46,7 +66,22 @@ The Tests are impemented with `Molecule <https://molecule.readthedocs.io>`_
 
   molecule test -s spigot
 
+Molecule Tips
+*******************************
 
+**Starting the Containers**
+.. code-block:: shell
+
+  molecule create
+
+
+.. code-block:: shell
+
+  molecule converge
+
+  docker exec -t -i centos7 /bin/bash
+
+  verify       Run automated tests against instances.
 
 .. |Travis CI build status| image:: https://travis-ci.org/nolte/ansible-minecraft.svg?branch=develop
     :target: https://travis-ci.org/nolte/ansible-minecraft

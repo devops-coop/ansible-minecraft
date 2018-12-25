@@ -1,0 +1,33 @@
+---
+- name: "Recursively find /tmp files older than 2 days"
+  find:
+    paths: "{{ deploy_helper.new_release_path }}"
+    file_type: "file"
+    patterns: "*.jar"
+  register: "jarfiles"
+
+- name: "Recreate symlinks"
+  file:
+    src: '{{ item.path }}'
+    dest: "{{ deploy_helper.shared_path }}/{{ item.path | regex_replace(deploy_helper.new_release_path) }}"
+    state: link
+    force: true
+  with_items: "{{ jarfiles.files }}"
+
+- name: "Recursively find /tmp files older than 2 days"
+  find:
+    paths: "{{ deploy_helper.new_release_path }}"
+    file_type: "directory"
+  register: "plugindirectories"
+
+
+- name: example copying file with owner and permissions
+  synchronize:
+    src: '{{ item.path }}'
+    dest: "{{ deploy_helper.shared_path }}/{{ item.path | regex_replace(deploy_helper.new_release_path) }}"
+    dirs: true
+    recursive: true
+    rsync_opts:
+      - "--chown={{ minecraft_user }}:{{ minecraft_group }}"
+  delegate_to: "{{ inventory_hostname }}"
+  with_items: "{{ plugindirectories.files }}"

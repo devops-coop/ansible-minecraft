@@ -5,6 +5,7 @@
     release: "{{ minecraft_plugins_set_version }}"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
+  register: pluginchanged
 
 - name: check plugins release folder is present
   file:
@@ -13,10 +14,17 @@
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
 
+- name: Add an unfinished file, to allow cleanup on successful finalize
+  file:
+    path: '{{ deploy_helper.new_release_path }}/{{ deploy_helper.unfinished_filename }}'
+    state: touch
+
 - include_tasks: plugin_download.yml
   with_dict: "{{ minecraft_plugin_sets[minecraft_plugins_set_version] }}"
   loop_control:
     loop_var: plugin_item
+
+- include_tasks: plugin_links.yml
 
 - name: Finalize the deploy, removing the unfinished file and switching the symlink
   deploy_helper:

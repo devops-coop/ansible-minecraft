@@ -4,8 +4,8 @@ minecraft_version: latest
 minecraft_user: "{{ minecraft_server }}"
 minecraft_group: "{{ minecraft_server }}"
 minecraft_basedir: "/opt/minecraft"
-minecraft_home: /{{minecraft_basedir}}/server
-minecraft_plugins: /{{minecraft_basedir}}/plugins
+minecraft_home: "{{minecraft_basedir}}/server"
+minecraft_plugins: "{{minecraft_basedir}}/plugins"
 minecraft_max_memory: 1024M
 minecraft_initial_memory: 1024M
 minecraft_service_name: "{{ minecraft_server }}"
@@ -21,3 +21,5 @@ minecraft_server_properties: {}
 minecraft_eula_accept: false
 minecraft_spigot_url: https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
 minecraft_server_java_ops:
+minecraft_java: /usr/bin/java
+minecraft_java_external_managed: false

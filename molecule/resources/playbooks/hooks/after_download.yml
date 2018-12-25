@@ -2,5 +2,6 @@
 - name: test after_download hook
   lineinfile:
     dest: /tmp/hooks
-    line: after_download
+    regexp: '^after_download='
+    line: 'after_download=true'
     create: true

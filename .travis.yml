@@ -5,18 +5,35 @@ services:
   - docker
 env:
   matrix:
-    - SCENARIO_NAME=default
-    - SCENARIO_NAME=spigot
-    - SCENARIO_NAME=supervisorspigot
-    - SCENARIO_NAME=supervisorvanilla
+    - SCENARIO_NAME=debian-jessie-vanilla-fixversion-supervisor
+    - SCENARIO_NAME=debian-trusty-vanilla-oldversion-supervisor
+    - SCENARIO_NAME=debian-xenial-vanilla-fixversion-supervisor
+    - SCENARIO_NAME=debian-bionic-vanilla-fixversion-supervisor
+    - SCENARIO_NAME=debian-jessie-spigot-fixversion-supervisor
+    - SCENARIO_NAME=debian-trusty-spigot-oldversion-supervisor
+    - SCENARIO_NAME=debian-xenial-spigot-fixversion-supervisor
+    - SCENARIO_NAME=debian-bionic-spigot-fixversion-supervisor
+    - SCENARIO_NAME=debian-jessie-vanilla-fixversion-systemd
+    - SCENARIO_NAME=debian-xenial-vanilla-fixversion-systemd
+    - SCENARIO_NAME=debian-bionic-vanilla-fixversion-systemd
+    - SCENARIO_NAME=redhat-centos7-vanilla-fixversion-systemd
+    - SCENARIO_NAME=redhat-twentyNine-vanilla-fixversion-systemd
+    - SCENARIO_NAME=debian-jessie-spigot-fixversion-systemd
+    - SCENARIO_NAME=debian-xenial-spigot-fixversion-systemd
+    - SCENARIO_NAME=debian-bionic-spigot-fixversion-systemd
+    - SCENARIO_NAME=redhat-centos7-spigot-fixversion-systemd
+    - SCENARIO_NAME=redhat-twentyNine-spigot-fixversion-systemd
+    - SCENARIO_NAME=debian-bionic-spigot-latest-systemd
+    - SCENARIO_NAME=redhat-centos7-spigot-latest-systemd
+    - SCENARIO_NAME=redhat-twentyNine-vanilla-latest-systemd
     - SCENARIO_NAME=docs
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-ce
 install:
-  - pip install tox
+  - pip install tox-travis
 script:
   - tox -e ${SCENARIO_NAME}
-# notifications:
-#   email: false
-#   webhooks: https://galaxy.ansible.com/api/v1/notifications/
+notifications:
+ email: false
+ webhooks: https://galaxy.ansible.com/api/v1/notifications/

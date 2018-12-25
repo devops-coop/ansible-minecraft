@@ -1,0 +1,33 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+  enabled: false
+  options:
+    config-file: .yamllint
+
+scenario:
+  test_sequence:
+    - lint
+    - destroy
+    - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+#    - idempotence
+    - side_effect
+    - verify
+    - destroy
+verifier:
+  name: testinfra
+  directory: ../resources/tests/
+  additional_files_or_dirs:
+    - ${MOLECULE_TESTINFRA_ADDITIONAL_TESTS}
+  lint:
+    name: flake8
+  options:
+      junit-xml: ${MOLECULE_TESTINFRA_UNIT_REPORT}

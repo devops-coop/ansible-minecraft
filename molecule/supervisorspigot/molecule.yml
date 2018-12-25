@@ -1,6 +1,8 @@
 ---
 dependency:
   name: galaxy
+  options:
+    role-file: ./molecule/resources/playbooks/requirements.yml
 driver:
   name: docker
 lint:
@@ -26,6 +28,7 @@ platforms:
     image: ubuntu:14.04
     command: /sbin/init
     groups:
+      - oldminecraft
       - minecraftserver
     security_opts:
       - seccomp=unconfined
@@ -60,14 +63,21 @@ provisioner:
       minecraftserver:
         user_accept_minecraft_eula: ${mc_accept_eula}
         minecraft_process_control: supervisor
+        mc_version: "1.13.1"
+        minecraft_server: spigot
+      oldminecraft:
+        mc_version: "1.9"
   playbooks:
-    converge: ../resources/playbooks/spigot.yml
+    converge: ../resources/playbooks/playbook.yml
   lint:
     name: ansible-lint
     enabled: false
     options:
       x:
+        - ANSIBLE0006
         - ANSIBLE0010
+        - ANSIBLE0011
+        - ANSIBLE0016
 scenario:
   name: supervisorspigot
 verifier:

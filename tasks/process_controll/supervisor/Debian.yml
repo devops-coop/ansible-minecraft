@@ -1,0 +1,7 @@
+---
+- name: install Supervisor
+  apt:
+    name: supervisor
+  register: pack_res
+  retries: 5
+  until: pack_res is success

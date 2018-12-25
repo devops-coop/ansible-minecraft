@@ -7,9 +7,11 @@
   when: minecraft_server == 'spigot'
 
 - name: agree to EULA
-  template:
-    src: eula.txt.j2
+  lineinfile:
     dest: "{{ deploy_helper.shared_path }}/eula.txt"
+    regexp: '^eula='
+    line: 'eula={{ minecraft_eula_accept | lower }}'
+    create: true
     mode: '0644'
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"

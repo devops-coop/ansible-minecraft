@@ -1,27 +1,14 @@
 ---
 dependency:
   name: galaxy
+  options:
+    role-file: ./molecule/resources/playbooks/requirements.yml
 driver:
   name: docker
 lint:
   name: yamllint
   enabled: false
 platforms:
-  - name: debian
-    image: debian:jessie
-    command: /sbin/init
-    groups:
-      - minecraftserver
-    security_opts:
-      - seccomp=unconfined
-    capabilities:
-      - SYS_ADMIN
-    volumes:
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    tmpfs:
-      - /tmp
-      - /run
-      - /run/lock
   - name: ubuntu16
     image: solita/ubuntu-systemd:16.04
     groups:
@@ -52,6 +39,20 @@ platforms:
       - /tmp
       - /run
       - /run/lock
+  - name: fedora
+    image: fedora:29
+    groups:
+      - minecraftserver
+    command: /usr/sbin/init
+    security_opts:
+      - seccomp=unconfined
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
   - name: centos7
     image: centos:latest
     groups:
@@ -74,7 +75,7 @@ provisioner:
         user_accept_minecraft_eula: ${mc_accept_eula}
         mc_version: "latest"
   playbooks:
-    converge: ../resources/playbooks/minecraft.yml
+    converge: ../resources/playbooks/playbook.yml
   lint:
     name: ansible-lint
     enabled: false

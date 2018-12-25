@@ -37,6 +37,35 @@ platforms:
       - /tmp
       - /run
       - /run/lock
+  - name: ubuntu18
+    image: solita/ubuntu-systemd:18.04
+    groups:
+      - minecraftserver
+    command: /sbin/init
+    security_opts:
+      - seccomp=unconfined
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+  - name: fedora
+    image: fedora:29
+    groups:
+      - minecraftserver
+    command: /usr/sbin/init
+    security_opts:
+      - seccomp=unconfined
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
   - name: centos7
     image: centos:latest
     groups:
@@ -57,14 +86,19 @@ provisioner:
     group_vars:
       minecraftserver:
         user_accept_minecraft_eula: ${mc_accept_eula}
+        minecraft_server: spigot
+        mc_version: 1.13.1
   playbooks:
-    converge: ../resources/playbooks/spigot.yml
+    converge: ../resources/playbooks/playbook.yml
   lint:
     name: ansible-lint
     enabled: false
     options:
       x:
+        - ANSIBLE0006
         - ANSIBLE0010
+        - ANSIBLE0011
+        - ANSIBLE0016
 scenario:
   name: spigot
 verifier:

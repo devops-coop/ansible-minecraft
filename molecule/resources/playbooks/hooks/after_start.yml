@@ -2,5 +2,6 @@
 - name: test after_start hook
   lineinfile:
     dest: /tmp/hooks
-    line: after_start
+    regexp: '^after_start='
+    line: 'after_start=true'
     create: true

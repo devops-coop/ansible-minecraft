@@ -1,0 +1,4 @@
+MOLECULE_INSTANCE_COMMAND: /usr/sbin/init
+MOLECULE_INSTANCE_TEMPFS:
+  - /tmp
+  - /run

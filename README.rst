@@ -3,13 +3,13 @@ ansible-minecraft
 
 ** This is a fork from the https://github.com/devops-coop/ansible-minecraft/ Project, thanks for the basement!!!**
 
-|Install from Ansible Galaxy| |Travis CI build status| |Chat on gitter.im|
+|Install from Ansible Galaxy| |CircleCI build status| |Travis CI build status| |Chat on gitter.im|
 
 This role installs `Minecraft <https://minecraft.net/>`__ or `Spigot <https://www.spigotmc.org/>`__ and configures it to run under `systemd <https://wiki.freedesktop.org/www/Software/systemd/>`__ or `Supervisor <http://supervisord.org/>`__.
 
-Current Version: 4.0.0
+Current Version: 4.1.0
 
-**If you're viewing this at** https://github.com/devops-coop/ansible-minecraft/**, you're reading the documentation for the master branch.** `View documentation for the latest release (4.0.0). <https://github.com/devops-coop/ansible-minecraft/tree/v4.0.0#ansible-minecraft>`__
+**If you're viewing this at** https://github.com/devops-coop/ansible-minecraft/**, you're reading the documentation for the master branch.** `View documentation for the latest release (4.1.0). <https://github.com/devops-coop/ansible-minecraft/tree/v4.1.0#ansible-minecraft>`__
 
 Requirements
 ------------
@@ -39,14 +39,17 @@ Features
    +================+=========+========+=========+========+
    | Debian 8       | ✓       | ✓      | ✓       | ✓      |
    +----------------+---------+--------+---------+--------+
-   | Ubuntu 14.04   | ✓       | ✓      | ✗       | ✗      |
+   | Debian 9       | ✗       | ✗      | ✓       | ✓      |
    +----------------+---------+--------+---------+--------+
    | Ubuntu 16.04   | ✓       | ✓      | ✓       | ✓      |
    +----------------+---------+--------+---------+--------+
-   | Ubuntu 18.04   | ✗       | ✗      | ✓       | ✗      |
+   | Ubuntu 18.04   | ✗       | ✗      | ✓       | ✓      |
    +----------------+---------+--------+---------+--------+
    | CentOS 7       | ✗       | ✗      | ✓       |  ✓     |
    +----------------+---------+--------+---------+--------+
+   | Fedora 29      | ✗       | ✗      | ✓       |  ✓     |
+   +----------------+---------+--------+---------+--------+
+
 
 -  safely stops the server using `stop <http://minecraft.gamepedia.com/Commands#stop>`__ when running under **systemd**
 -  uses `Docker <https://www.docker.com/>`__ and `Molecule <https://molecule.readthedocs.io/>`__ to run integration tests
@@ -133,9 +136,13 @@ The following variable defaults are defined in ``defaults/main.yml``.
 ``minecraft_server``
   choose between ``minecraft`` or ``spigot`` (default: ``minecraft``)
 
-```minecraft_server_java_ops```
-   additional java ops like remote debug ``-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
-``  (default: *none*)
+``minecraft_server_java_ops``
+   additional java ops like remote debug ``-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005`` (default: *none*)
+
+``minecraft_java_external_managed``
+  used for skipping the java installation tasks from this role, for handle Java by external scripts/roles (default: ``false``)
+
+
 
 Hooks and run stages
 --------------------
@@ -242,7 +249,7 @@ Testing with Vagrant
 This role includes a Vagrantfile used with a Docker-based test harness that approximates the Travis CI setup for integration testing. Using Vagrant allows all contributors to test on the same platform and avoid false test failures due to untested or incompatible docker versions.
 
 1. Install `Vagrant <https://www.vagrantup.com/>`__ and `VirtualBox <https://www.virtualbox.org/>`__.
-1.1 Accept the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__ with setting a Environment Property like: ```export mc_accept_eula=true && vagrant up```
+1.1 Accept the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__ with setting a Environment Property like: ``export mc_accept_eula=true && vagrant up``
 
 2. Run ``vagrant up`` from the same directory as the Vagrantfile in this repository.
 
@@ -259,12 +266,14 @@ Disclaimer
 ----------
 
 For execute a automatical installation you must accept the accepts the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__. Be aware that by using this role, you implicitly accept the same EULA.
-You can handle the acception by using a Environment Property like: ```export mc_accept_eula=true```
+You can handle the acception by using a Environment Property like: ``export mc_accept_eula=true``
 
 --To automate the installation, this role automatically accepts the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__. Be aware that by using this role, you implicitly accept the same EULA.--
 
 .. |Travis CI build status| image:: https://travis-ci.org/nolte/ansible-minecraft.svg?branch=master
     :target: https://travis-ci.org/nolte/ansible-minecraft
+.. |CircleCI build status| image:: https://circleci.com/gh/nolte/ansible-minecraft.svg?style=svg
+    :target: https://circleci.com/gh/nolte/ansible-minecraft
 .. |Install from Ansible Galaxy| image:: https://img.shields.io/badge/role-nolte.minecraft-blue.svg
     :target: https://galaxy.ansible.com/nolte/minecraft/
 .. |Chat on gitter.im| image:: https://badges.gitter.im/gitterHQ/gitter.png

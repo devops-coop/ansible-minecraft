@@ -3,7 +3,7 @@
   get_url:
     url: "{{ plugin_item.value.src }}"
     dest: "{{ deploy_helper.new_release_path }}"
-    validate_certs: false
+    validate_certs: "{{ plugin_item.value.validate_certs | default(true) }}"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
   when: '".jar" in plugin_item.value.src'
@@ -13,7 +13,7 @@
     src: "{{ plugin_item.value.src }}"
     dest: "{{ deploy_helper.new_release_path }}"
     remote_src: true
-    validate_certs: false
+    validate_certs: "{{ plugin_item.value.validate_certs | default(true) }}"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
   when: plugin_item.value.type is defined and plugin_item.value.type == "archive"

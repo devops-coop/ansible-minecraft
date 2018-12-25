@@ -2,5 +2,6 @@
 - name: test after_setup hook
   lineinfile:
     dest: /tmp/hooks
-    line: after_setup
+    regexp: '^after_setup='
+    line: 'after_setup=true'
     create: true

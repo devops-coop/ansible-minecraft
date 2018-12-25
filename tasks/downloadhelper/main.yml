@@ -2,7 +2,7 @@
 - name: Initialize the Minecraft Servers Versions Basedir
   deploy_helper:
     path: "{{ minecraft_home }}"
-    release: "{{ minecraft_version }}"
+    release: "{{ minecraft_version_int }}"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
 

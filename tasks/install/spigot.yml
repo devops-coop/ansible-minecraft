@@ -1,21 +1,18 @@
 ---
 - name: Add symlinks from the new release to the shared folder
   file:
-    dest: '{{ deploy_helper.shared_path }}/{{ item.path }}'
-    src: '{{ deploy_helper.current_path }}/{{ item.src }}'
+    dest: "{{ deploy_helper.shared_path }}/spigot.jar"
+    src: "{{ deploy_helper.current_path }}/spigot-{{ minecraft_version_int }}.jar"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
     state: link
-  with_items:
-    - path: spigot.jar
-      src: spigot-{{ minecraft_version }}.jar
   notify:
     - restart Minecraft
 
 - name: Add plugins symlinks to the shared folder
   file:
     dest: '{{ deploy_helper.shared_path }}/plugins'
-    src: '{{ minecraft_plugins }}/current'
+    src: '{{ minecraft_plugins }}/shared'
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
     state: link

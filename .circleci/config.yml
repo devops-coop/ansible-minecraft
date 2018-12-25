@@ -1,0 +1,362 @@
+version: 2
+aliases:
+  # Variables.
+  # For YAML support of anchors and references, @see http://blog.daemonl.com/2016/02/yaml.html
+
+  # SSH Deployment key for github Pushing,
+  - &deploy_ssh_fingerprint "1a:10:6a:88:8a:a7:ef:95:55:be:15:2b:02:bd:3b:cb"
+
+  # @see https://github.com/aktau/github-release
+  # Used container for handle github release actions
+  - &container_releasemanager
+    docker:
+      - image: circleci/golang:1.8
+
+  # add the GitHub Deployment Key to the ssh-agent
+  # @see https://circleci.com/docs/2.0/add-ssh-key/
+  - &run_task_add_key
+    add_ssh_keys:
+      fingerprints:
+        - *deploy_ssh_fingerprint
+
+  # @see https://stedolan.github.io/jq/
+  # used for better JSon Command Line parsing.
+  - &run_task_prepare_jq
+    run:
+      name: install jq to path
+      command: |
+        sudo wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -O /usr/bin/jq
+        sudo chmod +x /usr/bin/jq
+
+  # Load the latest GitHub Release
+  # Reuqired jq in the path
+  # @see https://developer.github.com/v3/repos/releases/#get-the-latest-release
+  - &run_task_load_latest_ghrelease
+    run:
+      name: Load the Latest GH Release
+      command: |
+        LAST_VERSION="$(curl https://${GITHUB_TOKEN}@api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/releases/latest | jq -r '.tag_name' )"
+        echo $LAST_VERSION > /tmp/workspace/last_release.txt
+
+  # Load one version behind the latest GitHub Release
+  # Reuqired jq in the path
+  # @see https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository
+  - &run_task_load_previous_ghrelease
+    run:
+      name: Load the Previous GH Release
+      command: |
+        PREVIOUS_VERSION="$(curl https://${GITHUB_TOKEN}@api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/releases | jq -r '.[1].tag_name' )"
+        echo $PREVIOUS_VERSION > /tmp/workspace/previous_release.txt
+
+  - &run_task_configure_git
+    run:
+      name: configure git set global settings
+      command: |
+        git config --global user.email "$GIT_AUTHOR_EMAIL"
+        git config --global user.name "${CIRCLE_USERNAME}"
+
+  - &machine_configuration
+    machine:
+        enabled: true
+        docker_layer_caching: true
+
+
+  - &molecule_tests_steps
+    steps:
+      - checkout
+      - run:
+          name: install ubuntu build reqs
+          command: |
+            sudo apt-get -qq update
+            sudo apt install -y build-essential libssl-dev libpython-dev python python-pip
+      - run:
+          name: configure docker
+          command: |
+            sudo apt-get -qq update
+            sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-ce
+            sudo pip install tox
+      - run:
+          name: pyversion
+          command: |
+            python --version
+      - run:
+          name: execute molecule test container
+          command: |
+            tox -e $SCENARIO_NAME
+          no_output_timeout: 30m
+      - run:
+          name: execute molecule test container
+          command: |
+            mkdir -p /tmp/reports/testinfra/
+            cp .tox/${CIRCLE_JOB}/tmp/molecule-report.xml /tmp/reports/testinfra/${CIRCLE_JOB}-report.xml
+      - store_test_results:
+          path: /tmp/reports
+jobs:
+  publish:
+    docker:
+      - image: circleci/python:3.6.4  # primary container for the build job
+    steps:
+      - run:
+          command: echo "publishing .... TBD"
+  lintcheck:
+    docker:
+      - image: circleci/python:3.6.4  # primary container for the build job
+    filters:
+      branches:
+        ignore:
+          - gh-pages
+    steps:
+      - checkout
+      - run:
+          command: sudo pip install ansible-lint
+      - run:
+          command: ansible-lint $(pwd)
+  builddocs:
+    docker:
+      - image: circleci/python:3.6.4  # primary container for the build job
+    filters:
+      branches:
+        ignore:
+          - gh-pages
+    steps:
+      - *run_task_add_key
+      - *run_task_configure_git
+      - checkout
+      - run:
+          command: sudo pip install tox
+      - run:
+          command: tox -e docs
+      - run:
+          command: |
+            git clone $CIRCLE_REPOSITORY_URL --branch gh-pages --single-branch /tmp/ghpage
+            cd /tmp/ghpage
+            git rm -rf .
+            cp -r /home/circleci/project/.tox/docs/tmp/html/. /tmp/ghpage
+            git add -A
+            git commit -m "Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
+            git push origin gh-pages
+
+
+
+
+  debian-jessie-vanilla-fixversion-supervisor:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: debian-jessie-vanilla-fixversion-supervisor
+    <<: *molecule_tests_steps
+  debian-trusty-vanilla-oldversion-supervisor:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: debian-trusty-vanilla-oldversion-supervisor
+    <<: *molecule_tests_steps
+  debian-xenial-vanilla-fixversion-supervisor:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: debian-xenial-vanilla-fixversion-supervisor
+    <<: *molecule_tests_steps
+  debian-bionic-vanilla-fixversion-supervisor:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: debian-bionic-vanilla-fixversion-supervisor
+    <<: *molecule_tests_steps
+  debian-jessie-spigot-fixversion-supervisor:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: debian-jessie-spigot-fixversion-supervisor
+    <<: *molecule_tests_steps
+  debian-trusty-spigot-oldversion-supervisor:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: debian-trusty-spigot-oldversion-supervisor
+    <<: *molecule_tests_steps
+  debian-xenial-spigot-fixversion-supervisor:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: debian-xenial-spigot-fixversion-supervisor
+    <<: *molecule_tests_steps
+  debian-bionic-spigot-fixversion-supervisor:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: debian-bionic-spigot-fixversion-supervisor
+    <<: *molecule_tests_steps
+  debian-jessie-vanilla-fixversion-systemd:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: debian-jessie-vanilla-fixversion-systemd
+    <<: *molecule_tests_steps
+  debian-xenial-vanilla-fixversion-systemd:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: debian-xenial-vanilla-fixversion-systemd
+    <<: *molecule_tests_steps
+  debian-bionic-vanilla-fixversion-systemd:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: debian-bionic-vanilla-fixversion-systemd
+    <<: *molecule_tests_steps
+  redhat-centos7-vanilla-fixversion-systemd:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: redhat-centos7-vanilla-fixversion-systemd
+    <<: *molecule_tests_steps
+  redhat-twentyNine-vanilla-fixversion-systemd:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: redhat-twentyNine-vanilla-fixversion-systemd
+    <<: *molecule_tests_steps
+  debian-jessie-spigot-fixversion-systemd:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: debian-jessie-spigot-fixversion-systemd
+    <<: *molecule_tests_steps
+  debian-xenial-spigot-fixversion-systemd:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: debian-xenial-spigot-fixversion-systemd
+    <<: *molecule_tests_steps
+  debian-bionic-spigot-fixversion-systemd:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: debian-bionic-spigot-fixversion-systemd
+    <<: *molecule_tests_steps
+  redhat-centos7-spigot-fixversion-systemd:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: redhat-centos7-spigot-fixversion-systemd
+    <<: *molecule_tests_steps
+  redhat-twentyNine-spigot-fixversion-systemd:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: redhat-twentyNine-spigot-fixversion-systemd
+    <<: *molecule_tests_steps
+
+  debian-bionic-spigot-latest-systemd:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: debian-bionic-spigot-latest-systemd
+    <<: *molecule_tests_steps
+  redhat-centos7-spigot-latest-systemd:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: redhat-centos7-spigot-latest-systemd
+    <<: *molecule_tests_steps
+  redhat-twentyNine-vanilla-latest-systemd:
+    <<: *machine_configuration
+    environment:
+      SCENARIO_NAME: redhat-twentyNine-vanilla-latest-systemd
+    <<: *molecule_tests_steps
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - builddocs
+      - lintcheck
+      - debian-jessie-vanilla-fixversion-supervisor:
+          requires:
+            - builddocs
+            - lintcheck
+      - debian-trusty-vanilla-oldversion-supervisor:
+          requires:
+            - builddocs
+            - lintcheck
+      - debian-xenial-vanilla-fixversion-supervisor:
+          requires:
+            - builddocs
+            - lintcheck
+      - debian-bionic-vanilla-fixversion-supervisor:
+          requires:
+            - builddocs
+            - lintcheck
+      - debian-jessie-spigot-fixversion-supervisor:
+          requires:
+            - builddocs
+            - lintcheck
+      - debian-trusty-spigot-oldversion-supervisor:
+          requires:
+            - builddocs
+            - lintcheck
+      - debian-xenial-spigot-fixversion-supervisor:
+          requires:
+            - builddocs
+            - lintcheck
+      - debian-bionic-spigot-fixversion-supervisor:
+          requires:
+            - builddocs
+            - lintcheck
+
+      - debian-jessie-vanilla-fixversion-systemd:
+          requires:
+            - builddocs
+            - lintcheck
+      - debian-xenial-vanilla-fixversion-systemd:
+          requires:
+            - builddocs
+            - lintcheck
+      - debian-bionic-vanilla-fixversion-systemd:
+          requires:
+            - builddocs
+            - lintcheck
+      - redhat-centos7-vanilla-fixversion-systemd:
+          requires:
+            - builddocs
+            - lintcheck
+      - redhat-twentyNine-vanilla-fixversion-systemd:
+          requires:
+            - builddocs
+            - lintcheck
+      - debian-jessie-spigot-fixversion-systemd:
+          requires:
+            - builddocs
+            - lintcheck
+      - debian-xenial-spigot-fixversion-systemd:
+          requires:
+            - builddocs
+            - lintcheck
+      - debian-bionic-spigot-fixversion-systemd:
+          requires:
+            - builddocs
+            - lintcheck
+      - redhat-centos7-spigot-fixversion-systemd:
+          requires:
+            - builddocs
+            - lintcheck
+      - redhat-twentyNine-spigot-fixversion-systemd:
+          requires:
+            - builddocs
+            - lintcheck
+      - debian-bionic-spigot-latest-systemd:
+          requires:
+            - builddocs
+            - lintcheck
+      - redhat-centos7-spigot-latest-systemd:
+          requires:
+            - builddocs
+            - lintcheck
+      - redhat-twentyNine-vanilla-latest-systemd:
+          requires:
+            - builddocs
+            - lintcheck
+      - publish:
+          requires:
+            - debian-jessie-vanilla-fixversion-supervisor
+            - debian-trusty-vanilla-oldversion-supervisor
+            - debian-xenial-vanilla-fixversion-supervisor
+            - debian-bionic-vanilla-fixversion-supervisor
+            - debian-jessie-spigot-fixversion-supervisor
+            - debian-trusty-spigot-oldversion-supervisor
+            - debian-xenial-spigot-fixversion-supervisor
+            - debian-bionic-spigot-fixversion-supervisor
+            - debian-jessie-vanilla-fixversion-systemd
+            - debian-xenial-vanilla-fixversion-systemd
+            - debian-bionic-vanilla-fixversion-systemd
+            - redhat-centos7-vanilla-fixversion-systemd
+            - redhat-twentyNine-vanilla-fixversion-systemd
+            - debian-jessie-spigot-fixversion-systemd
+            - debian-xenial-spigot-fixversion-systemd
+            - debian-bionic-spigot-fixversion-systemd
+            - redhat-centos7-spigot-fixversion-systemd
+            - redhat-twentyNine-spigot-fixversion-systemd
+            - debian-bionic-spigot-latest-systemd
+            - redhat-centos7-spigot-latest-systemd
+            - redhat-twentyNine-vanilla-latest-systemd

@@ -1,0 +1,37 @@
+groups:
+  default:
+    options:
+      default: true
+    permissions:
+    - multiverse.portal.access.*
+  visitors:
+    inheritance:
+    - default
+    permissions:
+    - multiverse.portal.access.*
+    worlds:
+      world_survival:
+        permissions:
+        - permissions.*
+      world:
+        permissions:
+        - permissions.*
+  admins:
+    inheritance:
+    - default
+    permissions:
+    - craftbook.*
+    - permissions.*
+    - citizens.*
+    - shopchest.*
+    - multiverse.*
+    - essentials.*
+  gamer:
+    inheritance:
+    - default
+    permissions:
+    - modifyworld.*
+    - worldedit.*
+    - worldguard.*
+schema-version: 1
+users:

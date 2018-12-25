@@ -18,14 +18,16 @@ def test_minecraft_service_user_exists(host):
 
 def test_server_dir_exists(host):
     f = host.file('/opt/minecraft/server/current')
+    version  = host.ansible.get_variables()['mc_version']
     assert f.exists
     assert f.is_directory
     assert f.is_symlink
-    assert f.linked_to == '/opt/minecraft/server/releases/1.9'
+    assert f.linked_to == '/opt/minecraft/server/releases/'+version
 
 
 def test_server_jar_exists(host):
-    f = host.file('/opt/minecraft/server/releases/1.9/spigot-1.9.jar')
+    version  = host.ansible.get_variables()['mc_version']
+    f = host.file('/opt/minecraft/server/releases/'+version+'/spigot-'+version+'.jar')
     assert f.exists
     assert f.is_file
     assert f.user == 'spigot'
@@ -33,9 +35,10 @@ def test_server_jar_exists(host):
 
 
 def test_server_symlink_exists(host):
+    version  = host.ansible.get_variables()['mc_version']
     f = host.file('/opt/minecraft/server/shared/spigot.jar')
     assert f.is_symlink
-    assert f.linked_to == '/opt/minecraft/server/releases/1.9/spigot-1.9.jar'
+    assert f.linked_to == '/opt/minecraft/server/releases/'+version+'/spigot-'+version+'.jar'
 
 
 def test_eula_exists_exists(host):

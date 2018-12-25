@@ -1,4 +1,0 @@
----
-- name: install Supervisor
-  apt:
-    name: supervisor

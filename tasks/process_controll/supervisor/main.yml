@@ -1,8 +1,9 @@
 ---
-- include: supervisor/Debian.yml
+
+- include: Debian.yml
   when: ansible_os_family == 'Debian'
 
-- include: supervisor/RedHat.yml
+- include: RedHat.yml
   when: ansible_os_family == 'RedHat'
 
 - name: start Supervisor

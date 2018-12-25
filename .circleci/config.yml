@@ -133,7 +133,7 @@ jobs:
             git rm -rf .
             cp -r /home/circleci/project/.tox/docs/tmp/html/. /tmp/ghpage
             git add -A
-            git commit -m "Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
+            git commit -m "[ci skip] Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
             git push origin gh-pages
 
 

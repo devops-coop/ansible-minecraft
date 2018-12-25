@@ -137,8 +137,6 @@ jobs:
             git push origin gh-pages
 
 
-
-
   debian-jessie-vanilla-fixversion-supervisor:
     <<: *machine_configuration
     environment:

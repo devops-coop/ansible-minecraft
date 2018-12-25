@@ -1,7 +1,7 @@
 # ansible-minecraft
 
 
-** This is a fork from the https://github.com/devops-coop/ansible-minecraft/ Project, thanks for the basement!!!**
+**This is a fork from the https://github.com/devops-coop/ansible-minecraft/ Project, thanks for the basement!!!**
 
 
 [![CircleCI](https://circleci.com/gh/nolte/ansible-minecraft.svg?style=svg)](https://circleci.com/gh/nolte/ansible-minecraft) [![Build Status](https://travis-ci.org/nolte/ansible-minecraft.svg?branch=develop)](https://travis-ci.org/nolte/ansible-minecraft) [![Install from Ansible Galaxy](https://img.shields.io/badge/role-nolte.ansible__minecraft-blue.svg)](https://galaxy.ansible.com/nolte/ansible_minecraft) [![Chat on gitter.im](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/devops-coop/ansible-minecraft) [![](https://img.shields.io/github/release/nolte/ansible-minecraft.svg)](https://github.com/nolte/ansible-minecraft) [![Documentation Status](https://readthedocs.org/projects/ansible-minecraft/badge/?version=stable)](https://ansible-minecraft.readthedocs.io/en/stable/?badge=stable)

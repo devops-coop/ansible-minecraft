@@ -1,9 +1,14 @@
 Usage
 =======================
 
-For First usage of the Role crate a Ansible Playbook Project.
+.. toctree::
+   :maxdepth: 2
 
-with a structure like this:
+   configure
+   maintenance/index
+   
+
+For First usage of the Role crate a Ansible Playbook Project, with a structure like this:
 
 .. code-block:: shell
 
@@ -25,19 +30,10 @@ List this ``role`` under the ``requirements.yml`` file.
 .. code-block:: yaml
 
     ...
-    - name: nolte.minecraft
+    - name: nolte.ansible_minecraft
+      version: 4.1.0
     ...
-
-
 
 .. warning::
     Please when you host the Minecraft Server at the
     internet configure somethink like ``firewalld`` for a minimal portection, and don`t publish the ``rcon.port`` to the public space!!
-
-
-
-.. toctree::
-   :maxdepth: 2
-
-   configure
-   maintenance/index

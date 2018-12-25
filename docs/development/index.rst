@@ -1,6 +1,11 @@
 Development
 =====================
 
+.. toctree::
+   :maxdepth: 2
+
+   testing
+
 .. role:: red
 
 
@@ -57,31 +62,4 @@ a simple version update can be manual executed with:
 
 the updateable files are listed at ``.bumpversion.cfg`` at the project root directory.
 
-Testing
---------------------
-
-The Tests are impemented with `Molecule <https://molecule.readthedocs.io>`_
-
-.. code-block:: shell
-
-  molecule test -s spigot
-
-Molecule Tips
-*******************************
-
-**Starting the Containers**
-.. code-block:: shell
-
-  molecule create
-
-
-.. code-block:: shell
-
-  molecule converge
-
-  docker exec -t -i centos7 /bin/bash
-
-  verify       Run automated tests against instances.
-
-.. |Travis CI build status| image:: https://travis-ci.org/nolte/ansible-minecraft.svg?branch=develop
-    :target: https://travis-ci.org/nolte/ansible-minecraft
+.. include:: ../links.rst

@@ -111,6 +111,29 @@ jobs:
           command: sudo pip install ansible-lint
       - run:
           command: ansible-lint $(pwd)
+
+  # generate a changelog from existing github commits/pull requests
+  # using https://github.com/ferrarimarco/docker-github-changelog-generator as generate container
+  # the container wraps https://github.com/github-changelog-generator/github-changelog-generator
+  generate-changelog:
+    machine: true
+    working_directory: /tmp/workspace
+    steps:
+      - *run_task_prepare_jq
+      - *run_task_load_latest_ghrelease
+      - run:
+          name: generate CHANGELOG.md
+          command: |
+            LAST_VERSION="$(cat /tmp/workspace/last_release.txt)"
+            docker run -it --rm -v "$(pwd)":/usr/local/src/your-app ferrarimarco/github-changelog-generator:1.15.0.pre.beta --user ${CIRCLE_PROJECT_USERNAME} --project ${CIRCLE_PROJECT_REPONAME} --token ${GITHUB_TOKEN} --since-tag $LAST_VERSION
+      - store_artifacts:
+          path: /tmp/workspace
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+              - CHANGELOG.md
+
+
   builddocs:
     docker:
       - image: circleci/python:3.6.4  # primary container for the build job
@@ -248,6 +271,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
+      - generate-changelog
       - builddocs
       - lintcheck
       - debian-jessie-vanilla-fixversion-supervisor:

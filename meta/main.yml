@@ -1,20 +1,27 @@
 ---
 galaxy_info:
+  role_name: minecraft
   author: DevOps Co-op + Nolte
-  description: Provision a vanilla Minecraft server
+  description: Provision a vanilla and Spigot Minecraft server
   license: Apache 2.0
-  min_ansible_version: 2.0
+  min_ansible_version: 2.2
   platforms:
     - name: Ubuntu
       versions:
         - trusty
         - xenial
+        - bionic
     - name: Debian
       versions:
         - jessie
+        - stretch
+        - buster
     - name: EL
       versions:
         - 7
+    - name: Fedora
+      versions:
+        - 29
   galaxy_tags:
     - minecraft
     - game

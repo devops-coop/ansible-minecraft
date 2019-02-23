@@ -1,0 +1,5 @@
+MOLECULE_INSTANCE_COMMAND: /lib/systemd/systemd
+MOLECULE_INSTANCE_TEMPFS:
+  - /tmp
+  - /run
+  - /run/lock

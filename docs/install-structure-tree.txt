@@ -1,0 +1,25 @@
+[root@centos7 minecraft]# tree -L 3
+.
+|-- plugins
+|   |-- current -> /opt/minecraft/plugins/releases/minimal
+|   |-- releases
+|   |   `-- minimal
+|   `-- shared
+|       |-- PermissionsEx
+|       |-- PermissionsEx-1.23.4.jar -> /opt/minecraft/plugins/releases/minimal/PermissionsEx-1.23.4.jar
+|       |-- PluginMetrics
+|       |-- TNE.jar -> /opt/minecraft/plugins/releases/minimal/TNE.jar
+|       |-- TheNewEconomy
+|       |-- Updater
+|       |-- Vault
+|       |-- Vault.jar -> /opt/minecraft/plugins/releases/minimal/Vault.jar
+|       `-- bStats
+`-- server
+    |-- current -> /opt/minecraft/server/releases/1.9
+    |-- releases
+    |   `-- 1.9
+    `-- shared
+        |-- ...
+        |-- plugins -> /opt/minecraft/plugins/shared
+        |-- spigot.jar -> /opt/minecraft/server/current/spigot-1.9.jar
+        `-- ...

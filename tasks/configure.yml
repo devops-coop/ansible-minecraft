@@ -4,6 +4,7 @@
 # starts.
 - name: generate server.properties
   shell: |
+    executable=/bin/bash set -o pipefail && true |
     echo "stop" | java -Xmx{{ minecraft_max_memory }} -Xms{{ minecraft_initial_memory }} -jar {{ minecraft_jar }} nogui
   args:
     creates: server.properties

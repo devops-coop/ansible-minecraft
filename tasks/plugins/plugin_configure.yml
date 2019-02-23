@@ -12,3 +12,4 @@
     dest: "{{ deploy_helper.shared_path }}/{{ plugin_config_item.dest }}"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
+  changed_when: False

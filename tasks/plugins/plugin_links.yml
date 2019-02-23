@@ -1,5 +1,5 @@
 ---
-- name: "Recursively find /tmp files older than 2 days"
+- name: "Recursively find *.jar files"
   find:
     paths: "{{ deploy_helper.new_release_path }}"
     file_type: "file"
@@ -14,14 +14,14 @@
     force: true
   with_items: "{{ jarfiles.files }}"
 
-- name: "Recursively find /tmp files older than 2 days"
+- name: "Recursively find plugin config directories"
   find:
     paths: "{{ deploy_helper.new_release_path }}"
     file_type: "directory"
   register: "plugindirectories"
 
 
-- name: example copying file with owner and permissions
+- name: copying file with owner and permissions
   synchronize:
     src: '{{ item.path }}'
     dest: "{{ deploy_helper.shared_path }}/{{ item.path | regex_replace(deploy_helper.new_release_path) }}"
@@ -31,3 +31,4 @@
       - "--chown={{ minecraft_user }}:{{ minecraft_group }}"
   delegate_to: "{{ inventory_hostname }}"
   with_items: "{{ plugindirectories.files }}"
+  changed_when: False

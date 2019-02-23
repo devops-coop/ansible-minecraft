@@ -14,11 +14,15 @@ env:
     - SCENARIO_NAME=debian-xenial-spigot-fixversion-supervisor
     - SCENARIO_NAME=debian-bionic-spigot-fixversion-supervisor
     - SCENARIO_NAME=debian-jessie-vanilla-fixversion-systemd
+    - SCENARIO_NAME=debian-stretch-vanilla-fixversion-systemd
+    - SCENARIO_NAME=debian-buster-vanilla-fixversion-systemd
     - SCENARIO_NAME=debian-xenial-vanilla-fixversion-systemd
     - SCENARIO_NAME=debian-bionic-vanilla-fixversion-systemd
     - SCENARIO_NAME=redhat-centos7-vanilla-fixversion-systemd
     - SCENARIO_NAME=redhat-twentyNine-vanilla-fixversion-systemd
     - SCENARIO_NAME=debian-jessie-spigot-fixversion-systemd
+    - SCENARIO_NAME=debian-stretch-spigot-fixversion-systemd
+    - SCENARIO_NAME=debian-buster-spigot-fixversion-systemd
     - SCENARIO_NAME=debian-xenial-spigot-fixversion-systemd
     - SCENARIO_NAME=debian-bionic-spigot-fixversion-systemd
     - SCENARIO_NAME=redhat-centos7-spigot-fixversion-systemd
@@ -26,6 +30,7 @@ env:
     - SCENARIO_NAME=debian-bionic-spigot-latest-systemd
     - SCENARIO_NAME=redhat-centos7-spigot-latest-systemd
     - SCENARIO_NAME=redhat-twentyNine-vanilla-latest-systemd
+    - SCENARIO_NAME=plugins
     - SCENARIO_NAME=docs
 before_install:
   - sudo apt-get -qq update

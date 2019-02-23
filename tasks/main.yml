@@ -32,11 +32,12 @@
 
 - include: "{{ minecraft_hook_before_install | default('empty.yml') }}"
 
-- name: Finalize the deploy, removing the unfinished file and switching the symlink
+- name: Finalize the Server deploy, removing the unfinished file and switching the symlink
   deploy_helper:
     path: "{{ minecraft_home }}"
     release: '{{ deploy_helper.new_release }}'
     state: finalize
+  changed_when: False
 
 - include: install/main.yml
 

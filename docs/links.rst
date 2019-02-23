@@ -8,3 +8,7 @@
     :target: https://gitter.im/devops-coop/ansible-minecraft
 .. |Documentation Status| image:: https://readthedocs.org/projects/ansible-minecraft/badge/?version=stable
     :target: https://ansible-minecraft.readthedocs.io/en/stable/?badge=stable
+.. |Github Project Stars| image:: https://img.shields.io/github/stars/nolte/ansible-minecraft.svg?label=Stars&style=social
+    :target: https://github.com/nolte/ansible-minecraft
+.. |Github Issue Tracking| image:: https://img.shields.io/github/issues-raw/nolte/ansible-minecraft.svg
+    :target: https://github.com/nolte/ansible-minecraft

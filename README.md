@@ -4,7 +4,7 @@
 **This is a fork from the https://github.com/devops-coop/ansible-minecraft/ Project, thanks for the basement!!!**
 
 
-[![CircleCI](https://circleci.com/gh/nolte/ansible-minecraft.svg?style=svg)](https://circleci.com/gh/nolte/ansible-minecraft) [![Build Status](https://travis-ci.org/nolte/ansible-minecraft.svg?branch=develop)](https://travis-ci.org/nolte/ansible-minecraft) [![Install from Ansible Galaxy](https://img.shields.io/badge/role-nolte.ansible__minecraft-blue.svg)](https://galaxy.ansible.com/nolte/ansible_minecraft) [![Chat on gitter.im](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/devops-coop/ansible-minecraft) [![](https://img.shields.io/github/release/nolte/ansible-minecraft.svg)](https://github.com/nolte/ansible-minecraft) [![Documentation Status](https://readthedocs.org/projects/ansible-minecraft/badge/?version=stable)](https://ansible-minecraft.readthedocs.io/en/stable/?badge=stable)
+[![CircleCI](https://circleci.com/gh/nolte/ansible-minecraft.svg?style=svg)](https://circleci.com/gh/nolte/ansible-minecraft) [![Build Status](https://travis-ci.org/nolte/ansible-minecraft.svg?branch=develop)](https://travis-ci.org/nolte/ansible-minecraft) [![Install from Ansible Galaxy](https://img.shields.io/badge/role-nolte.ansible__minecraft-blue.svg)](https://galaxy.ansible.com/nolte/ansible_minecraft) [![Chat on gitter.im](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/devops-coop/ansible-minecraft) [![](https://img.shields.io/github/release/nolte/ansible-minecraft.svg)](https://github.com/nolte/ansible-minecraft) [![Documentation Status](https://readthedocs.org/projects/ansible-minecraft/badge/?version=latest)](https://ansible-minecraft.readthedocs.io/en/stable/?badge=latest)
 
 
 This role installs [Minecraft](https://minecraft.net/) or [Spigot](https://www.spigotmc.org/) and configures it to run under [systemd](https://wiki.freedesktop.org/www/Software/systemd/) or [Supervisor](http://supervisord.org/).
@@ -22,6 +22,14 @@ This role installs [Minecraft](https://minecraft.net/) or [Spigot](https://www.s
 -  manages ``server.properties``
 -  hooks: include arbitrary tasks at specific stages during execution
 
+### Out of Role Scop
+
+- executing backups and recovery
+- healthy checks like [Minecraft-Region-Fixer](https://github.com/Fenixin/Minecraft-Region-Fixer)
+- handle utility services like [filebeat](https://www.elastic.co/de/products/beats/filebeat) or [prometheus](https://github.com/prometheus/node_exporter)
+- install additional Tools like [rcon-cli](https://github.com/itzg/rcon-cli).
+
+**All of this is needet but not a part of this role!**
 
 ## Usage
 
@@ -37,7 +45,7 @@ or add this to your ``requirements.yml``
 
 ```
 - name: nolte.ansible_minecraft
-  version: 4.1.0
+  version: 4.1.0.dev
 ```
 
 and execute ``ansible-galaxy install -r requirements.yml``
@@ -49,8 +57,6 @@ and execute ``ansible-galaxy install -r requirements.yml``
     roles:
        - { role: nolte.ansible_minecraft, minecraft_whitelist: ["jeb_", "dinnerbone"]}
 ```
-
-you
 
 ## Requirements
 

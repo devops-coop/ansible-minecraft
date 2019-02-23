@@ -18,6 +18,7 @@
   file:
     path: '{{ deploy_helper.new_release_path }}/{{ deploy_helper.unfinished_filename }}'
     state: touch
+  changed_when: false
 
 - include_tasks: plugin_download.yml
   with_dict: "{{ minecraft_plugin_sets[minecraft_plugins_set_version] }}"
@@ -26,8 +27,9 @@
 
 - include_tasks: plugin_links.yml
 
-- name: Finalize the deploy, removing the unfinished file and switching the symlink
+- name: Finalize the deploy for plugins, removing the unfinished file and switching the symlink
   deploy_helper:
     path: "{{ minecraft_plugins }}"
     release: '{{ deploy_helper.new_release }}'
     state: finalize
+  changed_when: False

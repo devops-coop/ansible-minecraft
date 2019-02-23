@@ -7,16 +7,16 @@ ansible-minecraft changelog
 Added
 ~~~~~
 
-- (`#7 <https://github.com/devops-coop/ansible-minecraft/issues/7>`__) Support `Spigot <https://www.spigotmc.org/>`__.
-- Using `Molecule <https://molecule.readthedocs.io/>`__ for Role Integration Tests, Manual Docker build removed.
+- (`#7 <https://github.com/devops-coop/ansible-minecraft/issues/7>`_) Support `Spigot <https://www.spigotmc.org/>`_.
+- Using `Molecule <https://molecule.readthedocs.io/>`_ for Role Integration Tests, Manual Docker build removed.
 - Using `Ansible Download Helper <https://docs.ansible.com/ansible/latest/modules/deploy_helper_module.html>`_ for easy version rollbacks.
 - Add Support for install and handle Plugins.
-- The User must Accept the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__ by using a System Property or Playbook vars, the default is ``false``!!
+- The User must Accept the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`_ by using a System Property or Playbook vars, the default is ``false``!!
 
 Fixed
 ~~~~~
 
-- (`#26 <https://github.com/devops-coop/ansible-minecraft/issues/26>`__) Latest release download failing (s3 urls depricated )
+- (`#26 <https://github.com/devops-coop/ansible-minecraft/issues/26>`_) Latest release download failing (s3 urls depricated )
 
 
 Deprecated
@@ -49,7 +49,7 @@ Fixed
 Fixed
 ~~~~~
 
--  (`#9 <https://github.com/devops-coop/ansible-minecraft/isues/9>`__) Fixed `RuntimeError` regression when building ACL files.
+-  (`#9 <https://github.com/devops-coop/ansible-minecraft/isues/9>`_) Fixed ``RuntimeError`` regression when building ACL files.
 
 3.0.0 (2016-07-15)
 ------------------
@@ -57,8 +57,8 @@ Fixed
 Added
 ~~~~~
 
--  (`#5 <https://github.com/devops-coop/ansible-minecraft/pull/5>`__) Manage ``server.properties`` by setting ``minecraft_server_properties`` (Mark Côté).
--  (`#6 <https://github.com/devops-coop/ansible-minecraft/issues/6>`__) Hooks: Include additional tasks at specific points during execution.
+-  (`#5 <https://github.com/devops-coop/ansible-minecraft/pull/5>`_) Manage ``server.properties`` by setting ``minecraft_server_properties`` (Mark Côté).
+-  (`#6 <https://github.com/devops-coop/ansible-minecraft/issues/6>`_) Hooks: Include additional tasks at specific points during execution.
 
 Changed
 ~~~~~~~
@@ -68,7 +68,7 @@ Changed
 Fixed
 ~~~~~
 
--  (`#4 <https://github.com/devops-coop/ansible-minecraft/issues/4>`__) Improve build documentation.
+-  (`#4 <https://github.com/devops-coop/ansible-minecraft/issues/4>`_) Improve build documentation.
 
 2.2.0 (2016-05-30)
 ------------------
@@ -118,7 +118,7 @@ Fixed
 Added
 ~~~~~
 
--  Add `AUTHORS <AUTHORS.rst>`__ file.
+-  Add `AUTHORS <AUTHORS.rst>`_ file.
 
 Changed
 ~~~~~~~

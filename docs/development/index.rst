@@ -1,65 +1,30 @@
 Development
 =====================
 
+This section shoud be descripe how the development process *(coding, testing, releasing and publishing)* works.
+
 .. toctree::
    :maxdepth: 2
 
+   building
    testing
+   public-services
+
 
 .. role:: red
 
+Branch Modell
+------------------------------------------
+
+As Branchmodel we use a mix of `Gitflow <https://datasift.github.io/gitflow/IntroducingGitFlow.html>`_ and `pull-requests <https://help.github.com/articles/about-pull-requests/>`_.
+Gitflow is used for the Release Process, the ``master`` branch present the latest Published Release.
+PullRequests are used for integrate external changes and ``feature`` branches into the ``develop`` branch.
 
 | The ``develop`` branch contains the latest unrelesed version from the role, mostly stable ;)
 | New features will be develop in feature branches like ``feature/integrate-cuberite``, :red:`it`s not recomendet to use this on PRODUCTION!!!`.
+| The ``master`` present the latest published release.
 
 For the `Continuous Integration <https://en.wikipedia.org/wiki/Continuous_integration>`_ we use `Travis CI <https://travis-ci.org>`_ |Travis CI build status| as service.
 
-
-Building
---------------------
-
-As build script we use `Tox <https://tox.readthedocs.io/en/latest/config.html>`_, so it`s easy to execute the different kind of build commands like, generate docs or execute tests.
-
-.. code-block:: shell
-
-  tox -e spigot
-
-**Possible Tox Envs**
-
-+-------------+--------------------------------------------------------------------------------------------------------------------------------+
-| env         | Description                                                                                                                    |
-+-------------+--------------------------------------------------------------------------------------------------------------------------------+
-| ``docs``    | generates the sphinx documentation page (generated to ``.tox/docs/tmp/html/``)                                                 |
-+-------------+--------------------------------------------------------------------------------------------------------------------------------+
-| ``default`` | Execute an Molecule tests for the classic vanilla Minecraft server (Tested ``CentOS7``,``Ubuntu1604``,``Ubuntu18``,``Debian``) |
-+-------------+--------------------------------------------------------------------------------------------------------------------------------+
-| ``spigot``  | Execute the Molecule tests for a spigot server.                                                                                |
-+-------------+--------------------------------------------------------------------------------------------------------------------------------+
-
-
-Versioning
-************************************
-
-This project follows `semantic versioning <http://semver.org/>`_.
-
-In the context of semantic versioning, consider the role contract to be defined by the role variables.
-
--  Changes that require user intervention will increase the **major** version. This includes changing the default value of a role variable.
--  Changes that do not require user intervention, but add backwards-compatible features, will increase the **minor** version.
--  Bug fixes will increase the **patch** version.
-
-
-Releasing
-************************************
-
-- `bumpversion <https://github.com/peritus/bumpversion/blob/master/README.rst>`_
-
-a simple version update can be manual executed with:
-
-.. code-block:: shell
-
-    bumpversion minor
-
-the updateable files are listed at ``.bumpversion.cfg`` at the project root directory.
 
 .. include:: ../links.rst

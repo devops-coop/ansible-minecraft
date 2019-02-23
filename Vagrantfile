@@ -9,7 +9,7 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.box = "centos/7"
-  
+
   config.vm.provision "shell", inline: "yum -y install git unzip"
   config.vm.provision "ansible_local" do |ansible|
     ansible.verbose = "v"

@@ -1,12 +1,15 @@
-Usage
+.. _role_advanced_usage:
+
+Advanced Usage
 =======================
 
 .. toctree::
    :maxdepth: 2
 
    configure
+   role-variables
    maintenance/index
-   
+
 
 For First usage of the Role crate a Ansible Playbook Project, with a structure like this:
 
@@ -31,7 +34,7 @@ List this ``role`` under the ``requirements.yml`` file.
 
     ...
     - name: nolte.ansible_minecraft
-      version: 4.1.0
+      version: 4.1.0.dev
     ...
 
 .. warning::

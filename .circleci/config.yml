@@ -6,18 +6,33 @@ aliases:
   # SSH Deployment key for github Pushing,
   - &deploy_ssh_fingerprint "1a:10:6a:88:8a:a7:ef:95:55:be:15:2b:02:bd:3b:cb"
 
-  # @see https://github.com/aktau/github-release
-  # Used container for handle github release actions
-  - &container_releasemanager
-    docker:
-      - image: circleci/golang:1.8
-
   # add the GitHub Deployment Key to the ssh-agent
   # @see https://circleci.com/docs/2.0/add-ssh-key/
   - &run_task_add_key
     add_ssh_keys:
       fingerprints:
         - *deploy_ssh_fingerprint
+
+
+  - &run_task_add_gh_known_hosts
+    run:
+      name: Keyscan Github (HACK)
+      command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+
+  # Configure git user settings
+  # @see https://help.github.com/articles/setting-your-username-in-git/
+  - &run_task_configure_git
+    run:
+      name: configure git set global settings
+      command: |
+        git config --global user.email "$GIT_AUTHOR_EMAIL"
+        git config --global user.name "${CIRCLE_USERNAME}"
+
+  # @see https://github.com/aktau/github-release
+  # Used container for handle github release actions
+  - &container_releasemanager
+    docker:
+      - image: circleci/golang:1.8
 
   # @see https://stedolan.github.io/jq/
   # used for better JSon Command Line parsing.
@@ -27,6 +42,11 @@ aliases:
       command: |
         sudo wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -O /usr/bin/jq
         sudo chmod +x /usr/bin/jq
+  - &run_task_prepare_github-release-manager
+    run:
+      name: install aktau/github-release manager
+      command: |
+        go get github.com/aktau/github-release
 
   # Load the latest GitHub Release
   # Reuqired jq in the path
@@ -36,7 +56,7 @@ aliases:
       name: Load the Latest GH Release
       command: |
         LAST_VERSION="$(curl https://${GITHUB_TOKEN}@api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/releases/latest | jq -r '.tag_name' )"
-        echo $LAST_VERSION > /tmp/workspace/last_release.txt
+        echo $LAST_VERSION > /tmp/workspaces/last_release.txt
 
   # Load one version behind the latest GitHub Release
   # Reuqired jq in the path
@@ -46,61 +66,49 @@ aliases:
       name: Load the Previous GH Release
       command: |
         PREVIOUS_VERSION="$(curl https://${GITHUB_TOKEN}@api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/releases | jq -r '.[1].tag_name' )"
-        echo $PREVIOUS_VERSION > /tmp/workspace/previous_release.txt
+        echo $PREVIOUS_VERSION > /tmp/workspaces/previous_release.txt
 
-  - &run_task_configure_git
+  # extract the current version from the .bumpversion.cfg
+  # save the extractd version to /tmp/workspaces/current_version.txt for later use
+  # @see https://github.com/peritus/bumpversion
+  - &run_task_load_current_version_bumpversion_cfg
     run:
-      name: configure git set global settings
+      name: Load the Current Version from .bumpversion.cfg
       command: |
-        git config --global user.email "$GIT_AUTHOR_EMAIL"
-        git config --global user.name "${CIRCLE_USERNAME}"
+        CURRENT_VERSION="$(cat .bumpversion.cfg | grep current_version | sed -r s,"^.*=",, | sed 's/ //')"
+        echo $CURRENT_VERSION > /tmp/workspaces/current_version.txt
 
-  - &machine_configuration
-    machine:
-        enabled: true
-        docker_layer_caching: true
+  - &run_task_push_github_page
+    run:
+      command: |
+        git clone $CIRCLE_REPOSITORY_URL --branch gh-pages --single-branch /tmp/ghpage
+        cd /tmp/ghpage
+        git rm -rf .
+        cp -r /tmp/workspaces/html/. /tmp/ghpage
+        git add -A
+        git commit -m "[ci skip] Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
+        git push origin gh-pages
 
+  # @see https://circleci.com/docs/2.0/language-python/
+  # Used container for python based uilds
+  - &container_python
+    docker:
+      - image: circleci/python:3.6.4
 
-  - &molecule_tests_steps
-    steps:
-      - checkout
-      - run:
-          name: install ubuntu build reqs
-          command: |
-            sudo apt-get -qq update
-            sudo apt install -y build-essential libssl-dev libpython-dev python python-pip
-      - run:
-          name: configure docker
-          command: |
-            sudo apt-get -qq update
-            sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-ce
-            sudo pip install tox
-      - run:
-          name: pyversion
-          command: |
-            python --version
-      - run:
-          name: execute molecule test container
-          command: |
-            tox -e $SCENARIO_NAME
-          no_output_timeout: 30m
-      - run:
-          name: execute molecule test container
-          command: |
-            mkdir -p /tmp/reports/testinfra/
-            cp .tox/${CIRCLE_JOB}/tmp/molecule-report.xml /tmp/reports/testinfra/${CIRCLE_JOB}-report.xml
-      - store_test_results:
-          path: /tmp/reports
+  # @see https://tox.readthedocs.io/en/latest/install.html
+  # Install tox required system dependencies
+  - &run_task_install_tox_dependencies
+    run:
+      name: install tox dependencies
+      command: |
+        sudo apt-get -qq update
+        sudo apt install -y enchant build-essential libssl-dev libpython-dev python python-pip
+        sudo pip install tox
+
 jobs:
-  publish:
-    docker:
-      - image: circleci/python:3.6.4  # primary container for the build job
-    steps:
-      - run:
-          command: echo "publishing .... TBD"
+  # execute ansible lint checks
   lintcheck:
-    docker:
-      - image: circleci/python:3.6.4  # primary container for the build job
+    <<: *container_python
     filters:
       branches:
         ignore:
@@ -112,273 +120,210 @@ jobs:
       - run:
           command: ansible-lint $(pwd)
 
+
   # generate a changelog from existing github commits/pull requests
   # using https://github.com/ferrarimarco/docker-github-changelog-generator as generate container
   # the container wraps https://github.com/github-changelog-generator/github-changelog-generator
   generate-changelog:
     machine: true
-    working_directory: /tmp/workspace
+    working_directory: /tmp/workspaces/changelog
     steps:
       - *run_task_prepare_jq
       - *run_task_load_latest_ghrelease
       - run:
           name: generate CHANGELOG.md
           command: |
-            LAST_VERSION="$(cat /tmp/workspace/last_release.txt)"
-            docker run -it --rm -v "$(pwd)":/usr/local/src/your-app ferrarimarco/github-changelog-generator:1.15.0.pre.beta --user ${CIRCLE_PROJECT_USERNAME} --project ${CIRCLE_PROJECT_REPONAME} --token ${GITHUB_TOKEN} --since-tag $LAST_VERSION
+            LAST_VERSION="$(cat /tmp/workspaces/last_release.txt)"
+            docker run -it --rm -v "$(pwd)":/usr/local/src/your-app ferrarimarco/github-changelog-generator:1.15.0.pre.beta --user ${CIRCLE_PROJECT_USERNAME} --project ${CIRCLE_PROJECT_REPONAME} --token ${GITHUB_TOKEN} --since-tag $LAST_VERSION --no-unreleased
       - store_artifacts:
-          path: /tmp/workspace
+          path: /tmp/workspaces/changelog
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: /tmp/workspaces/changelog
           paths:
               - CHANGELOG.md
 
-
   builddocs:
-    docker:
-      - image: circleci/python:3.6.4  # primary container for the build job
-    filters:
-      branches:
-        ignore:
-          - gh-pages
+    <<: *container_python
+    working_directory: /tmp/workspaces/build
     steps:
-      - *run_task_add_key
+      - attach_workspace:
+          at: /tmp/workspaces
+      - *run_task_install_tox_dependencies
+      - run:
+          name: build the sphinx documentation
+          command: |
+            tox -e docs
+      - store_artifacts:
+          path: .tox/docs/tmp/html
+          destination: sphinx
+      - persist_to_workspace:
+          root: /tmp/workspaces/build/.tox/docs/tmp
+          paths:
+              - html
+
+  publishghpage:
+    <<: *container_python
+    working_directory: /tmp/workspaces/html
+    steps:
+      - attach_workspace:
+          at: /tmp/workspaces
       - *run_task_configure_git
+      - *run_task_add_key
+      - *run_task_add_gh_known_hosts
+      - *run_task_push_github_page
+
+  finializebuild:
+    <<: *container_python
+    working_directory: /tmp/workspaces/build
+    steps:
+      - *run_task_configure_git
+      - *run_task_add_key
+      - *run_task_add_gh_known_hosts
+      - attach_workspace:
+          at: /tmp/workspaces
+      - run:
+          name: Push changes to github if release build
+          command: |
+            if [ -f /tmp/workspaces/release_build.txt ]; then
+                echo "File not found!"
+                releaseBranch="$(cat /tmp/workspaces/release_build.txt)"
+                git push origin release/$releaseBranch
+                git push origin ${CIRCLE_BRANCH}
+            fi
+
+  check_grade_up_build:
+    <<: *container_python
+    working_directory: /tmp/workspaces/build
+    steps:
+      - *run_task_configure_git
+      - *run_task_add_key
+      - *run_task_install_tox_dependencies
       - checkout
       - run:
-          command: sudo pip install tox
-      - run:
-          command: tox -e docs
-      - run:
+          name: install bumpversion
           command: |
-            git clone $CIRCLE_REPOSITORY_URL --branch gh-pages --single-branch /tmp/ghpage
-            cd /tmp/ghpage
-            git rm -rf .
-            cp -r /home/circleci/project/.tox/docs/tmp/html/. /tmp/ghpage
-            git add -A
-            git commit -m "[ci skip] Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
-            git push origin gh-pages
+            sudo pip install bumpversion
+      - run:
+          name: check is release build
+          command: |
+            GIT_COMMIT_DESC=$(git log --format=%B -n 1 $CIRCLE_SHA1)
+            echo $GIT_COMMIT_DESC
+            if [[ $GIT_COMMIT_DESC =~ "GradeUP" ]] && [[ $CIRCLE_BRANCH == "develop" ]];
+            then
+              echo "match"
+              currentVersion=$(bumpversion --allow-dirty --dry-run --list release | grep new_version | sed -r s,"^.*=",,)
+              bumpversion --commit release
+              git checkout -b release/v$currentVersion-pre
+              git checkout develop
+              bumpversion --commit minor
+              echo "v$currentVersion-pre" > /tmp/workspaces/release_build.txt
+            else
+               echo "classic build"
+            fi
+      - persist_to_workspace:
+          root: /tmp/workspaces
+          paths:
+              - build/*
+              - release_build.txt
+
+  integrate_release:
+    <<: *container_releasemanager
+    working_directory: /tmp/workspaces/build
+    steps:
+      - *run_task_prepare_jq
+      - *run_task_configure_git
+      - *run_task_add_key
+      - *run_task_add_gh_known_hosts
+      - attach_workspace:
+          at: /tmp/workspaces
+      - run:
+          name: merge to master
+          command: |
+            git status
+            git checkout master
+            git pull origin master
+            git merge --ff --no-edit --verbose ${CIRCLE_BRANCH}
+            git checkout ${CIRCLE_BRANCH}
+            echo "merge to master"
 
 
-  debian-jessie-vanilla-fixversion-supervisor:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: debian-jessie-vanilla-fixversion-supervisor
-    <<: *molecule_tests_steps
-  debian-trusty-vanilla-oldversion-supervisor:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: debian-trusty-vanilla-oldversion-supervisor
-    <<: *molecule_tests_steps
-  debian-xenial-vanilla-fixversion-supervisor:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: debian-xenial-vanilla-fixversion-supervisor
-    <<: *molecule_tests_steps
-  debian-bionic-vanilla-fixversion-supervisor:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: debian-bionic-vanilla-fixversion-supervisor
-    <<: *molecule_tests_steps
-  debian-jessie-spigot-fixversion-supervisor:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: debian-jessie-spigot-fixversion-supervisor
-    <<: *molecule_tests_steps
-  debian-trusty-spigot-oldversion-supervisor:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: debian-trusty-spigot-oldversion-supervisor
-    <<: *molecule_tests_steps
-  debian-xenial-spigot-fixversion-supervisor:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: debian-xenial-spigot-fixversion-supervisor
-    <<: *molecule_tests_steps
-  debian-bionic-spigot-fixversion-supervisor:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: debian-bionic-spigot-fixversion-supervisor
-    <<: *molecule_tests_steps
-  debian-jessie-vanilla-fixversion-systemd:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: debian-jessie-vanilla-fixversion-systemd
-    <<: *molecule_tests_steps
-  debian-xenial-vanilla-fixversion-systemd:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: debian-xenial-vanilla-fixversion-systemd
-    <<: *molecule_tests_steps
-  debian-bionic-vanilla-fixversion-systemd:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: debian-bionic-vanilla-fixversion-systemd
-    <<: *molecule_tests_steps
-  redhat-centos7-vanilla-fixversion-systemd:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: redhat-centos7-vanilla-fixversion-systemd
-    <<: *molecule_tests_steps
-  redhat-twentyNine-vanilla-fixversion-systemd:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: redhat-twentyNine-vanilla-fixversion-systemd
-    <<: *molecule_tests_steps
-  debian-jessie-spigot-fixversion-systemd:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: debian-jessie-spigot-fixversion-systemd
-    <<: *molecule_tests_steps
-  debian-xenial-spigot-fixversion-systemd:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: debian-xenial-spigot-fixversion-systemd
-    <<: *molecule_tests_steps
-  debian-bionic-spigot-fixversion-systemd:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: debian-bionic-spigot-fixversion-systemd
-    <<: *molecule_tests_steps
-  redhat-centos7-spigot-fixversion-systemd:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: redhat-centos7-spigot-fixversion-systemd
-    <<: *molecule_tests_steps
-  redhat-twentyNine-spigot-fixversion-systemd:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: redhat-twentyNine-spigot-fixversion-systemd
-    <<: *molecule_tests_steps
+      - *run_task_load_current_version_bumpversion_cfg
+      - run:
+          name: create release tag
+          command: |
+            CURRENT_VERSION="$(cat /tmp/workspaces/current_version.txt)"
+            git tag v$CURRENT_VERSION
+            git push origin v$CURRENT_VERSION
+      - persist_to_workspace:
+          root: /tmp/workspaces
+          paths:
+              - build/*
 
-  debian-bionic-spigot-latest-systemd:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: debian-bionic-spigot-latest-systemd
-    <<: *molecule_tests_steps
-  redhat-centos7-spigot-latest-systemd:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: redhat-centos7-spigot-latest-systemd
-    <<: *molecule_tests_steps
-  redhat-twentyNine-vanilla-latest-systemd:
-    <<: *machine_configuration
-    environment:
-      SCENARIO_NAME: redhat-twentyNine-vanilla-latest-systemd
-    <<: *molecule_tests_steps
+  create_gh_release:
+    <<: *container_releasemanager
+    working_directory: /tmp/workspaces/build
+    steps:
+      - *run_task_prepare_jq
+      - *run_task_configure_git
+      - *run_task_add_key
+      - *run_task_add_gh_known_hosts
+      - *run_task_prepare_github-release-manager
+      - attach_workspace:
+          at: /tmp/workspaces
+      - *run_task_load_current_version_bumpversion_cfg
+      - run:
+          name: create github pre-release
+          command: |
+            CURRENT_VERSION="$(cat /tmp/workspaces/current_version.txt)"
+            message="$(cat /tmp/workspaces/CHANGELOG.md)"
+            github-release release \
+                --user ${CIRCLE_PROJECT_USERNAME} \
+                --repo ${CIRCLE_PROJECT_REPONAME} \
+                --tag "v${CURRENT_VERSION}" \
+                --name "v${CURRENT_VERSION}" \
+                --description "${message}" \
+                --pre-release
+
+      - run:
+          name: delete the release branch
+          command: |
+            git checkout master
+            git push origin master
+            git push origin --delete ${CIRCLE_BRANCH}
 
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - generate-changelog
-      - builddocs
-      - lintcheck
-      - debian-jessie-vanilla-fixversion-supervisor:
+      - check_grade_up_build
+      - lintcheck:
+          requires:
+            - check_grade_up_build
+      - builddocs:
+          requires:
+            - check_grade_up_build
+      - publishghpage:
           requires:
             - builddocs
             - lintcheck
-      - debian-trusty-vanilla-oldversion-supervisor:
+          filters:
+            branches:
+              only:
+                - master
+      - finializebuild:
           requires:
             - builddocs
             - lintcheck
-      - debian-xenial-vanilla-fixversion-supervisor:
+      - integrate_release:
+          filters:
+            branches:
+              only:
+                - /release\/v.*-pre/
           requires:
-            - builddocs
-            - lintcheck
-      - debian-bionic-vanilla-fixversion-supervisor:
+            - finializebuild
+      - generate-changelog:
           requires:
-            - builddocs
-            - lintcheck
-      - debian-jessie-spigot-fixversion-supervisor:
+            - integrate_release
+      - create_gh_release:
           requires:
-            - builddocs
-            - lintcheck
-      - debian-trusty-spigot-oldversion-supervisor:
-          requires:
-            - builddocs
-            - lintcheck
-      - debian-xenial-spigot-fixversion-supervisor:
-          requires:
-            - builddocs
-            - lintcheck
-      - debian-bionic-spigot-fixversion-supervisor:
-          requires:
-            - builddocs
-            - lintcheck
-
-      - debian-jessie-vanilla-fixversion-systemd:
-          requires:
-            - builddocs
-            - lintcheck
-      - debian-xenial-vanilla-fixversion-systemd:
-          requires:
-            - builddocs
-            - lintcheck
-      - debian-bionic-vanilla-fixversion-systemd:
-          requires:
-            - builddocs
-            - lintcheck
-      - redhat-centos7-vanilla-fixversion-systemd:
-          requires:
-            - builddocs
-            - lintcheck
-      - redhat-twentyNine-vanilla-fixversion-systemd:
-          requires:
-            - builddocs
-            - lintcheck
-      - debian-jessie-spigot-fixversion-systemd:
-          requires:
-            - builddocs
-            - lintcheck
-      - debian-xenial-spigot-fixversion-systemd:
-          requires:
-            - builddocs
-            - lintcheck
-      - debian-bionic-spigot-fixversion-systemd:
-          requires:
-            - builddocs
-            - lintcheck
-      - redhat-centos7-spigot-fixversion-systemd:
-          requires:
-            - builddocs
-            - lintcheck
-      - redhat-twentyNine-spigot-fixversion-systemd:
-          requires:
-            - builddocs
-            - lintcheck
-      - debian-bionic-spigot-latest-systemd:
-          requires:
-            - builddocs
-            - lintcheck
-      - redhat-centos7-spigot-latest-systemd:
-          requires:
-            - builddocs
-            - lintcheck
-      - redhat-twentyNine-vanilla-latest-systemd:
-          requires:
-            - builddocs
-            - lintcheck
-      - publish:
-          requires:
-            - debian-jessie-vanilla-fixversion-supervisor
-            - debian-trusty-vanilla-oldversion-supervisor
-            - debian-xenial-vanilla-fixversion-supervisor
-            - debian-bionic-vanilla-fixversion-supervisor
-            - debian-jessie-spigot-fixversion-supervisor
-            - debian-trusty-spigot-oldversion-supervisor
-            - debian-xenial-spigot-fixversion-supervisor
-            - debian-bionic-spigot-fixversion-supervisor
-            - debian-jessie-vanilla-fixversion-systemd
-            - debian-xenial-vanilla-fixversion-systemd
-            - debian-bionic-vanilla-fixversion-systemd
-            - redhat-centos7-vanilla-fixversion-systemd
-            - redhat-twentyNine-vanilla-fixversion-systemd
-            - debian-jessie-spigot-fixversion-systemd
-            - debian-xenial-spigot-fixversion-systemd
-            - debian-bionic-spigot-fixversion-systemd
-            - redhat-centos7-spigot-fixversion-systemd
-            - redhat-twentyNine-spigot-fixversion-systemd
-            - debian-bionic-spigot-latest-systemd
-            - redhat-centos7-spigot-latest-systemd
-            - redhat-twentyNine-vanilla-latest-systemd
+            - generate-changelog

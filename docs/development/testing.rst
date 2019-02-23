@@ -29,32 +29,31 @@ The Tests are impemented with `Molecule <https://molecule.readthedocs.io>`_
 Molecule Tips
 `````````````````````````````````````````````````````````````````````
 
-**Starting the Containers**
-.. code-block:: shell
+| For the development and debugging it is easyer and faster to execute the Molecule sequenzes step by step.
+| First you must start the container with ``molecule create``, after the containers started, you can execute the Role/Playbook ``molecule converge``.
+| Now, when all the steps are finished, you can execute the Integration Tests with ``molecule verify``
 
-  molecule create
+.. note::
 
+  For Debugging the role take a look into the container with ``docker exec -t -i centos7 /bin/bash``
 
-.. code-block:: shell
-
-  molecule converge
-
-  docker exec -t -i centos7 /bin/bash
-
-  verify       Run automated tests against instances.
 
 Testing with Vagrant
 -------------------------------------------------------------------
 
-This role includes a Vagrantfile used with a Docker-based test harness that approximates the Travis CI setup for integration testing. Using Vagrant allows all contributors to test on the same platform and avoid false test failures due to untested or incompatible docker versions.
+| This role includes a Vagrantfile used for `Exploratory testing <https://en.wikipedia.org/wiki/Exploratory_testing>`_.
+| If you want to use this vagrant machine follow this steps:
 
-1. Install `Vagrant <https://www.vagrantup.com/>`__ and `VirtualBox <https://www.virtualbox.org/>`__.
-1.1 Accept the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`__ with setting a Environment Property like: ``export mc_accept_eula=true && vagrant up``
+| 1. Install `Vagrant <https://www.vagrantup.com/>`_ and `VirtualBox <https://www.virtualbox.org/>`_.
+| 1.1. Accept the `Minecraft EULA <https://account.mojang.com/documents/minecraft_eula>`_ with setting a Environment Property like: ``export mc_accept_eula=true``
+| 2. Run ``vagrant up`` from the same directory as the Vagrantfile in this repository.
 
-2. Run ``vagrant up`` from the same directory as the Vagrantfile in this repository.
+.. note::
+  Now, you can start the game and conntecting again our server e.g. ``localhost:25565`` and test the changes.
 
-Now you can Connect with your Game again the Testserver on ``localhost:25565`` and test your server.
+| 3. for manual lookups you can connect over SSH into the VM with: ``vagrant ssh``
 
-3. for manual lookups you can connect over SSH into the VM with: ``vagrant ssh``
+.. note::
+  If the Vagrant box allways exists, you can reexecute the Playbook with ``vagrant rsync && vagrant provision``
 
 .. include:: ../links.rst

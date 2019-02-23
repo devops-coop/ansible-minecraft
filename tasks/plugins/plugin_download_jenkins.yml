@@ -1,0 +1,19 @@
+---
+- name: "find last successful build from jenkins"
+  uri:
+    url: "{{ plugin_item.value.src }}/api/json"
+    method: GET
+    return_content: yes
+    body_format: json
+    validate_certs: "{{ plugin_item.value.validate_certs | default(true) }}"
+  register: jenkins_plugin_build_response
+
+- name: filter the artefacts
+  set_fact:
+    plugin_download_src: "{{ jenkins_plugin_build_response.json.artifacts
+      | selectattr('fileName', 'match', '(^((?!sources).)*$)')
+      | list
+      | selectattr('fileName', 'match', '(^((?!javadoc).)*$)')
+      | list
+      | map(attribute='fileName')
+      | list  }}"

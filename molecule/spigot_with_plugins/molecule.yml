@@ -9,36 +9,6 @@ lint:
   name: yamllint
   enabled: false
 platforms:
-  - name: debianjessie
-    image: debian:jessie
-    command: /sbin/init
-    groups:
-      - minecraftserver
-    security_opts:
-      - seccomp=unconfined
-    capabilities:
-      - SYS_ADMIN
-    volumes:
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    tmpfs:
-      - /tmp
-      - /run
-      - /run/lock
-  - name: ubuntu16
-    image: solita/ubuntu-systemd:16.04
-    groups:
-      - minecraftserver
-    command: /sbin/init
-    security_opts:
-      - seccomp=unconfined
-    capabilities:
-      - SYS_ADMIN
-    volumes:
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    tmpfs:
-      - /tmp
-      - /run
-      - /run/lock
   - name: ubuntu18
     image: solita/ubuntu-systemd:18.04
     groups:
@@ -54,20 +24,6 @@ platforms:
       - /tmp
       - /run
       - /run/lock
-  - name: fedora
-    image: fedora:29
-    groups:
-      - minecraftserver
-    command: /usr/sbin/init
-    security_opts:
-      - seccomp=unconfined
-    capabilities:
-      - SYS_ADMIN
-    volumes:
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    tmpfs:
-      - /tmp
-      - /run
   - name: centos7
     image: centos:latest
     groups:
@@ -87,7 +43,7 @@ provisioner:
   inventory:
     group_vars:
       minecraftserver:
-        user_accept_minecraft_eula: ${mc_accept_eula}
+        user_accept_minecraft_eula: ${mc_accept_eula:-false}
         minecraft_server: spigot
         mc_version: 1.13.1
         minecraft_plugins_set_version: "minimal"
@@ -100,6 +56,10 @@ provisioner:
               config:
                 - src: config_permissionex.yml.j2
                   dest: PermissionsEx/config.yml
+            jenkinsbuild:
+              src: https://ci.onarandombox.com/job/Multiverse-SignPortals/lastSuccessfulBuild
+              type: "jenkins_latest"
+              validate_certs: false
             tne:
               src: https://github.com/TheNewEconomy/TNE-Bukkit/releases/download/Beta-1.1.3/Beta.1.1.3.zip
               type: "archive"

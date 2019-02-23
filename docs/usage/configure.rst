@@ -18,7 +18,7 @@ Example
 
     - hosts: minecraft
       roles:
-         - { role: nolte.ansible_minecraft, minecraft_whitelist: ["jeb_", "dinnerbone"]}
+         - { role: nolte.minecraft, minecraft_whitelist: ["jeb_", "dinnerbone"]}
 
 
 Install Plugins

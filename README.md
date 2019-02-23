@@ -4,7 +4,7 @@
 **This is a fork from the https://github.com/devops-coop/ansible-minecraft/ Project, thanks for the basement!!!**
 
 
-[![CircleCI](https://circleci.com/gh/nolte/ansible-minecraft.svg?style=svg)](https://circleci.com/gh/nolte/ansible-minecraft) [![Build Status](https://travis-ci.org/nolte/ansible-minecraft.svg?branch=develop)](https://travis-ci.org/nolte/ansible-minecraft) [![Install from Ansible Galaxy](https://img.shields.io/badge/role-nolte.ansible__minecraft-blue.svg)](https://galaxy.ansible.com/nolte/ansible_minecraft) [![Chat on gitter.im](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/devops-coop/ansible-minecraft) [![](https://img.shields.io/github/release/nolte/ansible-minecraft.svg)](https://github.com/nolte/ansible-minecraft) [![Documentation Status](https://readthedocs.org/projects/ansible-minecraft/badge/?version=latest)](https://ansible-minecraft.readthedocs.io/en/stable/?badge=latest)
+[![CircleCI](https://circleci.com/gh/nolte/ansible-minecraft.svg?style=svg)](https://circleci.com/gh/nolte/ansible-minecraft) [![Build Status](https://travis-ci.org/nolte/ansible-minecraft.svg?branch=develop)](https://travis-ci.org/nolte/ansible-minecraft) [![Install from Ansible Galaxy](https://img.shields.io/badge/role-nolte.ansible__minecraft-blue.svg)](https://galaxy.ansible.com/nolte/minecraft) [![Chat on gitter.im](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/devops-coop/ansible-minecraft) [![](https://img.shields.io/github/release/nolte/ansible-minecraft.svg)](https://github.com/nolte/ansible-minecraft) [![Documentation Status](https://readthedocs.org/projects/ansible-minecraft/badge/?version=latest)](https://ansible-minecraft.readthedocs.io/en/stable/?badge=latest)
 
 
 This role installs [Minecraft](https://minecraft.net/) or [Spigot](https://www.spigotmc.org/) and configures it to run under [systemd](https://wiki.freedesktop.org/www/Software/systemd/) or [Supervisor](http://supervisord.org/).
@@ -38,13 +38,13 @@ This role installs [Minecraft](https://minecraft.net/) or [Spigot](https://www.s
 ### Install
 
 ```
-   ansible-galaxy install nolte.ansible_minecraft
+   ansible-galaxy install nolte.minecraft
 ```
 
 or add this to your ``requirements.yml``
 
 ```
-- name: nolte.ansible_minecraft
+- name: nolte.minecraft
   version: 4.2.0.dev
 ```
 
@@ -55,7 +55,7 @@ and execute ``ansible-galaxy install -r requirements.yml``
 ```
   - hosts: minecraft
     roles:
-       - { role: nolte.ansible_minecraft, minecraft_whitelist: ["jeb_", "dinnerbone"]}
+       - { role: nolte.minecraft, minecraft_whitelist: ["jeb_", "dinnerbone"]}
 ```
 
 ## Requirements

@@ -33,7 +33,7 @@ List this ``role`` under the ``requirements.yml`` file.
 .. code-block:: yaml
 
     ...
-    - name: nolte.ansible_minecraft
+    - name: nolte.minecraft
       version: 4.2.0.dev
     ...
 

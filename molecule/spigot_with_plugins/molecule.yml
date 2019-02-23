@@ -80,7 +80,6 @@ verifier:
   name: testinfra
   directory: ../resources/tests/
   additional_files_or_dirs:
-    - ../tests_spigot/
     - ../tests_plugins/
   lint:
     name: flake8

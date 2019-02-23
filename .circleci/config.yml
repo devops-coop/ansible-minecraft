@@ -215,7 +215,12 @@ jobs:
               bumpversion --commit release
               git checkout -b release/v$currentVersion-pre
               git checkout develop
-              bumpversion --commit minor
+              if [[ $GIT_COMMIT_DESC =~ "minor" ]];
+              then
+                bumpversion --commit minor
+              else
+                bumpversion --commit patch
+              fi
               echo "v$currentVersion-pre" > /tmp/workspaces/release_build.txt
             else
                echo "classic build"
@@ -281,8 +286,7 @@ jobs:
                 --repo ${CIRCLE_PROJECT_REPONAME} \
                 --tag "v${CURRENT_VERSION}" \
                 --name "v${CURRENT_VERSION}" \
-                --description "${message}" \
-                --pre-release
+                --description "${message}"
 
       - run:
           name: delete the release branch

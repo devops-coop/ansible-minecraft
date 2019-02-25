@@ -17,6 +17,8 @@ Vagrant.configure(2) do |config|
   config.vm.provision "ansible_local" do |ansible|
 #    ansible.verbose = "v"
     ansible.become = true
+    ansible.install_mode = "pip"
+    ansible.version = "2.4.0.0"
     ansible.extra_vars = {
       user_accept_minecraft_eula: ENV['mc_accept_eula']
     }

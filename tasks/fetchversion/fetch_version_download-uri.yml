@@ -9,28 +9,27 @@
   set_fact:
     minecraft_version_int: "{{ minecraft_versions.json.latest.release }}"
   when: minecraft_version == "latest"
-  no_log: true
 
 - name: find latest release version
   set_fact:
     minecraft_version_int: "{{ minecraft_version }}"
   when: minecraft_version != "latest"
-  no_log: true
 
-- name: extract version specific mainfest file
+- name: find latest release version
   set_fact:
-    minecraft_version_manifest_url: "{{ item.url }}"
-  when: item.id == (minecraft_version_int|string)
-  with_items: "{{ minecraft_versions.json.versions }}"
-  no_log: true
+    minecraft_version_download_manifest_url: "{{ minecraft_versions.json.versions
+      | selectattr('id', 'eq', (minecraft_version_int|string) )
+      | map(attribute='url')
+      | list
+      | first }}"
 
 - name: show located minecraft version
   debug:
-    msg: "Download {{ minecraft_version_int }} from {{ minecraft_version_manifest_url }}"
+    msg: "Download {{ minecraft_version_int }} from {{ minecraft_version_download_manifest_url }}"
 
 - name: Download the version specific mainfest file
   uri:
-    url: "{{ minecraft_version_manifest_url }}"
+    url: "{{ minecraft_version_download_manifest_url }}"
     return_content: true
   register: minecraft_version_info
 

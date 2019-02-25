@@ -1,4 +1,9 @@
 ---
+- name: "refresh plugin release"
+  include_tasks: handlers/plugin_links.yml
+  notify:
+    - restart Minecraft
+
 # Chain handlers to support multiple process supervisors. A task simply needs
 # to notify 'restart Minecraft', which will trigger the supervisor-specific
 # actions.
@@ -36,6 +41,7 @@
     state: restarted
   become: true
   when: minecraft_process_control == 'supervisor'
+
 
 
 

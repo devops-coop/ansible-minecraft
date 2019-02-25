@@ -24,8 +24,9 @@
   with_dict: "{{ minecraft_plugin_sets[minecraft_plugins_set_version] }}"
   loop_control:
     loop_var: plugin_item
+  register: installed_plugins
 
-- include_tasks: plugin_links.yml
+#- meta: flush_handlers
 
 - name: Finalize the deploy for plugins, removing the unfinished file and switching the symlink
   deploy_helper:

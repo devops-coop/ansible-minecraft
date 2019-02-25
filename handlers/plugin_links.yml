@@ -1,7 +1,13 @@
 ---
-- name: "Recursively find *.jar files"
+
+- name: define plugin directories
+  set_fact:
+    plugin_sources: "{{ minecraft_plugins }}/current"
+    plugin_target_link: "{{ minecraft_plugins }}/shared"
+
+- name: "Find All Plugin *.jar files from the current Release"
   find:
-    paths: "{{ deploy_helper.new_release_path }}"
+    paths: "{{ plugin_sources }}"
     file_type: "file"
     patterns: "*.jar"
   register: "jarfiles"
@@ -9,26 +15,24 @@
 - name: "Recreate symlinks"
   file:
     src: '{{ item.path }}'
-    dest: "{{ deploy_helper.shared_path }}/{{ item.path | regex_replace(deploy_helper.new_release_path) }}"
+    dest: "{{ item.path | regex_replace(plugin_sources, plugin_target_link ) }}"
     state: link
     force: true
   with_items: "{{ jarfiles.files }}"
 
 - name: "Recursively find plugin config directories"
   find:
-    paths: "{{ deploy_helper.new_release_path }}"
+    paths: "{{ plugin_sources }}"
     file_type: "directory"
   register: "plugindirectories"
 
-
 - name: copying file with owner and permissions
   synchronize:
-    src: '{{ item.path }}'
-    dest: "{{ deploy_helper.shared_path }}/{{ item.path | regex_replace(deploy_helper.new_release_path) }}"
+    src: '{{ item.path }}/'
+    dest: "{{ item.path | regex_replace(plugin_sources, plugin_target_link ) }}/"
     dirs: true
     recursive: true
     rsync_opts:
       - "--chown={{ minecraft_user }}:{{ minecraft_group }}"
   delegate_to: "{{ inventory_hostname }}"
   with_items: "{{ plugindirectories.files }}"
-  changed_when: False

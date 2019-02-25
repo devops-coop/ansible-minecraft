@@ -1,0 +1,30 @@
+---
+
+- name: direct set the jar download url
+  set_fact:
+      plugin_download_src: "{{ plugin_item.value.src }}"
+  when: (".jar" in plugin_item.value.src)
+
+- include_tasks: plugin_download_jenkins.yml
+  when: plugin_item.value.type is defined and plugin_item.value.type == "jenkins_latest"
+
+- name: define target dest name
+  set_fact:
+    download_dest: "{{ deploy_helper.new_release_path }}/{{ plugin_item.value.dest }}"
+  when:  plugin_item.value.dest is defined
+
+- name: define target dest name
+  set_fact:
+    download_dest: "{{ deploy_helper.new_release_path }}"
+  when:  plugin_item.value.dest is undefined
+
+- name: "Download {{ plugin_item.key }}"
+  get_url:
+    url: "{{ plugin_download_src }}"
+    dest: "{{ download_dest }}"
+    validate_certs: "{{ plugin_item.value.validate_certs | default(true) }}"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    force: "{{ plugin_item.value.force | default(false) }}"
+  register: download_reporter
+  notify: "refresh plugin release"

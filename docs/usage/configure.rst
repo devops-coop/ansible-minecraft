@@ -1,18 +1,20 @@
 .. _role_config_role:
 
 Configure the Role
-=============================
+***********************************************************************
 
-.. literalinclude:: ../install-structure-tree.txt
-   :language: bash
+This role shoud fix two Problems, firstly :ref:`role_config_role_server` and secondly :ref:`role_config_role_plugins`.
 
+.. _role_config_role_server:
 
 Configure the Server
------------------------------
+=======================================================================
 
+This Role will be install by default a vanilla server to the configured :ref:`Server Directory <role_config_variabels-minecraft_home>`.
+You will find a full list of configuration attributes on :ref:`role_config_variabels`.
 
 Example
-`````````````````````````````````````````````````````````````````
+-----------------------------------------------------------------------
 
 .. code:: yaml
 
@@ -21,43 +23,71 @@ Example
          - { role: nolte.minecraft, minecraft_whitelist: ["jeb_", "dinnerbone"]}
 
 
+.. _role_config_role_plugins:
+
 Install Plugins
--------------------------------
+=======================================================================
 
-| The Problems by many plugins is the copatibility.
-| The most plugins have a ``*.jar``` and a configuration Folder.
-| Plugin updates shoud only change the used ``*.jar``.
-| The config of a plugin will be placed under ``plugins/shared``.
-| the jars placed under ``plugins/releases/{pluginsets}/*.jar`` and will finaly link to ``plugins/shared``
+The plugins will installed to the Configured :ref:`Plugins Location <role_config_variabels-minecraft_plugins>`
+into a Release subfolder like ``plugins/releases/{pluginsets}/*.jar`` and finaly link to ``plugins/shared``.
 
-| finaly the ``plugins/shared`` will be linked to ``server/shared/plugins``
-| all pluginruntime data of your server will be stored under ``plugins/shared``
-
-**example config:**
-
-.. code-block:: yaml
-
-    minecraft_plugins_set_version: "minimal"
-    minecraft_plugin_sets:
-      minimal:
-        vault:
-          src: https://media.forgecdn.net/files/2615/750/Vault.jar
-        permissionsEx:
-          src: https://media.forgecdn.net/files/909/154/PermissionsEx-1.23.4.jar
-          config:
-            - src: config_permissionex.yml.j2
-              dest: PermissionsEx/config.yml
-        tne:
-          src: https://github.com/TheNewEconomy/TNE-Bukkit/releases/download/Beta-1.1.3/Beta.1.1.3.zip
-          type: "archive"
-        multiverse:
-          src: https://ci.onarandombox.com/job/Multiverse-SignPortals/lastSuccessfulBuild
-          type: "jenkins_latest"
-          validate_certs: false
+The ``plugins/shared`` Directory will be linked to ``server/shared/plugins`` all Plugin Runtime-data of
+your server will be stored under ``plugins/shared``, see :ref:`maintenance_structure_fs`.
 
 
-Configure Plugin
-`````````````````````````````````````````````````````````````````
+.. literalinclude:: ./../../playbook_configure_vagrent.yml
+   :language: yaml
+   :lines: 8-28
+   :caption: Example Plugin Source Config file
+   :name: example-plugins-config
 
-| To automatical configure a plugin create a ``Jinja`` templatefile at your Playbook ``templates`` folder, and add a ``config:`` entry.
-| The ``dest:`` path is relative to the ``plugins/shared`` folder.
+.. _role_config_role_plugins-download-src:
+
+Configure Plugin Download Source
+-----------------------------------------------------------------------
+
+Directly Download a ``*.jar`` from a Webserver, like ``media.forgecdn.net``.
+
+``type`` (*optional*)
+   default direct jar
+
+.. _role_config_role_plugins-jenkins:
+
+   ``"jenkins_latest"`` used for load the latest successful build.
+
+.. _role_config_role_plugins-archive:
+
+   ``"archive"`` used for load and unpack some Archive from remote.
+
+``src``
+   The Download Source from the Plugin.
+
+``dest`` (*optional*)
+   The local jar name, like ``PermissionsEx.jar``
+
+``force`` (*optional*)
+   overwrite allways existing plugins, (default: ``false``).
+
+``validate_certs`` (*optional*)
+   If ``false``, SSL certificates will not be validated, look (`Ansible Doc, validate_certs <https://docs.ansible.com/ansible/latest/modules/get_url_module.html>`_) (default: ``true``).
+
+``jenkins_artefact_path`` (*optional*)
+   | system group Minecraft runs as (default: ``/artifact/target``)
+   | only usable with ``type: "jenkins_latest"``
+
+.. _role_config_role_plugins-configure:
+
+``config`` (*optional*)
+  | To automatical configure a plugin create a ``Jinja`` templatefile at your Playbook ``templates`` folder, and add a ``config:`` entry.
+  | The ``dest:`` path is relative to the ``plugins/shared`` folder.
+
+
+  .. code-block:: yaml
+     :caption: You can set a list of ``dict`s`` like:
+     :name: example-plugin-conf-template
+
+     ...
+     config:
+       - src: "{{ playbook_dir }}/templates/config_permissionex.yml.j2"
+         dest: PermissionsEx/config.yml
+     ...

@@ -53,11 +53,13 @@ provisioner:
               src: https://media.forgecdn.net/files/2615/750/Vault.jar
             permissionsEx:
               src: https://media.forgecdn.net/files/909/154/PermissionsEx-1.23.4.jar
+              dest: PermissionsEx.jar
               config:
                 - src: config_permissionex.yml.j2
                   dest: PermissionsEx/config.yml
-            jenkinsbuild:
+            multiverse-signportals:
               src: https://ci.onarandombox.com/job/Multiverse-SignPortals/lastSuccessfulBuild
+              dest: Multiverse.jar
               type: "jenkins_latest"
               validate_certs: false
             tne:

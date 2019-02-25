@@ -1,34 +1,25 @@
 ---
-- name: "Download {{ plugin_item.key }}"
-  unarchive:
-    src: "{{ plugin_item.value.src }}"
-    dest: "{{ deploy_helper.new_release_path }}"
-    remote_src: true
-    validate_certs: "{{ plugin_item.value.validate_certs | default(true) }}"
-    owner: "{{ minecraft_user }}"
-    group: "{{ minecraft_group }}"
-  changed_when: False
-  when: plugin_item.value.type is defined and plugin_item.value.type == "archive"
-
-- name: direct set the jar download url
-  set_fact:
-      plugin_download_src: "{{ plugin_item.value.src }}"
-  when: (".jar" in plugin_item.value.src)
-
-- include_tasks: plugin_download_jenkins.yml
-  when: plugin_item.value.type is defined and plugin_item.value.type == "jenkins_latest"
-
-- name: "Download {{ plugin_item.key }}"
-  get_url:
-    url: "{{ plugin_download_src }}"
-    dest: "{{ deploy_helper.new_release_path }}"
-    validate_certs: "{{ plugin_item.value.validate_certs | default(true) }}"
-    owner: "{{ minecraft_user }}"
-    group: "{{ minecraft_group }}"
-  changed_when: False
+- include_tasks: plugin_download_archive.yml
   when:
-    (plugin_item.value.type is undefined or plugin_item.value.type != "archive") and
-    (".jar" in plugin_item.value.src)
+    plugin_item.value.type is defined and
+    plugin_item.value.type == "archive"
+
+- include_tasks: plugin_download_direct.yml
+  when:
+    plugin_item.value.type is undefined or
+    plugin_item.value.type == "jenkins_latest"
+
+
+- name: create a plugin download report
+  template:
+    src: plugin-download-report.txt.j2
+    dest: "{{ deploy_helper.new_release_path }}/report-{{ plugin_item.key }}.yml"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+  when:
+    ( download_reporter is defined and download_reporter.changed )
+  tags:
+    - skip_ansible_lint
 
 - include_tasks: plugin_configure.yml
   with_items: "{{ plugin_item.value.config }}"

@@ -6,10 +6,17 @@
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
 
+- name: check the config file allways exists
+  stat:
+    path: "{{ deploy_helper.shared_path }}/{{ plugin_config_item.dest }}"
+  register: config_file
+
 - name: put config template to plugin dir
   template:
     src: "{{ plugin_config_item.src }}"
     dest: "{{ deploy_helper.shared_path }}/{{ plugin_config_item.dest }}"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
-  changed_when: False
+  when: ( not config_file.stat.exists ) or
+    ( plugin_config_item.force is defined and
+      plugin_config_item.force )

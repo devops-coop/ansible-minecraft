@@ -1,5 +1,6 @@
 import os
 
+import pytest
 import testinfra.utils.ansible_runner
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
@@ -27,17 +28,34 @@ def test_plugins_shared_dir_exists(host):
     assert f.is_directory
 
 
-def test_plugins_jar_exists(host):
-    f = host.file("/opt/minecraft/plugins/shared/Vault.jar")
+@pytest.mark.parametrize(
+    "pluginJarFilename", ["multiverse-signportals", "permissionsEx", "vault", "tne"]
+)
+def test_plugins_install_report_exists(host, pluginJarFilename):
+    f = host.file(
+        "/opt/minecraft/plugins/releases/minimal/report-" + pluginJarFilename + ".yml"
+    )
+    assert f.exists
+    assert f.is_file
+
+
+@pytest.mark.parametrize(
+    "pluginJarFilename", ["Vault.jar", "Multiverse.jar", "PermissionsEx.jar"]
+)
+def test_plugins_jar_exists(host, pluginJarFilename):
+    f = host.file("/opt/minecraft/plugins/shared/" + pluginJarFilename)
     assert f.exists
     assert f.is_file
     assert f.is_symlink
-    assert f.linked_to == "/opt/minecraft/plugins/releases/minimal/Vault.jar"
+    assert f.linked_to == "/opt/minecraft/plugins/releases/minimal/" + pluginJarFilename
 
 
-def test_plugins_jar_in_server_exists(host):
-    f = host.file("/opt/minecraft/server/shared/plugins/Vault.jar")
+@pytest.mark.parametrize(
+    "pluginJarFilename", ["Vault.jar", "Multiverse.jar", "PermissionsEx.jar"]
+)
+def test_plugins_jar_in_server_exists(host, pluginJarFilename):
+    f = host.file("/opt/minecraft/server/shared/plugins/" + pluginJarFilename)
     assert f.exists
     assert f.is_file
     assert f.is_symlink
-    assert f.linked_to == "/opt/minecraft/plugins/releases/minimal/Vault.jar"
+    assert f.linked_to == "/opt/minecraft/plugins/releases/minimal/" + pluginJarFilename

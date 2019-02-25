@@ -10,8 +10,21 @@
         minimal:
           vault:
             src: https://media.forgecdn.net/files/2615/750/Vault.jar
+          permissionsEx:
+            src: https://media.forgecdn.net/files/909/154/PermissionsEx-1.23.4.jar
+            dest: PermissionsEx.jar
+            config:
+              - src: "{{ playbook_dir }}/molecule/resources/playbooks/templates/config_permissionex.yml.j2"
+                dest: PermissionsEx/config.yml
+          multiverseCore:
+            src: https://ci.onarandombox.com/job/Multiverse-Core/lastSuccessfulBuild
+            dest: Multiverse-Core.jar
+            type: "jenkins_latest"
+            jenkins_artefact_path: "/artifact/target"
+            force: true
+            validate_certs: false
           tne:
-            src: https://github.com/TheNewEconomy/TNE-Bukkit/releases/download/Beta-1.1.3/Beta.1.1.3.zip
+            src: https://github.com/TheNewEconomy/TNE-Bukkit/releases/download/0.1.1.8/TNE-0.1.1.8.zip
             type: "archive"
       minecraft_server_properties:
         server-port: 25565

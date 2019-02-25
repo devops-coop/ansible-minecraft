@@ -1,0 +1,18 @@
+last_update: {{ ansible_date_time.iso8601 | quote }}
+plugin_key: {{ plugin_item.key | quote }}
+original_url: {{ plugin_item.value.src | quote }}
+{% if download_reporter.url is defined -%}
+url: {{ download_reporter.url | quote }}
+{% endif %}
+{% if download_reporter.checksum_src is defined -%}
+checksum_src: {{ download_reporter.checksum_src | quote }}
+{% endif %}
+{% if download_reporter.dest is defined -%}
+dest: {{ download_reporter.dest | quote }}
+{% endif %}
+{% if download_reporter.md5sum is defined -%}
+md5sum: {{ download_reporter.md5sum | quote }}
+{% endif %}
+{% if download_reporter.size is defined -%}
+size: {{ download_reporter.size }}
+{% endif %}

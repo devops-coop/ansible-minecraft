@@ -8,11 +8,14 @@ Vagrant.configure(2) do |config|
     v.cpus = 2
   end
 
+  config.vm.synced_folder ".", "/vagrant", type: "rsync",
+      rsync__exclude: [".git/",".tox/"]
+
   config.vm.box = "centos/7"
 
   config.vm.provision "shell", inline: "yum -y install git unzip"
   config.vm.provision "ansible_local" do |ansible|
-    ansible.verbose = "v"
+#    ansible.verbose = "v"
     ansible.become = true
     ansible.extra_vars = {
       user_accept_minecraft_eula: ENV['mc_accept_eula']

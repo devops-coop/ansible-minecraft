@@ -1,0 +1,27 @@
+---
+
+- name: filter the artefacts
+  set_fact:
+    plugin_download_src: "{{ plugin_item.value.src }}"
+
+- name: check the config file allways exists
+  stat:
+    path: "{{ deploy_helper.new_release_path }}/report-{{ plugin_item.key }}.yml"
+  register: config_file
+
+- name: "Download {{ plugin_item.key }}"
+  unarchive:
+    src: "{{ plugin_download_src }}"
+    dest: "{{ deploy_helper.new_release_path }}"
+    remote_src: true
+    validate_certs: "{{ plugin_item.value.validate_certs | default(true) }}"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+  register: download_reporter
+  notify: "refresh plugin release"
+  when: ( not config_file.stat.exists ) or
+    ( plugin_item.value.force is defined and
+      plugin_item.value.force )
+
+
+#report-

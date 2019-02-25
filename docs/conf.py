@@ -5,14 +5,7 @@ import os
 import shlex
 import sys
 
-extensions = [
-    "sphinx.ext.autodoc",
-    "sphinx.ext.doctest",
-    "sphinx.ext.todo",
-    "sphinx.ext.viewcode",
-    "sphinx.ext.githubpages",
-    "m2r",
-]
+extensions = ["sphinx.ext.todo", "sphinx.ext.githubpages", "m2r"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -42,7 +35,7 @@ language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ["_build"]
+exclude_patterns = [".tox", "_build"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "sphinx"

@@ -30,8 +30,19 @@ The following variable defaults are defined in ``defaults/main.yml``.
 ``minecraft_group``
    system group Minecraft runs as (default: ``{{ minecraft_server }}``)
 
+``minecraft_basedir``
+   directory base variable for the Minecraft installation (default: ``/opt/minecraft``)
+
+.. _role_config_variabels-minecraft_home:
+
 ``minecraft_home``
-   directory to install Minecraft to (default: ``/opt/minecraft``)
+   directory to install Minecraft Server to (default: ``{{minecraft_basedir}}/server``)
+
+
+.. _role_config_variabels-minecraft_plugins:
+
+``minecraft_plugins``
+   directory to install Minecraft Plugins to (default: ``{{minecraft_basedir}}/plugins``)
 
 ``minecraft_max_memory``
    Java max memory (``-Xmx``) to allocate (default: ``1024M``)

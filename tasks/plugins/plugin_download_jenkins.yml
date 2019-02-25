@@ -10,10 +10,12 @@
 
 - name: filter the artefacts
   set_fact:
-    plugin_download_src: "{{ jenkins_plugin_build_response.json.artifacts
+    plugin_download_src: "{{ plugin_item.value.src }}{{ plugin_item.value.jenkins_artefact_path
+      | default('/artifact/target') }}/{{ jenkins_plugin_build_response.json.artifacts
       | selectattr('fileName', 'match', '(^((?!sources).)*$)')
       | list
       | selectattr('fileName', 'match', '(^((?!javadoc).)*$)')
       | list
       | map(attribute='fileName')
-      | list  }}"
+      | list
+      | first  }}"

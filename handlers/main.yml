@@ -42,9 +42,6 @@
   become: true
   when: minecraft_process_control == 'supervisor'
 
-
-
-
 - name: enable service (systemd)
   service:
     name: "{{ item }}"

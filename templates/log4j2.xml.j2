@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%level] %msg%n" />
+		</Console>
+
+		<RollingRandomAccessFile name="rolling_server_log" fileName="{{ minecraft_external_log_conf.fileName | default('logs/server.log') }}"
+				filePattern="{{ minecraft_external_log_conf.filePattern | default('logs/server_%d{yyyy-MM-dd}.log.gz') }}">
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%level] %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				{% if minecraft_external_log_conf.sizeBased is defined -%}
+				<SizeBasedTriggeringPolicy size="{{ minecraft_external_log_conf.sizeBased }}" />
+				{% endif %}
+			</Policies>
+			{% if minecraft_external_log_conf.rollover is defined -%}
+			<DefaultRolloverStrategy max="{{ minecraft_external_log_conf.rollover }}" />
+			{% endif %}
+		</RollingRandomAccessFile>
+	</Appenders>
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="rolling_server_log" />
+			<!-- <AppenderRef ref="console" /> -->
+		</Root>
+	</Loggers>
+</Configuration>

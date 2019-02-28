@@ -12,7 +12,7 @@ WorkingDirectory={{ deploy_helper.shared_path }}
 StandardInput=socket
 StandardOutput=journal
 StandardError=journal
-ExecStart={{ minecraft_java }} -Xmx{{ minecraft_max_memory }} -Xms{{ minecraft_initial_memory }} {{ minecraft_server_java_ops }} -jar {{ minecraft_jar }} nogui
+ExecStart={{ minecraft_java }} -Xmx{{ minecraft_max_memory }} -Xms{{ minecraft_initial_memory }} {% if minecraft_external_log_conf is defined %}-Dlog4j.configurationFile={{ minecraft_external_log_conf.conf_file }}{% endif %} {{ minecraft_server_java_ops }} -jar {{ minecraft_jar }} nogui
 ExecStop=/bin/sh -c "echo 'save-all' > {{ minecraft_console_fifo }}"
 ExecStop=/bin/sh -c "echo 'stop' > {{ minecraft_console_fifo }}"
 Restart=on-failure

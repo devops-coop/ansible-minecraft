@@ -17,3 +17,24 @@
     group: "{{ minecraft_group }}"
   notify:
     - enable service
+
+- name: check that log base directory exists
+  file:
+    path: "/var/log/minecraft"
+    state: directory
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+  when:
+    minecraft_external_log_conf is defined and
+    minecraft_external_log_conf.fileName is defined
+
+- name: external logging config
+  template:
+    src: "{{ minecraft_external_log_conf.template | default('log4j2.xml.j2') }}"
+    dest: "{{ deploy_helper.shared_path }}/{{ minecraft_external_log_conf.conf_file }}"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+  when:
+    minecraft_external_log_conf is defined
+  notify:
+    - restart Minecraft

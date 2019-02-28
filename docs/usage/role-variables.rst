@@ -83,10 +83,30 @@ The following variable defaults are defined in ``defaults/main.yml``.
 ``minecraft_java_external_managed``
   used for skipping the java installation tasks from this role, for handle Java by external scripts/roles (default: ``false``)
 
+.. _role_config_variabels-minecraft_external_log_conf:
+
+Logging
+---------------------------------------------------------------------------------------------------------------------------------
+
+``minecraft_external_log_conf`` (*optional*) type Dict
+  handle a external Log4j2 Config used `RollingRandomAccessFileAppender <https://logging.apache.org/log4j/2.x/manual/appenders.html#RollingRandomAccessFileAppender>`_, controlling LogRotate, Maximal LogFile Size, and maximum keeped logs.
+
+  Examples:
+
+  .. code:: yaml
+
+      minecraft_external_log_conf:
+        conf_file: log4j2.xml
+        template: log4j2.xml.j2
+        fileName: /var/log/minecraft/server.log
+        filePattern: /var/log/minecraft/server_%d{yyyy-MM-dd}.log.gz
+        rollover: 5
+        sizeBased: 10MB
+
 
 
 Hooks and run stages
-`````````````````````````````````````````````````````````````````
+---------------------------------------------------------------------------------------------------------------------------------
 
 **ansible-minecraft** organizes execution into a number of run stages:
 

@@ -26,6 +26,12 @@
           tne:
             src: https://github.com/TheNewEconomy/TNE-Bukkit/releases/download/0.1.1.8/TNE-0.1.1.8.zip
             type: "archive"
+      minecraft_external_log_conf:
+        conf_file: log4j2.xml
+        fileName: /var/log/minecraft/server.log
+        filePattern: /var/log/minecraft/server_%d{yyyy-MM-dd}.log.gz
+        rollover: 5
+        sizeBased: 10MB
       minecraft_server_properties:
         server-port: 25565
         rcon.port: 25564

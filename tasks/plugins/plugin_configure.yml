@@ -17,6 +17,24 @@
     dest: "{{ deploy_helper.shared_path }}/{{ plugin_config_item.dest }}"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
-  when: ( not config_file.stat.exists ) or
+  when:
+    ( plugin_config_item.src is defined ) and
+    (
+      ( not config_file.stat.exists ) or
+      ( plugin_config_item.force is defined and
+        plugin_config_item.force )
+      )
+
+- name: put all config template from folder to plugin dir
+  template:
+    src: "{{ item }}"
+    dest: "{{ deploy_helper.shared_path }}/{{ plugin_config_item.dest }}/{{ item | basename | regex_replace('\\.j2','') }}"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+  with_fileglob:
+    - "{{ plugin_config_item.src_dir }}/*.j2"
+  when:
+    ( plugin_config_item.src_dir is defined ) and (
+    ( not config_file.stat.exists ) or
     ( plugin_config_item.force is defined and
-      plugin_config_item.force )
+      plugin_config_item.force ))

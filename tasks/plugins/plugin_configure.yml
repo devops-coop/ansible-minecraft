@@ -25,6 +25,17 @@
         plugin_config_item.force )
       )
 
+- name: debug put all config template from folder to plugin dir
+  debug:
+    msg: "{{ deploy_helper.shared_path }}/{{ plugin_config_item.dest }}/{{ item | basename | regex_replace('\\.j2','') }}"
+  with_fileglob:
+    - "{{ plugin_config_item.src_dir }}/*.j2"
+  when:
+    ( plugin_config_item.src_dir is defined ) and (
+    ( not config_file.stat.exists ) or
+    ( plugin_config_item.force is defined and
+      plugin_config_item.force ))
+
 - name: put all config template from folder to plugin dir
   template:
     src: "{{ item }}"

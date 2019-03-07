@@ -29,7 +29,7 @@ def test_plugins_shared_dir_exists(host):
 
 
 @pytest.mark.parametrize(
-    "pluginJarFilename", ["multiverse-signportals", "permissionsEx", "vault", "tne"]
+    "pluginJarFilename", ["multiverse-signportals", "permissionsEx", "vault", "tne","LuckPerms"]
 )
 def test_plugins_install_report_exists(host, pluginJarFilename):
     f = host.file(
@@ -40,7 +40,7 @@ def test_plugins_install_report_exists(host, pluginJarFilename):
 
 
 @pytest.mark.parametrize(
-    "pluginJarFilename", ["Vault.jar", "Multiverse.jar", "PermissionsEx.jar"]
+    "pluginJarFilename", ["Vault.jar", "Multiverse.jar", "PermissionsEx.jar","TNE.jar","LuckPerms.jar"]
 )
 def test_plugins_jar_exists(host, pluginJarFilename):
     f = host.file("/opt/minecraft/plugins/shared/" + pluginJarFilename)
@@ -51,7 +51,7 @@ def test_plugins_jar_exists(host, pluginJarFilename):
 
 
 @pytest.mark.parametrize(
-    "pluginJarFilename", ["Vault.jar", "Multiverse.jar", "PermissionsEx.jar"]
+    "pluginJarFilename", ["Vault.jar", "Multiverse.jar", "PermissionsEx.jar","TNE.jar","LuckPerms.jar"]
 )
 def test_plugins_jar_in_server_exists(host, pluginJarFilename):
     f = host.file("/opt/minecraft/server/shared/plugins/" + pluginJarFilename)
@@ -59,3 +59,14 @@ def test_plugins_jar_in_server_exists(host, pluginJarFilename):
     assert f.is_file
     assert f.is_symlink
     assert f.linked_to == "/opt/minecraft/plugins/releases/minimal/" + pluginJarFilename
+
+
+@pytest.mark.parametrize(
+    "configfile", ["PermissionsEx/config.yml","LuckPerms/yaml-storage/groups/config.yml"]
+)
+def test_plugins_check_plugins_configs(host, configfile):
+    f = host.file(
+        "/opt/minecraft/plugins/shared/" + configfile
+    )
+    assert f.exists
+    assert f.is_file

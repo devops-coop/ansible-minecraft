@@ -29,7 +29,7 @@ def test_plugins_shared_dir_exists(host):
 
 
 @pytest.mark.parametrize(
-    "pluginJarFilename", ["multiverse-signportals", "permissionsEx", "vault", "tne","LuckPerms"]
+    "pluginJarFilename", ["permissionsEx", "vault", "tne","LuckPerms"]
 )
 def test_plugins_install_report_exists(host, pluginJarFilename):
     f = host.file(
@@ -40,7 +40,7 @@ def test_plugins_install_report_exists(host, pluginJarFilename):
 
 
 @pytest.mark.parametrize(
-    "pluginJarFilename", ["Vault.jar", "Multiverse.jar", "PermissionsEx.jar","TNE.jar","LuckPerms.jar"]
+    "pluginJarFilename", ["Vault.jar", "PermissionsEx.jar","TNE.jar","LuckPerms.jar"]
 )
 def test_plugins_jar_exists(host, pluginJarFilename):
     f = host.file("/opt/minecraft/plugins/shared/" + pluginJarFilename)
@@ -51,7 +51,7 @@ def test_plugins_jar_exists(host, pluginJarFilename):
 
 
 @pytest.mark.parametrize(
-    "pluginJarFilename", ["Vault.jar", "Multiverse.jar", "PermissionsEx.jar","TNE.jar","LuckPerms.jar"]
+    "pluginJarFilename", ["Vault.jar", "PermissionsEx.jar","TNE.jar","LuckPerms.jar"]
 )
 def test_plugins_jar_in_server_exists(host, pluginJarFilename):
     f = host.file("/opt/minecraft/server/shared/plugins/" + pluginJarFilename)

@@ -4,7 +4,7 @@ language: python
 services:
   - docker
 python:
-  - "3.6"  
+  - "3.6"
 env:
   matrix:
     - SCENARIO_NAME=debian-stretch-vanilla-fixversion

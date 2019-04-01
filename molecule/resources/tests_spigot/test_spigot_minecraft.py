@@ -49,6 +49,6 @@ def test_server_symlink_exists(host):
 
 def test_eula_exists_exists(host):
     f = host.file("/opt/minecraft/server/shared/eula.txt")
-    assert f.content_string.find("eula=true")
+    assert f.content_string == "eula=true"
     assert f.user == "spigot"
     assert f.group == "spigot"

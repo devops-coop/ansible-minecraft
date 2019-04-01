@@ -9,8 +9,8 @@ lint:
   name: yamllint
   enabled: false
 platforms:
-  - name: debianjessie
-    image: debian:jessie
+  - name: debianbuster
+    image: jrei/systemd-debian:10
     command: /sbin/init
     groups:
       - minecraftserver

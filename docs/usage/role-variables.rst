@@ -56,9 +56,6 @@ The following variable defaults are defined in ``defaults/main.yml``.
 ``minecraft_supervisor_name``
    **DEPRECATED:** Supervisor program name (default: ``{{ minecraft_service_name }}``)
 
-``minecraft_process_control``
-   Choose between ``systemd`` and ``supervisor`` (default: ``systemd``).
-
 ``minecraft_whitelist``
    list of Minecraft usernames to whitelist (default: ``[]``)
 

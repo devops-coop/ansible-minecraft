@@ -8,7 +8,7 @@ lint:
   enabled: false
 platforms:
   - name: debian
-    image: debian:jessie
+    image: jrei/systemd-debian:10
     command: /sbin/init
     groups:
       - minecraftserver

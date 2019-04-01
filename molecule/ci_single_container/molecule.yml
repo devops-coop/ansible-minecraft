@@ -1,29 +1,29 @@
 ---
 platforms:
   - name: instance
-    image: ${MOLECULE_IMAGE}
+    image: ${MOL_IMAGE:-"solita/ubuntu-systemd:18.04"}
     groups:
       - minecraftserver
-    command: ${MOLECULE_INSTANCE_COMMAND}
+    command: ${MOL_INSTANCE_COMMAND:-"/sbin/init"}
     security_opts:
       - seccomp=unconfined
     capabilities:
       - SYS_ADMIN
+    tmpfs: ${MOL_INSTANCE_TEMPFS:-["/tmp","/run","/run/lock"]}
     volumes:
       - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    tmpfs: ${MOLECULE_INSTANCE_TEMPFS}
 provisioner:
   name: ansible
   inventory:
     group_vars:
       minecraftserver:
-        user_accept_minecraft_eula: ${user_accept_minecraft_eula}
-        mc_version: ${MC_VERSION}
-        minecraft_server: ${MC_SERVER_TYPE}
-        minecraft_process_control: "${minecraft_process_control}"
+        user_accept_minecraft_eula: ${user_accept_minecraft_eula:-"false"}
+        mc_version: ${MC_VERSION:-"latest"}
+        minecraft_server: ${MC_SERVER_TYPE:-"minecraft"}
   playbooks:
     converge: ../resources/playbooks/playbook.yml
   lint:
+    enabled: false
     name: ansible-lint
     options:
       x:

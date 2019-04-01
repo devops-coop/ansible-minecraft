@@ -1,7 +1,11 @@
 ansible-minecraft changelog
 ===========================
 
-4.0.0 (Unreleased)
+5.0.0
+----------
+- Remove Debian Jessie and Supervisor support.
+
+4.0.0
 ----------
 
 Added

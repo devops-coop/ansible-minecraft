@@ -1,7 +1,3 @@
 ---
 
-- include: supervisor/main.yml
-  when: minecraft_process_control == 'supervisor'
-
 - include: systemd/main.yml
-  when: minecraft_process_control == 'systemd'

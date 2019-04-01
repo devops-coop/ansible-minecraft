@@ -5,22 +5,18 @@ services:
   - docker
 env:
   matrix:
-    - SCENARIO_NAME=debian-jessie-vanilla-fixversion-supervisor
     - SCENARIO_NAME=debian-trusty-vanilla-oldversion-supervisor
     - SCENARIO_NAME=debian-xenial-vanilla-fixversion-supervisor
     - SCENARIO_NAME=debian-bionic-vanilla-fixversion-supervisor
-    - SCENARIO_NAME=debian-jessie-spigot-fixversion-supervisor
     - SCENARIO_NAME=debian-trusty-spigot-oldversion-supervisor
     - SCENARIO_NAME=debian-xenial-spigot-fixversion-supervisor
     - SCENARIO_NAME=debian-bionic-spigot-fixversion-supervisor
-    - SCENARIO_NAME=debian-jessie-vanilla-fixversion-systemd
     - SCENARIO_NAME=debian-stretch-vanilla-fixversion-systemd
     - SCENARIO_NAME=debian-buster-vanilla-fixversion-systemd
     - SCENARIO_NAME=debian-xenial-vanilla-fixversion-systemd
     - SCENARIO_NAME=debian-bionic-vanilla-fixversion-systemd
     - SCENARIO_NAME=redhat-centos7-vanilla-fixversion-systemd
     - SCENARIO_NAME=redhat-twentyNine-vanilla-fixversion-systemd
-    - SCENARIO_NAME=debian-jessie-spigot-fixversion-systemd
     - SCENARIO_NAME=debian-stretch-spigot-fixversion-systemd
     - SCENARIO_NAME=debian-buster-spigot-fixversion-systemd
     - SCENARIO_NAME=debian-xenial-spigot-fixversion-systemd

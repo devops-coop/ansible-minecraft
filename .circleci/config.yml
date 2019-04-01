@@ -32,7 +32,7 @@ aliases:
   # Used container for handle github release actions
   - &container_releasemanager
     docker:
-      - image: circleci/golang:1.8
+      - image: circleci/golang:1.12
 
   # @see https://stedolan.github.io/jq/
   # used for better JSon Command Line parsing.
@@ -93,7 +93,7 @@ aliases:
   # Used container for python based uilds
   - &container_python
     docker:
-      - image: circleci/python:3.6.4
+      - image: circleci/python:3.6-stretch-node-browsers-legacy
 
   # @see https://tox.readthedocs.io/en/latest/install.html
   # Install tox required system dependencies

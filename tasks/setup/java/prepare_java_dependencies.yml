@@ -2,13 +2,9 @@
 
 - debug: msg="CX {{ ansible_distribution_release }} {{ ansible_distribution }} {{ ansible_os_family }}"
 
-- include_tasks: install_java_debian_jessie.yml
-  when: ansible_distribution_release == 'jessie'
-
 - name: install java package
   package:
     name: "{{ java_package_name }}"
   register: pack_res
   retries: 5
   until: pack_res is success
-  when: ansible_distribution_release != 'jessie'

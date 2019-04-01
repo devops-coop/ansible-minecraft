@@ -1,4 +1,3 @@
-MOLECULE_INSTANCE_COMMAND: /usr/sbin/init
-MOLECULE_INSTANCE_TEMPFS:
-  - /tmp
-  - /run
+MOL_INSTANCE_COMMAND: /usr/sbin/init
+MOL_INSTANCE_TEMPFS: "[\"/tmp\",\"/run\"]"
+MOL_TESTINFRA_ADDITIONAL_TESTS: "../tests_empty"

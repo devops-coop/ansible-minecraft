@@ -1,5 +1,3 @@
-MOLECULE_INSTANCE_COMMAND: /lib/systemd/systemd
-MOLECULE_INSTANCE_TEMPFS:
-  - /tmp
-  - /run
-  - /run/lock
+MOL_INSTANCE_COMMAND: /lib/systemd/systemd
+MOL_INSTANCE_TEMPFS: "[\"/tmp\",\"/run\",\"/run/lock\"]"
+MOL_TESTINFRA_ADDITIONAL_TESTS: ""

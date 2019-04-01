@@ -13,8 +13,7 @@ This role installs [Minecraft](https://minecraft.net/) or [Spigot](https://www.s
 ## Features
 
 -  supports [vanilla Minecraft](https://minecraft.net) and [Spigot](https://spigotmc.org/)
--  supports Debian 8, Ubuntu 14.04, Ubuntu 16.04, Ubuntu 18.04, CentOS 7, Fedora 29
--  supports different process supervisors on different platforms
+-  supports Debian >9, Ubuntu 14.04, Ubuntu 16.04, Ubuntu 18.04, CentOS 7, Fedora 29
 -  safely stops the server using [stop](http://minecraft.gamepedia.com/Commands#stop) when running under **systemd**
 -  uses [Docker](https://www.docker.com/) and [Molecule](https://molecule.readthedocs.io/) to run integration tests
 -  manages user ACLs
@@ -45,7 +44,7 @@ or add this to your ``requirements.yml``
 
 ```
 - name: nolte.minecraft
-  version: v4.3.3.dev
+  version: v5.0.0.dev
 ```
 
 and execute ``ansible-galaxy install -r requirements.yml``

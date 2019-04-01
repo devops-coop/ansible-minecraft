@@ -29,7 +29,7 @@ def test_plugins_shared_dir_exists(host):
 
 
 @pytest.mark.parametrize(
-    "pluginJarFilename", ["permissionsEx", "vault", "tne","LuckPerms"]
+    "pluginJarFilename", ["permissionsEx", "vault", "tne", "LuckPerms"]
 )
 def test_plugins_install_report_exists(host, pluginJarFilename):
     f = host.file(
@@ -40,7 +40,7 @@ def test_plugins_install_report_exists(host, pluginJarFilename):
 
 
 @pytest.mark.parametrize(
-    "pluginJarFilename", ["Vault.jar", "PermissionsEx.jar","TNE.jar","LuckPerms.jar"]
+    "pluginJarFilename", ["Vault.jar", "PermissionsEx.jar", "TNE.jar", "LuckPerms.jar"]
 )
 def test_plugins_jar_exists(host, pluginJarFilename):
     f = host.file("/opt/minecraft/plugins/shared/" + pluginJarFilename)
@@ -51,7 +51,7 @@ def test_plugins_jar_exists(host, pluginJarFilename):
 
 
 @pytest.mark.parametrize(
-    "pluginJarFilename", ["Vault.jar", "PermissionsEx.jar","TNE.jar","LuckPerms.jar"]
+    "pluginJarFilename", ["Vault.jar", "PermissionsEx.jar", "TNE.jar", "LuckPerms.jar"]
 )
 def test_plugins_jar_in_server_exists(host, pluginJarFilename):
     f = host.file("/opt/minecraft/server/shared/plugins/" + pluginJarFilename)
@@ -62,11 +62,10 @@ def test_plugins_jar_in_server_exists(host, pluginJarFilename):
 
 
 @pytest.mark.parametrize(
-    "configfile", ["PermissionsEx/config.yml","LuckPerms/yaml-storage/groups/config.yml"]
+    "configfile",
+    ["PermissionsEx/config.yml", "LuckPerms/yaml-storage/groups/config.yml"],
 )
 def test_plugins_check_plugins_configs(host, configfile):
-    f = host.file(
-        "/opt/minecraft/plugins/shared/" + configfile
-    )
+    f = host.file("/opt/minecraft/plugins/shared/" + configfile)
     assert f.exists
     assert f.is_file

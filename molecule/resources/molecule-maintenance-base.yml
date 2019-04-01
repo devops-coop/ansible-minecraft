@@ -26,8 +26,8 @@ verifier:
   name: testinfra
   directory: ../resources/tests/
   additional_files_or_dirs:
-    - ${MOLECULE_TESTINFRA_ADDITIONAL_TESTS}
+    - ${MOL_TESTINFRA_ADDITIONAL_TESTS:-../tests_empty}
   lint:
     name: flake8
   options:
-      junit-xml: ${MOLECULE_TESTINFRA_UNIT_REPORT}
+      junit-xml: ${MOL_TESTINFRA_UNIT_REPORT}

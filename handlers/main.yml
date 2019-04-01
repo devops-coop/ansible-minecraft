@@ -4,45 +4,12 @@
   notify:
     - restart Minecraft
 
-# Chain handlers to support multiple process supervisors. A task simply needs
-# to notify 'restart Minecraft', which will trigger the supervisor-specific
-# actions.
-- name: restart Minecraft
-  debug:
-    msg: restarting Minecraft using {{ minecraft_process_control }}
-  changed_when: true
-  notify:
-    - restart Minecraft (supervisor)
-    - restart Minecraft (systemd)
-
-- name: restart Minecraft (supervisor)
-  supervisorctl:
-    name: "{{ minecraft_service_name }}"
-    state: restarted
-  when: minecraft_process_control == 'supervisor'
-
-- name: restart Minecraft (systemd)
+- name: restart Minecraft 
   service:
     name: "{{ minecraft_service_name }}"
     state: restarted
-  when: minecraft_process_control == 'systemd'
 
-- name: enable service
-  debug:
-    msg: enabling Minecraft service using {{ minecraft_process_control }}
-  changed_when: true
-  notify:
-    - enable service (supervisor)
-    - enable service (systemd)
-
-- name: enable service (supervisor)
-  supervisorctl:
-    name: "{{ minecraft_service_name }}"
-    state: restarted
-  become: true
-  when: minecraft_process_control == 'supervisor'
-
-- name: enable service (systemd)
+- name: enable service 
   service:
     name: "{{ item }}"
     state: started
@@ -50,4 +17,3 @@
   with_items:
     - "{{ minecraft_service_name }}.service"
     - "{{ minecraft_service_name }}.socket"
-  when: minecraft_process_control == 'systemd'

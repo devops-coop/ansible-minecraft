@@ -4,12 +4,12 @@
   notify:
     - restart Minecraft
 
-- name: restart Minecraft 
+- name: restart Minecraft
   service:
     name: "{{ minecraft_service_name }}"
     state: restarted
 
-- name: enable service 
+- name: enable service
   service:
     name: "{{ item }}"
     state: started

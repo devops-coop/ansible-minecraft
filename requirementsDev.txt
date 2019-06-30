@@ -1,0 +1,4 @@
+ansible==2.8.1
+molecule==2.20.1
+docker-py==1.10.6
+testinfra==3.0.5

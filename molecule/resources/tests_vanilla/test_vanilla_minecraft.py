@@ -42,10 +42,3 @@ def test_server_shared_symlink_exists(host):
         f.linked_to
         == "/opt/minecraft/server/releases/" + version + "/minecraft_server.jar"
     )
-
-
-def test_eula_exists_exists(host):
-    f = host.file("/opt/minecraft/server/shared/eula.txt")
-    assert "eula=true" in f.content_string
-    assert f.user == "minecraft"
-    assert f.group == "minecraft"

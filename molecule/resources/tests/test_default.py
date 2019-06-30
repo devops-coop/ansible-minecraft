@@ -25,8 +25,7 @@ def test_gameport_is_open(host):
 def test_rconport_is_open(host):
     host.socket("tcp://0.0.0.0:25564").is_listening
 
+
 def test_eula_exists_exists(host):
     f = host.file("/opt/minecraft/server/shared/eula.txt")
     assert "eula=true" in f.content_string
-    assert f.user == "spigot"
-    assert f.group == "spigot"

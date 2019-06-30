@@ -25,6 +25,10 @@ def test_server_jar_exists(host):
     assert f.user == "minecraft"
     assert f.group == "minecraft"
 
+def test_eula_user_match(host):
+    f = host.file("/opt/minecraft/server/shared/eula.txt")
+    assert f.user == "minecraft"
+    assert f.group == "minecraft"
 
 def test_server_current_symlink_exists(host):
     f = host.file("/opt/minecraft/server/current")

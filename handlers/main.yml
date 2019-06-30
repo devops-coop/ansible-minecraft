@@ -1,8 +1,6 @@
 ---
 - name: "refresh plugin release"
   include_tasks: handlers/plugin_links.yml
-  notify:
-    - restart Minecraft
 
 - name: reload systemd units
   systemd:

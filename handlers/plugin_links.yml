@@ -19,6 +19,8 @@
     state: link
     force: true
   with_items: "{{ jarfiles.files }}"
+  notify:
+    - restart Minecraft
 
 - name: "Recursively find plugin config directories"
   find:

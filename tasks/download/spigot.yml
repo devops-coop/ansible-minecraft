@@ -11,7 +11,7 @@
   until: get_res is success
 
 - name: build Spigot server
-  command: java -jar BuildTools.jar --rev "{{ minecraft_version_int }}"
+  command: java -Xmx{{ minecraft_max_memory }} -Xms{{ minecraft_initial_memory }} -jar BuildTools.jar --rev "{{ minecraft_version_int }}"
   args:
     creates: "spigot-{{ minecraft_version_int }}.jar"
     chdir: "{{ deploy_helper.new_release_path }}"

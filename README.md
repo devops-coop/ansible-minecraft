@@ -28,7 +28,7 @@ This role installs [Minecraft](https://minecraft.net/) or [Spigot](https://www.s
 - handle utility services like [filebeat](https://www.elastic.co/de/products/beats/filebeat) or [prometheus](https://github.com/prometheus/node_exporter)
 - install additional Tools like [rcon-cli](https://github.com/itzg/rcon-cli).
 
-**All of this is needet but not a part of this role!**
+**All of this is needet but not a part of this role!**, _you will find examples at [nolte/minecraft-infrastructure](https://github.com/nolte/minecraft-infrastructure)._
 
 ## Usage
 
@@ -60,7 +60,7 @@ and execute ``ansible-galaxy install -r requirements.yml``
 ## Requirements
 
 -  Python 2.7 on the Ansible control machine to generate user ACLs
--  Ansible 2.4.0+ on the control machine to fetch the Minecraft version
+-  Ansible 2.7.0+ on the control machine to fetch the Minecraft version
 
 
 ## Contributing

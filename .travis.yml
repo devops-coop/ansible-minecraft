@@ -17,6 +17,7 @@ env:
     - SCENARIO_NAME=debian-buster-spigot-fixversion
     - SCENARIO_NAME=debian-xenial-spigot-fixversion
     - SCENARIO_NAME=debian-bionic-spigot-fixversion
+    - SCENARIO_NAME=debian-disco-spigot-fixversion
     - SCENARIO_NAME=redhat-centos7-spigot-fixversion
     - SCENARIO_NAME=redhat-twentyNine-spigot-fixversion
     - SCENARIO_NAME=debian-bionic-spigot-latest
@@ -31,13 +32,13 @@ install:
   - pip install tox-travis
 script:
   - tox -e ${SCENARIO_NAME}
-  
+
 notifications:
- email: false
- webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  email: false
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
 
 branches:
   only:
-  - master
-  - develop
-  - feature/*
+    - master
+    - develop
+    - feature/*

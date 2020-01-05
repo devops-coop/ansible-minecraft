@@ -244,12 +244,11 @@ jobs:
       - run:
           name: merge to master
           command: |
+            export GIT_MERGE_AUTOEDIT=no
             git status
             git checkout master
             git pull origin master
-            git merge --no-commit --no-ff ${CIRCLE_BRANCH}
-            git add .
-            git commit -m "Merge Release branch"
+            git merge  -m "Merge Release branch" --no-edit ${CIRCLE_BRANCH}
             git push origin master
             git checkout ${CIRCLE_BRANCH}
             echo "merge to master"

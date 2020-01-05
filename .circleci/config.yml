@@ -248,7 +248,7 @@ jobs:
             git status
             git checkout master
             git pull origin master
-            git merge --ff --no-edit --verbose ${CIRCLE_BRANCH}
+            git merge -m "merge release" --ff --no-edit --verbose ${CIRCLE_BRANCH}
             git checkout ${CIRCLE_BRANCH}
             echo "merge to master"
 

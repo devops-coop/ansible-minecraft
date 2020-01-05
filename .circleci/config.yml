@@ -27,7 +27,6 @@ aliases:
       command: |
         git config --global user.email "$GIT_AUTHOR_EMAIL"
         git config --global user.name "${CIRCLE_USERNAME}"
-        git config --global core.editor vim
 
   # @see https://github.com/aktau/github-release
   # Used container for handle github release actions
@@ -248,7 +247,10 @@ jobs:
             git status
             git checkout master
             git pull origin master
-            git merge -m "merge release" --ff --no-edit --verbose ${CIRCLE_BRANCH}
+            git merge --no-commit --no-ff ${CIRCLE_BRANCH}
+            git add .
+            git commit -m "Merge Release branch"
+            git push origin master
             git checkout ${CIRCLE_BRANCH}
             echo "merge to master"
 

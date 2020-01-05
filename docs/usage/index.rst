@@ -34,7 +34,7 @@ List this ``role`` under the ``requirements.yml`` file.
 
     ...
     - name: nolte.minecraft
-      version: 5.0.5
+      version: 5.0.6.dev
     ...
 
 .. warning::

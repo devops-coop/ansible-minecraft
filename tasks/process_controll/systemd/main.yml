@@ -1,6 +1,6 @@
 ---
 - include: Ubuntu.yml
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version | version_compare('16.04', '<')
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('16.04', '<')
 
 - name: install units
   template:

@@ -149,7 +149,7 @@ class ServerProperties(ServerFile):
         # Convert all values to strings.  The default booleans in
         # server.properties are represented by "true" and "false" instead of
         # Python's "True" and "False", so convert them explicitly.
-        for name, value in properties.iteritems():
+        for name, value in properties.items():
             properties[name] = (
                 str(value).lower() if isinstance(value, bool) else str(value)
             )
@@ -169,7 +169,7 @@ class ServerProperties(ServerFile):
                 else:
                     self.newlines.append(line)
 
-        for name, value in properties.iteritems():
+        for name, value in properties.items():
             self.newlines.append("{}={}\n".format(name, value))
             self._content_changed = True
 

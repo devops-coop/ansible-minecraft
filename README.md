@@ -44,7 +44,7 @@ or add this to your ``requirements.yml``
 
 ```
 - name: nolte.minecraft
-  version: v5.0.5.dev
+  version: v5.0.5
 ```
 
 and execute ``ansible-galaxy install -r requirements.yml``

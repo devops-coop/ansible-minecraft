@@ -6,8 +6,8 @@ minecraft_group: "{{ minecraft_server }}"
 minecraft_basedir: "/opt/minecraft"
 minecraft_home: "{{minecraft_basedir}}/server"
 minecraft_plugins: "{{minecraft_basedir}}/plugins"
-minecraft_max_memory: 1024M
-minecraft_initial_memory: 1024M
+minecraft_max_memory: "{{ (ansible_memtotal_mb * 0.6) | round | int }}m"
+minecraft_initial_memory: "{{ (ansible_memtotal_mb * 0.6) | round | int }}m"
 minecraft_service_name: "{{ minecraft_server }}"
 minecraft_supervisor_name: "{{ minecraft_service_name }}"
 minecraft_whitelist: []

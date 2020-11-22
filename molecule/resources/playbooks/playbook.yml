@@ -1,6 +1,11 @@
 ---
 - hosts: minecraftserver
   pre_tasks:
+    - name: Run the equivalent of "apt-get update" as a separate step
+      apt:
+        update_cache: yes
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
     # required dependencies for testinfra tests (not needet for production)
     - name: install precondition package
       package:
@@ -10,6 +15,7 @@
         - net-tools
         - unzip
         - rsync
+
   roles:
     - role: "{{ playbook_dir }}/./../../../"
       minecraft_version: "{{ mc_version | default('1.13.1') }}"

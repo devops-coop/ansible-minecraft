@@ -5,9 +5,6 @@ dependency:
     role-file: ./molecule/resources/playbooks/requirements.yml
 driver:
   name: docker
-lint:
-  name: yamllint
-  enabled: false
 platforms:
   - name: ubuntu18
     image: solita/ubuntu-systemd:18.04
@@ -24,8 +21,8 @@ platforms:
       - /tmp
       - /run
       - /run/lock
-  - name: centos7
-    image: centos:latest
+  - name: centos8
+    image: centos:8
     groups:
       - minecraftserver
     command: /usr/sbin/init

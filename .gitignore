@@ -4,3 +4,4 @@
 .vagrant/*
 __pycache__
 *.retry
+env

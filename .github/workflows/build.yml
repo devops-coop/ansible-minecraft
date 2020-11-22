@@ -1,0 +1,62 @@
+name: Ansible Lint  # feel free to pick your own name
+
+on: [push, pull_request]
+jobs:
+  #lint:
+  #  runs-on: ubuntu-latest
+  #  strategy:
+  #    max-parallel: 5
+  #    matrix:
+  #      python-version: [3.8]
+  #  steps:
+  #    - uses: actions/checkout@v2
+  #    - uses: actions/setup-python@v2
+  #      with:
+  #        python-version: ${{ matrix.python-version }}
+  #        architecture: 'x64'
+  #    - uses: pre-commit/action@v2.0.0
+  molecule:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+      fail-fast: false
+      matrix:
+        python-version: [3.8]    
+        scenario-name: 
+          - debian-bionic-spigot-fixversion
+          - debian-bionic-spigot-latest
+          - debian-bionic-vanilla-fixversion
+          - debian-buster-spigot-fixversion
+          - debian-buster-spigot-latest
+          - debian-buster-vanilla-fixversion
+          - debian-bullseye-spigot-fixversion
+          - debian-bullseye-spigot-latest
+          - debian-bullseye-vanilla-fixversion
+          - debian-focalFossa-spigot-fixversion
+          - debian-focalFossa-spigot-fixversion
+          - debian-focalFossa-vanilla-fixversion
+          - redhat-centos7-spigot-fixversion
+          - redhat-centos7-spigot-latest
+          - redhat-centos7-vanilla-fixversion
+          - redhat-centos8-spigot-fixversion
+          - redhat-centos8-spigot-latest
+          - redhat-centos8-vanilla-fixversion 
+          - redhat-twentyNine-spigot-fixversion
+          - redhat-twentyNine-vanilla-fixversion
+          - redhat-twentyNine-vanilla-latest
+          - plugins
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: 'x64'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox tox-gh-actions
+      - name: Test with tox
+        env:
+           mc_accept_eula: ${{ secrets.MC_ACCEPT_EULA }}      
+        run: tox -e ${{ matrix.scenario-name }}
+#/go/src/github.com/nolte/ansible_playbook-baseline-online-server/molecule/default

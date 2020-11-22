@@ -59,7 +59,7 @@ and execute ``ansible-galaxy install -r requirements.yml``
 
 ## Requirements
 
--  Python 2.7 on the Ansible control machine to generate user ACLs
+-  Python 3.x on the Ansible control machine to generate user ACLs
 -  Ansible 2.7.0+ on the control machine to fetch the Minecraft version
 
 

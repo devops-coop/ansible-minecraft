@@ -1,13 +1,9 @@
 ---
 dependency:
   name: galaxy
+
 driver:
   name: docker
-lint:
-  name: yamllint
-  enabled: false
-  options:
-    config-file: .yamllint
 
 scenario:
   test_sequence:

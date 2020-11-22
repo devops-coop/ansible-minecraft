@@ -12,6 +12,7 @@ galaxy_info:
         - trusty
         - xenial
         - bionic
+        - bullseye
     - name: Debian
       versions:
         - stretch
@@ -19,9 +20,12 @@ galaxy_info:
     - name: EL
       versions:
         - 7
+        - 8
     - name: Fedora
       versions:
         - 29
+        - 33
+        - 34
   galaxy_tags:
     - minecraft
     - game

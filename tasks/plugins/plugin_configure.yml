@@ -5,6 +5,7 @@
     state: directory
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
+    mode: 0755
 
 - name: check the config file allways exists
   stat:
@@ -17,6 +18,7 @@
     dest: "{{ deploy_helper.shared_path }}/{{ plugin_config_item.dest }}"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
+    mode: 0600
   when:
     ( plugin_config_item.src is defined ) and
     (
@@ -42,6 +44,7 @@
     dest: "{{ deploy_helper.shared_path }}/{{ plugin_config_item.dest }}/{{ item | basename | regex_replace('\\.j2','') }}"
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
+    mode: 0600
   with_fileglob:
     - "{{ plugin_config_item.src_dir }}/*.j2"
   when:

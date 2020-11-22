@@ -13,11 +13,13 @@
     state: directory
     owner: "{{ minecraft_user }}"
     group: "{{ minecraft_group }}"
+    mode: 0755
 
 - name: Add an unfinished file, to allow cleanup on successful finalize
   file:
     path: '{{ deploy_helper.new_release_path }}/{{ deploy_helper.unfinished_filename }}'
     state: touch
+    mode: 0600
   changed_when: false
 
 - include_tasks: plugin_download.yml

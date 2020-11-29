@@ -1,6 +1,13 @@
-name: Ansible Lint  # feel free to pick your own name
+name: molecule e2e
 
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore:
+    - 'docs/**'
+    - 'requirementsDocs.txt'
+    - '.devcontainer'
+
+
 jobs:
   #lint:
   #  runs-on: ubuntu-latest

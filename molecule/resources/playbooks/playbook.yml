@@ -5,6 +5,7 @@
       apt:
         update_cache: yes
       when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      changed_when: "'molecule-idempotence-notest' not in ansible_skip_tags"
 
     # required dependencies for testinfra tests (not needet for production)
     - name: install precondition package

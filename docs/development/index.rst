@@ -24,7 +24,7 @@ PullRequests are used for integrate external changes and ``feature`` branches in
 | New features will be develop in feature branches like ``feature/integrate-cuberite``, :red:`it`s not recomendet to use this on PRODUCTION!!!`.
 | The ``master`` present the latest published release.
 
-For the `Continuous Integration <https://en.wikipedia.org/wiki/Continuous_integration>`_ we use `Travis CI <https://travis-ci.org>`_ |Travis CI build status| as service.
+For the `Continuous Integration <https://en.wikipedia.org/wiki/Continuous_integration>`_ we use `GitHub Workflows` as service.
 
 
 .. include:: ../links.rst

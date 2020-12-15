@@ -312,13 +312,38 @@ def get_uuids(usernames, url=None):
         A dict mapping Minecraft usernames to UUIDs.
     """
     url = url if url else MINECRAFT_API_URL
-    payload = json.dumps(usernames)
-    headers = {"Content-Type": "application/json"}
-    response = open_url(url, data=payload, headers=headers)
-    profiles = json.loads(response.read())
-    # The API provides UUIDs without dashes. Convert the provided IDs into
-    # the canonical format so Minecraft can load them.
-    return {p["name"]: str(uuid.UUID(p["id"])) for p in profiles}
+    profiles = list()
+    # Divide usernames passed into batches of 10. The API at MINECRAFT_API_URL
+    # accepts a maximum of 10 usernames per request.
+    for batch in divide_list(usernames, 10):
+        payload = json.dumps(batch)
+        headers = {"Content-Type": "application/json"}
+        response = open_url(url, data=payload, headers=headers)
+        profiles.append(json.loads(response.read()))
+        # The API provides UUIDs without dashes. Convert the provided IDs into
+        # the canonical format so Minecraft can load them.
+    return {
+        profile["name"]: str(uuid.UUID(profile["id"]))
+        for p in profiles
+        for profile in p
+    }
+
+
+def divide_list(l, n):
+    """
+    Divides a list l into batches of n items.
+
+    Args:
+        l: A list of items.
+        n: Number of items per list to return.
+
+    Returns:
+        A list of lists with length n.
+    """
+    b = list()
+    for i in range(0, len(l), n):
+        b.append(l[i : i + n])
+    return b
 
 
 def main(argv=None):

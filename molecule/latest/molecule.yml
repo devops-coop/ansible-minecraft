@@ -1,13 +1,13 @@
 ---
 dependency:
   name: galaxy
-  options:
-    role-file: ./molecule/resources/playbooks/requirements.yml
+#  options:
+#    role-file: ./molecule/resources/playbooks/requirements.yml
 driver:
   name: docker
-lint:
-  name: yamllint
-  enabled: false
+#lint:
+#  name: yamllint
+#  enabled: false
 platforms:
   - name: ubuntu16
     image: solita/ubuntu-systemd:16.04
@@ -54,7 +54,7 @@ platforms:
       - /tmp
       - /run
   - name: centos7
-    image: centos:latest
+    image: centos:7
     groups:
       - minecraftserver
     command: /usr/sbin/init
@@ -80,8 +80,12 @@ provisioner:
     name: ansible-lint
     enabled: false
     options:
-      x:
-        - ANSIBLE0010
+       x:
+         - ANSIBLE0006
+         - ANSIBLE0010
+         - ANSIBLE0011
+         - ANSIBLE0016
+         - ANSIBLE0106
 scenario:
   name: latest
 verifier:

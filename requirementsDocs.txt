@@ -1,5 +1,5 @@
 Sphinx==3.3.1
 sphinxcontrib-plantuml==0.21
 sphinxcontrib-ansibleautodoc==0.0.5
-sphinx_rtd_theme==0.5.0
+sphinx_rtd_theme==0.5.2
 PyYAML>=5.3.1

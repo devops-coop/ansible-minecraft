@@ -3,9 +3,9 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
-  enabled: false
+#lint:
+#  name: yamllint
+#  enabled: false
 platforms:
   - name: debian
     image: jrei/systemd-debian:10

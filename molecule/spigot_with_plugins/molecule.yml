@@ -1,8 +1,8 @@
 ---
 dependency:
   name: galaxy
-  options:
-    role-file: ./molecule/resources/playbooks/requirements.yml
+#  options:
+#    role-file: ./molecule/resources/playbooks/requirements.yml
 driver:
   name: docker
 platforms:
@@ -51,7 +51,7 @@ provisioner:
             LuckPerms:
               src: https://ci.lucko.me/job/LuckPerms/lastSuccessfulBuild/
               type: "jenkins_latest"
-              jenkins_artefact_path: "/artifact/bukkit/build/libs"
+              jenkins_artefact_path: "/artifact/bukkit/loader/build/libs"
               dest: LuckPerms.jar
               force: true
               config:

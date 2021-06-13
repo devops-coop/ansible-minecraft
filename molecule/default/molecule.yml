@@ -5,9 +5,9 @@ dependency:
 #    role-file: ./molecule/resources/playbooks/requirements.yml
 driver:
   name: docker
-lint:
-  name: yamllint
-  enabled: false
+#lint:
+#  name: yamllint
+#  enabled: false
 platforms:
   - name: debianbuster
     image: jrei/systemd-debian:10
@@ -69,7 +69,7 @@ platforms:
       - /tmp
       - /run
   - name: centos7
-    image: centos:latest
+    image: centos:7
     groups:
       - minecraftserver
     command: /usr/sbin/init
@@ -100,6 +100,7 @@ provisioner:
         - ANSIBLE0010
         - ANSIBLE0011
         - ANSIBLE0016
+        - ANSIBLE0106
 scenario:
   name: default
 verifier:

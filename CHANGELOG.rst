@@ -1,5 +1,13 @@
 ansible-minecraft changelog
 ===========================
+6.0.0
+----------
+
+Braking Change
+~~~~~
+
+- Remove the Java Installation logic from this role, because Minecraft 1.17 required Java 16, more information at (`#169 <https://github.com/nolte/ansible-minecraft/issues/169>`_). So `minecraft_java_external_managed=true` is the new Normal for this Role, using a extra role  ``nolte/ansible-role-msopenjdk <https://github.com/nolte/ansible-role-msopenjdk>`_ for install java.
+
 
 5.0.0
 ----------

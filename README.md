@@ -23,6 +23,7 @@ This role installs [Minecraft](https://minecraft.net/) or [Spigot](https://www.s
 
 ### Out of Role Scop
 
+- install a *Java Runtime*, this must be done, before you use this Role, you can use [nolte/ansible-role-msopenjdk](https://github.com/nolte/ansible-role-msopenjdk) for example.
 - executing backups and recovery
 - healthy checks like [Minecraft-Region-Fixer](https://github.com/Fenixin/Minecraft-Region-Fixer)
 - handle utility services like [filebeat](https://www.elastic.co/de/products/beats/filebeat) or [prometheus](https://github.com/prometheus/node_exporter)
@@ -60,6 +61,7 @@ and execute ``ansible-galaxy install -r requirements.yml``
 
 -  Python 3.x on the Ansible control machine to generate user ACLs
 -  Ansible 2.7.0+ on the control machine to fetch the Minecraft version
+-  Existing Compatible Java Runtime for start and install Minecraft on target System.
 
 
 ## Contributing

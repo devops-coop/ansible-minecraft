@@ -21,4 +21,4 @@ minecraft_eula_accept: false
 minecraft_spigot_url: https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
 minecraft_server_java_ops:
 minecraft_java: /usr/bin/java
-minecraft_java_external_managed: false
+#minecraft_java_external_managed: true

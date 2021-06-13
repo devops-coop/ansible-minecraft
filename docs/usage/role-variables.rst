@@ -77,9 +77,6 @@ The following variable defaults are defined in ``defaults/main.yml``.
 ``minecraft_server_java_ops``
    additional java ops like remote debug ``-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005`` (default: *none*)
 
-``minecraft_java_external_managed``
-  used for skipping the java installation tasks from this role, for handle Java by external scripts/roles (default: ``false``)
-
 .. _role_config_variabels-minecraft_external_log_conf:
 
 Logging

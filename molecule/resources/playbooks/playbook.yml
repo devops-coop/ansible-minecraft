@@ -17,6 +17,9 @@
         - unzip
         - rsync
 
+    - include_role: 
+        name: nolte.msopenjdk
+
   roles:
     - role: "{{ playbook_dir }}/./../../../"
       minecraft_version: "{{ mc_version | default('1.13.1') }}"

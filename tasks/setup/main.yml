@@ -1,21 +1,5 @@
 ---
 
-- name: load system specific vars
-  include_vars: "{{ lookup('first_found', params) }}"
-  vars:
-    params:
-      files:
-        - "{{ ansible_distribution_release }}.yml"
-        - "{{ ansible_distribution }}.yml"
-        - "{{ ansible_os_family }}.yml"
-        - "default.yml"
-      paths:
-        - 'vars'
-
-- name: install java dependency
-  include: java/prepare_java_dependencies.yml
-  when: not minecraft_java_external_managed
-
 - name: install spigot package
   package:
     name: "{{ item }}"
